@@ -37,42 +37,5 @@ outputs:
       which reported changes to be applied
     value: ${{ steps.main.outputs.changed-paths }}
 runs:
-  using: composite
-  steps:
-    - run: |
-        echo ::group::Clone tfenv
-        git clone -q https://github.com/tfutils/tfenv.git ~/.tfenv
-        git -C ~/.tfenv checkout -q ${{ inputs.tfenv-version }}
-        echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
-        echo ::endgroup::
-
-        echo ::group::Clone tgenv
-        git clone -q https://github.com/cunymatthieu/tgenv.git ~/.tgenv
-        git -C ~/.tgenv checkout -q ${{ inputs.tgenv-version }}
-        echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
-        echo ::endgroup::
-
-        echo ::group::Run tfenv install
-        PATH="$HOME/.tfenv/bin:$PATH" tfenv install
-        echo ::endgroup::
-
-        echo ::group::Run tgenv install
-        PATH="$HOME/.tgenv/bin:$PATH" tgenv install
-        echo ::endgroup::
-      shell: bash
-    - id: main
-      run: |
-        if ${{ inputs.init }}; then
-          echo "::group::Run make init paths='${{ inputs.config-paths }}'"
-          make init paths='${{ inputs.config-paths }}' 2>&1
-          echo ::endgroup::
-        fi
-
-        # When GITHUB_ACTIONS=true, this command will also write the required
-        # statements to set the outputs of this GitHub action.
-        make '${{ inputs.command }}' paths='${{ inputs.config-paths }}'
-      shell: bash
-      env:
-        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
-        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
-        TF_IN_AUTOMATION: 'true'
+  using: docker
+  image: ../../../.terragrunt/Dockerfile

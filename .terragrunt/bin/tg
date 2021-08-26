@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+unset CDPATH
+
+basedir="$(dirname "${BASH_SOURCE[0]}")/.."
+libexecdir="$basedir/libexec"
+executable="$libexecdir/tg"
+
+if [[ -x $executable ]]; then
+  exec "$executable" "$@"
+fi
+
+image=$(docker build -q -t tg "$basedir")
+
+exec docker run -it --rm -u $(id -u):$(id -g) -v $(pwd):/$(pwd) -w $(pwd) "$image" "$@"

@@ -268,7 +268,7 @@ terraform {
 }
 
 dependency "state" {
-  config_path = local.remote_state_backend != "terragrunt" ? "${local.root_dir}/.terragrunt/null" : local.state_dependency_config_path
+  config_path = local.remote_state_backend != "terragrunt" ? "${local.root_dir}/.terragrunt" : local.state_dependency_config_path
   skip_outputs = local.remote_state_backend != "terragrunt" || abspath("${local.root_dir}/${path_relative_to_include()}") == abspath(local.state_dependency_config_path)
 }
 
