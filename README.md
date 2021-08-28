@@ -1,5 +1,14 @@
-# Template
-> Repository template with GitHub workflows
+# Terragrunt Template
+> Repository template with GitHub workflows for Terragrunt
+
+This project uses a single [parent `terragrunt.hcl` file](terragrunt.hcl) that
+is included by all child `terragrunt.hcl` files. The parent `terragrunt.hcl`
+file provides `terragrunt`, and `remote_state` blocks as well as an `inputs`
+attribute that can be configured via `terragrunt.yml` files that are located
+in each level of the configuration directory hierarchy.
+
+For more details on this approach, and the definition of supported attributes
+in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 
 ## Features
 
