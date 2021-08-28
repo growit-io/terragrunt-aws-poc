@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+exec sed \
+  -e '2i\
+	graph [truecolor=true bgcolor="#ffffff00"]' \
+  -e '3i\
+	node [shape=box3d style=filled fillcolor="#c0c0c0ff" color="#404040ff"]' \
+  -e '4i\
+	edge [color="#808080ff"]' \
+  -e "s,$CURDIR/,,g" \
+  -e "s,$CURDIR,root,g" \
+  -e "/\"\.terragrunt\/null\"/d"
