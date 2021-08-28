@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.0.2](https://www.github.com/growit-io/template/compare/v0.0.1...v0.0.2) (2021-08-28)
+
+
+### Bug Fixes
+
+* **template:** disable automatic conflict resolution for LICENSE, and README.md ([4c00b92](https://www.github.com/growit-io/template/commit/4c00b92c901dcde08628138869b52fea0cae26d7))
+* **template:** maintain a single pull request for upstream changes ([db0a332](https://www.github.com/growit-io/template/commit/db0a332d03421a2bb3d2e43a0eabfe6577a54932))
+
 ### [0.0.1](https://www.github.com/growit-io/template/compare/v0.0.0...v0.0.1) (2021-08-28)
 
 
