@@ -1,8 +1,8 @@
-variable "root" {
+variable "cloud" {
   type = string
 
   validation {
-    condition = var.root == "examples"
+    condition = var.cloud == "examples"
     error_message = "The value should match the name of the first subdirectory that leads to this module, under the root directory of the repository. The expected name for this directory is \"examples\"."
   }
 }
