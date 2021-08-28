@@ -2,7 +2,9 @@
 [![Upstream](https://github.com/growit-io/template/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/upstream.yml)
 [![Release](https://github.com/growit-io/template/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/release.yml)
 [![Downstream](https://github.com/growit-io/template/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/downstream.yml)
-> Repository template with GitHub workflows
+
+This is a template for GitHub repositories with workflows to keep generated
+repositories synchronized with new releases of the template.
 
 ## Features
 
