@@ -1,5 +1,5 @@
-# Terragrunt Template
-> Repository template with GitHub workflows for Terragrunt
+# Terragrunt Template for Amazon Web Services
+> Terragrunt configuration repository template for Amazon Web Services
 
 This project uses a single [parent `terragrunt.hcl` file](terragrunt.hcl) that
 is included by all child `terragrunt.hcl` files. The parent `terragrunt.hcl`
