@@ -1,0 +1,119 @@
+name: 'Remote Merge Action'
+description: >-
+  This action merges the history of a branch or tag in another repository into
+  the current repository.
+inputs:
+  token:
+    description: >-
+      A GitHub token with write access to the current repository. Defaults to
+      the automatic token provided by GitHub Actions.
+    required: false
+    default: ''
+  clone-token:
+    description: >-
+      A GitHub token with permission to clone the remote repository. Defaults
+      to the same value as the `token` input.
+    required: false
+    default: ''
+  repository:
+    description: >-
+      The remote repository to merge in the format "owner/name".
+    required: false
+    default: ''
+  branch-or-tag:
+    description: >-
+      The name of a branch or tag in the remote repository. Defaults to the
+      name of the HEAD branch in the current working directory.
+    required: false
+    default: ''
+  merge-strategy:
+    description: >-
+      The merge strategy to use. This is passed through to `git merge` as the
+      `-s <strategy>` option.
+    required: false
+    default: 'recursive'
+  merge-exclude:
+    description: >-
+      The content of a gitignore(5) file that defines paths which should always
+      be excluded from merge operations.
+    required: false
+    default: ''
+  conflict-resolution:
+    description: >-
+      A JSON object describing how merge conflicts should be handled. The keys
+      are the paths which are expected to produce conflicts during merge and the
+      value for each path is a string specifying how the conflicting path should
+      be handled:
+
+      - ours: Discard all changes and keep the current version of the file.
+
+      Example:
+
+      {
+        "CHANGELOG.md": "ours",
+        "LICENSE": "ours",
+        "README.md": "ours",
+        "version.txt": "ours"
+      }
+    required: false
+    default: ''
+  remote:
+    description: >-
+      The name of the Git remote to add for fetching and merging. Defaults to
+      the name of the remote repository.
+    required: false
+    default: ''
+  pr-branch:
+    description: >-
+      The name of the pull request branch to create or update.
+    required: false
+    default: ''
+  delete-pr-branch:
+    description: >-
+      Whether to delete the pull request branch when the local repository is
+      already up to date with the remote repository.
+    required: false
+    default: 'true'
+runs:
+  using: composite
+  steps:
+    - shell: python
+      run: |
+        import os
+        import sys
+
+        class Unbuffered(object):
+            def __init__(self, stream):
+                self.stream = stream
+            def write(self, data):
+                self.stream.write(data)
+                self.stream.flush()
+            def writelines(self, datas):
+                self.stream.writelines(datas)
+                self.stream.flush()
+            def __getattr__(self, attr):
+                return getattr(self.stream, attr)
+
+        sys.stdout = Unbuffered(sys.stdout)
+
+        # GitHub actions doesn't handle stdout and stderr synchronously, and
+        # combined with the undocumented ::group feature, this may lead to some
+        # messages escaping the group, or even ending up in the wrong group.
+        sys.stderr = sys.stdout
+
+        sys.path.insert(0, os.environ['GITHUB_ACTION_PATH'])
+
+        from main import main
+
+        exit(main())
+      env:
+        TOKEN: ${{ inputs.token || github.token }}
+        CLONE_TOKEN: ${{ inputs.clone-token }}
+        REPOSITORY: ${{ inputs.repository }}
+        BRANCH_OR_TAG: ${{ inputs.branch-or-tag }}
+        MERGE_STRATEGY: ${{ inputs.merge-strategy }}
+        MERGE_EXCLUDE: ${{ inputs.merge-exclude }}
+        CONFLICT_RESOLUTION: ${{ inputs.conflict-resolution }}
+        REMOTE: ${{ inputs.remote }}
+        PR_BRANCH: ${{ inputs.pr-branch }}
+        DELETE_PR_BRANCH: ${{ inputs.delete-pr-branch }}

@@ -1,0 +1,12 @@
+layer: example
+
+remote_state:
+  backend: local
+  config:
+    path: terraform.tfstate
+
+terraform:
+  source: .
+
+inputs:
+  hello: world

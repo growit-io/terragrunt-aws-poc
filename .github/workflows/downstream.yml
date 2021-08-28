@@ -1,0 +1,74 @@
+name: 'Downstream'
+
+on:
+  repository_dispatch:
+    types: [release_created]
+
+jobs:
+  matrix:
+    name: 'Matrix'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Generate repository array for jobs.dispatch.strategy.matrix'
+        id: main
+        run: |
+          # Check GITHUB_TOKEN and set repository output
+
+          echo ::group::Check GITHUB_TOKEN
+          # The default token for GitHub Actions can only access the current
+          # repository, but we need a token that has access to one or more of
+          # the other repositories in the same organization.
+          if [[ -z $GITHUB_TOKEN ]]; then
+            echo 'The ACTIONS_BOT_TOKEN secret is not set or empty.'
+            echo 'Please provide a valid GitHub token and try again.'
+            exit 2
+          fi
+          echo ::endgroup::
+
+          echo ::group::Set repository output
+          repository_name=${GITHUB_REPOSITORY##$GITHUB_REPOSITORY_OWNER/}
+
+          # This generates a JSON array with all the downstream repositories in
+          # the organization which were created using the current repository as
+          # a template. The array values look like "owner/repository_name".
+          #
+          # We have to compact the JSON data (-c) because GitHub Actions does
+          # not support multi-line values with the "::set-output" mechanism.
+          echo "::set-output name=repository::$(
+            gh repo list --json name,templateRepository \
+              "$GITHUB_REPOSITORY_OWNER" | \
+              jq -c '[
+                .[] |
+                select(.templateRepository.name == "'"$repository_name"'") |
+                "'"$GITHUB_REPOSITORY_OWNER"'/" + .name
+              ]'
+          )"
+          echo ::endgroup::
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT_TOKEN }}
+    outputs:
+      repository: ${{ steps.main.outputs.repository }}
+
+  dispatch:
+    name: 'Dispatch'
+    needs: matrix
+    # GitHub Actions reports an error if the strategy matrix is empty, so we
+    # skip the dispatch job entirely if there are no downstream repositories.
+    if: needs.matrix.outputs.repository != '[]'
+    strategy:
+      matrix:
+        repository: ${{ fromJSON(needs.matrix.outputs.repository) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Repository Dispatch'
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          repository: ${{ matrix.repository }}
+          event-type: upstream_release_created
+          client-payload: >-
+            {
+              "repository": "${{ github.repository }}",
+              "html_url": "${{ github.event.client_payload.html_url }}",
+              "tag_name": "${{ github.event.client_payload.tag_name }}"
+            }

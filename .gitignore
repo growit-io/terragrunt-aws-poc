@@ -1,0 +1,12 @@
+# Terragrunt cache directories
+.terragrunt-cache/
+
+# Terraform provider lock files
+.terraform.lock.hcl
+
+# Created by Makefile targets
+tfplan
+tfstate.json
+
+# Project configuration files for JetBrains IDEs like IntelliJ CE
+/.idea/

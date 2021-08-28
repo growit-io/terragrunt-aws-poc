@@ -1,0 +1,40 @@
+name: 'Upstream'
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'Repository to merge'
+        required: false
+        default: ''
+      branch_or_tag:
+        description: 'Branch or tag to merge'
+        required: false
+        default: ''
+  repository_dispatch:
+    types: [template_generated, upstream_release_created]
+
+jobs:
+  merge:
+    name: 'Merge remote repository'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          fetch-depth: 0
+      - name: 'Merge upstream release'
+        uses: ./.github/actions/remote-merge
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          repository: ${{ github.event.client_payload.repository || github.event.inputs.repository }}
+          branch-or-tag: ${{ github.event.client_payload.tag_name || github.event.inputs.branch_or_tag }}
+          merge-exclude: |
+            /CHANGELOG.md
+            /version.txt
+          conflict-resolution: |
+            {
+              "LICENSE": "ours",
+              "README.md": "ours"
+            }
