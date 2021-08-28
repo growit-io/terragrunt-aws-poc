@@ -33,8 +33,3 @@ jobs:
           merge-exclude: |
             /CHANGELOG.md
             /version.txt
-          conflict-resolution: |
-            {
-              "LICENSE": "ours",
-              "README.md": "ours"
-            }
