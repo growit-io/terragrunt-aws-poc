@@ -1,0 +1,8 @@
+layer: tier
+
+terraform:
+  source:
+    append: '${organization}/${cloud}-${tier}-'
+
+inputs:
+  default_region: eu-central-1

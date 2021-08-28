@@ -1,5 +1,6 @@
-# Terragrunt Template for Amazon Web Services
-> Terragrunt configuration repository template for Amazon Web Services
+# Terragrunt Configuration for Amazon Web Services
+[![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg?event=push)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
+> Proof-of-concept Terragrunt configuration repository for Amazon Web Services
 
 This project uses a single [parent `terragrunt.hcl` file](terragrunt.hcl) that
 is included by all child `terragrunt.hcl` files. The parent `terragrunt.hcl`
@@ -28,20 +29,15 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 - [**Upstream**](.github/workflows/upstream.yml): Keeps this repository
   synchronized with the template that it was created from.
 
-## Usage
+## Directory index
 
-1. Create a new repository on GitHub using this repository as a template.
-2. Wait for the initial workflow runs to complete in the new repository. The
-   initial workflow runs will create a pull request to integrate the history
-   of the template repository.
-3. Merge the pull request to integrate the history of this template into the
-   new repository. This allows the new repository to receive upstream changes
-   via pull requests whenever a new template release is created.
-4. Update [commitlint.config.js](commitlint.config.js) to define the commit
-   scopes that you plan to use in the new repository. The `scope-enum` value
-   should also include all commit scopes that are used in the template.
-5. Update [README.md](README.md) to describe how the new repository differs
-   from the template.
+- [aws](aws): Contains `terragrunt.yml` files and Terragrunt configurations (child `terragrunt.hcl` files) for Amazon Web Services
+- [modules](modules): Contains all Terraform root modules used by Terragrunt configurations in this repository, and required child modules
+- [docs](docs): Reference documentation for this Terragrunt AWS Proof-of-Concept project
+
+## Configuration structure
+
+![Dependency graph](graph.svg)
 
 ## Changelog
 
