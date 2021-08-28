@@ -49,6 +49,9 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 5. Update [README.md](README.md) in the new repository:
     - Update the status badges to point to the new repository's workflows.
     - Describe how the new repository differs from the template.
+6. Create a hierarchy of subdirectories with `terragrunt.hcl`, and optional
+   `terragrunt.yml` files to describe your configuration. See the
+   [examples](examples) directory for inspiration.
 
 ## Changelog
 
