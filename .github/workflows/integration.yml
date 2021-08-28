@@ -1,0 +1,37 @@
+name: 'Integration'
+
+on: [pull_request]
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - id: merge-base
+        run: |
+          # Detect merge commit with unrelated histories
+          head_ref=$(git rev-parse ${{ github.event.pull_request.head.sha }})
+          commit=$(git cat-file -p $head_ref)
+          unrelated_histories=false
+
+          if [[ $(grep -c '^parent ' <<<"$commit") -gt 1 ]]; then
+            parents=$(awk '/^parent / {print $2}' <<<"$commit")
+
+            if ! git merge-base --is-ancestor $(echo $parents); then
+              unrelated_histories=true
+            fi
+          fi
+
+          echo ::set-output name=unrelated-histories::$unrelated_histories
+      - # https://github.com/wagoid/commitlint-github-action
+        # The commitlint action does not handle unrelated histories and fails,
+        # so we detect this condition and skip the step, only in that case.
+        if: steps.merge-base.outputs.unrelated-histories == 'false'
+        uses: wagoid/commitlint-github-action@v4
+        with:
+          configFile: commitlint.config.js
+          firstParent: false
+          failOnWarnings: true
+          helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
