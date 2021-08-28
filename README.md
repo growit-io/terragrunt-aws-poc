@@ -1,7 +1,7 @@
 # Terragrunt Template for Amazon Web Services
-[![Upstream](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml)
-[![Release](https://github.com/growit-io/terragrunt/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/release.yml)
-[![Downstream](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml)
+[![Upstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml)
+[![Release](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml)
+[![Downstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml)
 
 This is a Terragrunt configuration repository template for Amazon Web Services
 with GitHub workflows to keep generated repositories synchronized with new
