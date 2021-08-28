@@ -3,11 +3,6 @@
 
 ## Features
 
-### GitHub actions
-
-- [**Remote Merge**](.github/actions/remote-merge): Merges the history of a
-  branch or tag in another repository into this repository.
-
 ### GitHub workflows
 
 - [**Integration**](.github/workflows/integration.yml): Validates all commit
@@ -18,6 +13,11 @@
   created from this template of new releases.
 - [**Upstream**](.github/workflows/upstream.yml): Keeps this repository
   synchronized with the template that it was created from.
+
+### GitHub actions
+
+- [**Remote Merge**](.github/actions/remote-merge): Merges the history of a
+  branch or tag in another repository into this repository.
 
 ## Usage
 
