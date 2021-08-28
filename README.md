@@ -1,21 +1,22 @@
 # Terragrunt Template
-> Repository template with GitHub workflows for Terragrunt
+[![Upstream](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml)
+[![Release](https://github.com/growit-io/terragrunt/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/release.yml)
+[![Downstream](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml)
 
-This project uses a single [parent `terragrunt.hcl` file](terragrunt.hcl) that
-is included by all child `terragrunt.hcl` files. The parent `terragrunt.hcl`
-file provides `terragrunt`, and `remote_state` blocks as well as an `inputs`
-attribute that can be configured via `terragrunt.yml` files that are located
-in each level of the configuration directory hierarchy.
+This is a template for Terragrunt configuration repositories on GitHub with
+workflows to keep generated repositories synchronized with new releases of the
+template.
+
+This repository includes a single [parent `terragrunt.hcl`](terragrunt.hcl) that
+should be included by all child `terragrunt.hcl` files. The parent
+`terragrunt.hcl` file provides `terragrunt` and `remote_state` blocks, as well
+as an `inputs` attribute whose value will be the result of merging the `inputs`
+attributes of all `terragrunt.yml` files in the directory hierarchy.
 
 For more details on this approach, and the definition of supported attributes
 in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 
 ## Features
-
-### GitHub actions
-
-- [**Remote Merge**](.github/actions/remote-merge): Merges the history of a
-  branch or tag in another repository into this repository.
 
 ### GitHub workflows
 
@@ -27,6 +28,11 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
   created from this template of new releases.
 - [**Upstream**](.github/workflows/upstream.yml): Keeps this repository
   synchronized with the template that it was created from.
+
+### GitHub actions
+
+- [**Remote Merge**](.github/actions/remote-merge): Merges the history of a
+  branch or tag in another repository into this repository.
 
 ## Usage
 
@@ -40,8 +46,9 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 4. Update [commitlint.config.js](commitlint.config.js) to define the commit
    scopes that you plan to use in the new repository. The `scope-enum` value
    should also include all commit scopes that are used in the template.
-5. Update [README.md](README.md) to describe how the new repository differs
-   from the template.
+5. Update [README.md](README.md) in the new repository:
+    - Update the status badges to point to the new repository's workflows.
+    - Describe how the new repository differs from the template.
 
 ## Changelog
 
