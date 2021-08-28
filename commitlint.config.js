@@ -6,6 +6,7 @@ const Configuration = {
       'template',
       'terragrunt',
       'terragrunt-aws',
+      'terragrunt-aws-poc',
     ]],
     'type-enum': [2, 'always', [
       'feat',
