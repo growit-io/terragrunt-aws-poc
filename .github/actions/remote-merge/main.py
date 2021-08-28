@@ -319,8 +319,7 @@ def main():
     remote = os.environ['REMOTE'] or repository_name
     clone_url = f'https://x-github-token:{clone_token}@{github_host}/{repository}.git'
     remote_ref = f'{remote}/{branch_or_tag}'
-    pr_branch = os.environ['PR_BRANCH'] or \
-        f'chore/merge-{repository_name}-{branch_or_tag}'
+    pr_branch = os.environ['PR_BRANCH'] or f'chore/merge-{repository_name}'
     delete_pr_branch = os.environ['DELETE_PR_BRANCH'] == 'true'
 
     # Set environment variables required for Git merge and commit operations
