@@ -1,4 +1,7 @@
 # Template
+[![Upstream](https://github.com/growit-io/template/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/upstream.yml)
+[![Release](https://github.com/growit-io/template/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/release.yml)
+[![Downstream](https://github.com/growit-io/template/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/downstream.yml)
 > Repository template with GitHub workflows
 
 ## Features
@@ -31,8 +34,9 @@
 4. Update [commitlint.config.js](commitlint.config.js) to define the commit
    scopes that you plan to use in the new repository. The `scope-enum` value
    should also include all commit scopes that are used in the template.
-5. Update [README.md](README.md) to describe how the new repository differs
-   from the template.
+5. Update [README.md](README.md) in the new repository:
+   - Update the status badges to point to the new repository's workflows. 
+   - Describe how the new repository differs from the template.
 
 ## Changelog
 
