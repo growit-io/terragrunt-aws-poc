@@ -135,18 +135,19 @@ def git_unmerged_paths(status):
     return paths
 
 
-def revert_excluded_paths(exclude_patterns):
+def revert_excluded_paths(exclude_patterns, ref):
     """Reverts all files matched by the given exclude patterns to their state
     on the HEAD branch.
 
     :param exclude_patterns: content of a gitignore(5) file
+    :param ref: Git reference to revert excluded files to
     """
     for path in git_ls_files_ignored(exclude_patterns):
-        print(f'Excluding {path} from merge')
+        print(f'Reverting {path} to {ref}')
 
         check_call(['git', 'reset', '-q', '--', path])
 
-        if 0 != call(['git', 'checkout', '-q', 'HEAD', '--', path],
+        if 0 != call(['git', 'checkout', '-q', ref, '--', path],
                      stderr=DEVNULL):
             os.unlink(path)
 
@@ -354,44 +355,47 @@ def main():
         git_remote_add(remote, clone_url)
         git_fetch_branches_and_tags(remote)
 
-    push_ref = 'HEAD'
+    orig_head = git_head_branch()
 
-    with group(f'Merge {remote_ref} into {git_head_branch()}'):
+    # Prepare the commit summary and pull request title
+    commit_scope = os.path.basename(os.getcwd())
+    commit_description = f'merge {repository}@{branch_or_tag}'
+    pr_title = f'chore({commit_scope}): {commit_description}'
+
+    with group(f'Merge {remote_ref} into {orig_head}'):
         merge_success = git_merge_no_commit(merge_strategy, f'{remote_ref}')
 
         if git_merge_in_progress():
-            revert_excluded_paths(merge_exclude)
+            revert_excluded_paths(merge_exclude, 'HEAD')
 
-        if not merge_success:
-            if not resolve_all_merge_conflicts(conflict_resolution):
-                # TODO: create branch with excluded paths checked out from HEAD
-                push_ref = git_rev_parse(remote_ref)
+            if not merge_success:
+                if not resolve_all_merge_conflicts(conflict_resolution):
+                    check_call(['git', 'merge', '--abort'])
+                    check_call(['git', 'clean', '-ffdx'])
+                    check_call(['git', 'checkout', '-b', pr_branch, remote_ref])
+                    revert_excluded_paths(merge_exclude, orig_head)
+                    commit_description = 'revert files excluded from merge'
 
-    # Prepare the commit summary and pull request title
-    scope = os.path.basename(os.getcwd())
-    description = f'merge {repository}@{branch_or_tag}'
-    summary = f'chore({scope}): {description}'
-
-    if push_ref == 'HEAD':
-        with group(f'Commit changes to {git_head_branch()}'):
-            if not git_merge_in_progress():
+    with group(f'Commit changes to {git_head_branch()}'):
+        if not git_merge_in_progress() and git_workdir_is_clean():
+            if git_head_branch() == orig_head:
                 print('Nothing to commit, working tree clean.')
 
                 if delete_pr_branch:
                     git_delete_remote_branch(pr_branch)
 
                 return 0
+        else:
+            git_commit(f'chore({commit_scope}): {commit_description}')
 
-            git_commit(summary)
-
-    with group(f'Push {push_ref} to {pr_branch}'):
-        git_force_push(push_ref, pr_branch)
+    with group(f'Push {git_head_branch()} to {pr_branch}'):
+        git_force_push(git_head_branch(), pr_branch)
 
     with group(f'Create pull request for {pr_branch}'):
         github_create_or_update_pull_request(
             base=git_head_branch(),
             head=pr_branch,
-            title=summary,
+            title=pr_title,
             body=f'This change integrates all commits from **{branch_or_tag}** '
                  f'in the [{repository}]({repository_url}) repository.'
         )
