@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.0.2](https://www.github.com/growit-io/terragrunt-aws/compare/v0.0.1...v0.0.2) (2021-08-29)
+
+
+### Documentation
+
+* **terragrunt-aws:** update status badges to point to the correct repository ([60eb8cb](https://www.github.com/growit-io/terragrunt-aws/commit/60eb8cb5d8e5f51028167c638c10f460d243c463))
+
 ### [0.0.1](https://www.github.com/growit-io/terragrunt-aws/compare/v0.0.0...v0.0.1) (2021-08-28)
 
 
