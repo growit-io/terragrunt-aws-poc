@@ -1,5 +1,39 @@
 # Changelog
 
+### [0.0.2](https://www.github.com/growit-io/terragrunt/compare/v0.0.1...v0.0.2) (2021-08-29)
+
+
+### Bug Fixes
+
+* **template:** revert merge-exclude paths even in case of unresolvable conflicts ([0dd0458](https://www.github.com/growit-io/terragrunt/commit/0dd04586c83482ebe4a1d5c7095734a4bacab04e))
+
+
+### Build System
+
+* **template:** add Makefile to run unit tests for main.py ([2453c10](https://www.github.com/growit-io/terragrunt/commit/2453c100c8fd936175fed99e52ffd6cc6a4d334a))
+
+
+### CI/CD Workflows
+
+* **template:** run `make test-unit` in integration workflow ([ce1f52c](https://www.github.com/growit-io/terragrunt/commit/ce1f52cd002b2915a3e53ec7b8142845984f4c9c))
+
+
+### Code Refactoring
+
+* **template:** make main.py easier to mock for testing ([df0028b](https://www.github.com/growit-io/terragrunt/commit/df0028b8cc89ba2e1037f7a50ff79743632944b6))
+
+
+### Documentation
+
+* **template:** recommend updating the Makefile and or integration.yml workflow ([c70c5dc](https://www.github.com/growit-io/terragrunt/commit/c70c5dc94dd3a615026b56cae22b6d1c71d3edea))
+* **template:** use same wording as standard-version to describe CHANGELOG.md ([8e3d07f](https://www.github.com/growit-io/terragrunt/commit/8e3d07f7411de58c0866e83299781538f5c5c53c))
+
+
+### Automated Tests
+
+* **template:** add test for merge-exclude with unresolvable conflicts ([f752ef0](https://www.github.com/growit-io/terragrunt/commit/f752ef0fd969984a48fb28fd5d314fbfc64ea73b))
+* **template:** test merging of related and unrelated histories ([3ae1c43](https://www.github.com/growit-io/terragrunt/commit/3ae1c43d4506d462241b38ce0e4da07d3aa39317))
+
 ### [0.0.1](https://www.github.com/growit-io/terragrunt/compare/v0.0.0...v0.0.1) (2021-08-28)
 
 
