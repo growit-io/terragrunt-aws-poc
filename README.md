@@ -59,8 +59,8 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 
 ## Changelog
 
-All relevant changes to this project are documented in the file
-[CHANGELOG.md](CHANGELOG.md).
+All notable changes to this project will be documented in the
+[CHANGELOG.md](CHANGELOG.md) file.
 
 ## Contributing
 
