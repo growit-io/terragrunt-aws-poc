@@ -39,6 +39,11 @@ repositories synchronized with new releases of the template.
 5. Update [README.md](README.md) in the new repository:
    - Update the status badges to point to the new repository's workflows. 
    - Describe how the new repository differs from the template.
+6. Update the [Makefile](Makefile) and/or
+   [integration.yml](.github/workflows/integration.yml) workflow to run tests
+   specific to the new repository's purpose. If the new repository is going to
+   be a template as well, then you may want to include the existing tests from
+   the upstream template.
 
 ## Changelog
 
