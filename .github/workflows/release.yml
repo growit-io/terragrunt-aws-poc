@@ -69,3 +69,59 @@ jobs:
             }
     outputs:
       release_created: ${{ steps.main.outputs.release_created }}
+
+  development:
+    name: 'Development'
+    needs: release
+    if: '! needs.release.outputs.release_created'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans and execute proposed actions'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: apply
+          config-paths: '*/workloads/dev'
+          aws-access-key-id: ${{ secrets.CI_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CI_AWS_SECRET_ACCESS_KEY }}
+
+  production:
+    name: 'Production'
+    needs: release
+    if: needs.release.outputs.release_created
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans and execute proposed actions'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: apply
+          config-paths: '*/boot */management/dev */prod'
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+
+  graph:
+    name: 'Graph'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Setup Graphviz'
+        uses: ts-graphviz/setup-graphviz@v1
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create or update dependency graphs'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: graph
+          config-paths: '*'
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+      - name: 'Create pull request'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          commit-message: 'chore: update dependency graphs'
+          branch: chore/update-dependency-graphs
+          delete-branch: true
+          title: 'chore: update dependency graphs'
