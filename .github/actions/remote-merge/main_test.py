@@ -73,11 +73,17 @@ class GitRepository(object):
     def git_commit(self, *args, message='automated commit'):
         self.git('commit', '-m', message, *args)
 
-    def git(self, *args):
+    def git(self, *args, output=False):
         with cwd(self.work_tree):
-            subprocess.check_call(['git'] + list(args),
-                                  stdout=subprocess.DEVNULL,
-                                  stderr=subprocess.DEVNULL)
+            cmd = ['git'] + list(args)
+            stdout = subprocess.DEVNULL
+            stderr = subprocess.DEVNULL
+
+            if output:
+                return subprocess.check_output(cmd, stderr=stderr).decode()
+            else:
+                subprocess.check_call(cmd, stdout=stdout, stderr=stderr)
+                return None
 
 
 @contextlib.contextmanager
@@ -145,6 +151,35 @@ class TestMain(unittest.TestCase):
         self.assertEqual(main.main(), 0)
 
         self.assertTrue(self.git_force_push.called)
+        self.assertFalse(self.git_delete_remote_branch.called)
+        self.assertTrue(self.github_create_or_update_pull_request.called)
+
+    def test_merge_exclude_with_unresolvable_conflicts(self):
+        pr_branch = 'chore/merge-upstream'
+        remote_version = '0.0.0'
+        expected_version = '1.0.0'
+        expected_summary = f'chore({os.path.basename(self.local.work_tree)}):' \
+                           ' revert files excluded from merge'
+
+        self.remote.write_file('README.md', '# Remote')
+        self.remote.write_file('version.txt', remote_version)
+        self.remote.git('add', 'README.md', 'version.txt')
+        self.remote.git_commit()
+
+        self.local.write_file('README.md', '# Local')
+        self.local.write_file('version.txt', expected_version)
+        self.local.git('add', 'README.md', 'version.txt')
+        self.local.git_commit()
+
+        with environ({'MERGE_EXCLUDE': '/version.txt\n'}):
+            self.assertEqual(main.main(), 0)
+
+        actual_version = self.local.git('show', 'HEAD:version.txt', output=True)
+        actual_summary = self.local.git('log', '-1', '--format=format:%s', output=True)
+
+        self.assertEqual(expected_version, actual_version)
+        self.assertEqual(expected_summary, actual_summary)
+        self.git_force_push.assert_called_with(pr_branch, pr_branch)
         self.assertFalse(self.git_delete_remote_branch.called)
         self.assertTrue(self.github_create_or_update_pull_request.called)
 
