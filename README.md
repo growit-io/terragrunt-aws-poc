@@ -47,16 +47,21 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
    scopes that you plan to use in the new repository. The `scope-enum` value
    should also include all commit scopes that are used in the template.
 5. Update [README.md](README.md) in the new repository:
-    - Update the status badges to point to the new repository's workflows.
-    - Describe how the new repository differs from the template.
-6. Create a hierarchy of subdirectories with `terragrunt.hcl`, and optional
+   - Update the status badges to point to the new repository's workflows. 
+   - Describe how the new repository differs from the template.
+6. Update the [Makefile](Makefile) and/or
+   [integration.yml](.github/workflows/integration.yml) workflow to run tests
+   specific to the new repository's purpose. If the new repository is going to
+   be a template as well, then you may want to include the existing tests from
+   the upstream template.
+7. Create a hierarchy of subdirectories with `terragrunt.hcl`, and optional
    `terragrunt.yml` files to describe your configuration. See the
    [examples](examples) directory for inspiration.
 
 ## Changelog
 
-All relevant changes to this project are documented in the file
-[CHANGELOG.md](CHANGELOG.md).
+All notable changes to this project will be documented in the
+[CHANGELOG.md](CHANGELOG.md) file.
 
 ## Contributing
 

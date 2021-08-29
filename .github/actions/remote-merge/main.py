@@ -62,7 +62,7 @@ def git_head_branch():
         decode().rstrip()
 
 
-def git_add_remote(name, url):
+def git_remote_add(name, url):
     """Add a new Git remote with the specified name and repository URL."""
     check_call(['git', 'remote', 'add', name, url])
 
@@ -73,7 +73,7 @@ def git_fetch_branches_and_tags(remote):
     allows us to keep local tags unmodified and run `git merge {remote}/{tag}`
     to merge either a remote branch or tag.
     """
-    check_call(['git', 'fetch', '--no-tags', '--prune', remote,
+    check_call(['git', 'fetch', '-q', '--no-tags', '--prune', remote,
                 f'+refs/heads/*:refs/remotes/{remote}/*',
                 f'+refs/tags/*:refs/tags/{remote}/*'], stderr=STDOUT)
 
@@ -90,7 +90,7 @@ def git_merge_no_commit(strategy, ref):
     already up to date, and False if there were conflicts or other reasons that
     prevented the merge operation.
     """
-    return 0 == call(['git', 'merge', '-s', strategy, '--no-commit',
+    return 0 == call(['git', 'merge', '-q', '-s', strategy, '--no-commit',
                       '--allow-unrelated-histories', ref], stderr=STDOUT)
 
 
@@ -135,18 +135,19 @@ def git_unmerged_paths(status):
     return paths
 
 
-def revert_excluded_paths(exclude_patterns):
+def revert_excluded_paths(exclude_patterns, ref):
     """Reverts all files matched by the given exclude patterns to their state
     on the HEAD branch.
 
     :param exclude_patterns: content of a gitignore(5) file
+    :param ref: Git reference to revert excluded files to
     """
     for path in git_ls_files_ignored(exclude_patterns):
-        print(f'Excluding {path} from merge')
+        print(f'Reverting {path} to {ref}')
 
         check_call(['git', 'reset', '-q', '--', path])
 
-        if 0 != call(['git', 'checkout', '-q', 'HEAD', '--', path],
+        if 0 != call(['git', 'checkout', '-q', ref, '--', path],
                      stderr=DEVNULL):
             os.unlink(path)
 
@@ -282,6 +283,27 @@ def github_template_repository():
     return info['owner']['login'] + '/' + info['name']
 
 
+def github_url():
+    """Return the HTTPS base URL of the GitHub UI."""
+    return os.environ['GITHUB_API_URL'].replace('api.', '').replace('/api', '')
+
+
+def github_host():
+    """Return the hostname of the GitHub instance."""
+    return re.sub('.*://', '', github_url())
+
+
+def github_repository_url(repository):
+    """Return the HTTPS URL of the given repository on GitHub."""
+    return f'{github_url()}/{repository}'
+
+
+def github_clone_url(clone_token, repository):
+    """Return the HTTPS clone URL of the given GitHub repository."""
+    return f'https://x-github-token:{clone_token}@' \
+           f'{github_host()}/{repository}.git'
+
+
 def main():
     """Gather the inputs for this GitHub Action and merge the specified branch
     or tag of the specified remote repository into the current HEAD. The current
@@ -297,9 +319,6 @@ def main():
     assert git_head_is_not_detached()
 
     # Gather automatic action environment variables and derived values
-    github_api_url = os.environ['GITHUB_API_URL']
-    github_url = github_api_url.replace('api.', '').replace('/api', '')
-    github_host = re.sub('.*://', '', github_url)
     github_actor = os.environ['GITHUB_ACTOR']
 
     # Set required environment variables for the GitHub CLI
@@ -311,13 +330,13 @@ def main():
     repository = os.environ['REPOSITORY'] or github_template_repository()
     assert re.match('.+/.+', repository)
     repository_name = repository.split('/')[1]
-    repository_url = f'{github_url}/{repository}'
+    repository_url = github_repository_url(repository)
     branch_or_tag = os.environ['BRANCH_OR_TAG'] or git_head_branch()
     merge_strategy = os.environ['MERGE_STRATEGY']
     merge_exclude = os.environ['MERGE_EXCLUDE']
     conflict_resolution = json.loads(os.environ['CONFLICT_RESOLUTION'])
     remote = os.environ['REMOTE'] or repository_name
-    clone_url = f'https://x-github-token:{clone_token}@{github_host}/{repository}.git'
+    clone_url = github_clone_url(clone_token, repository)
     remote_ref = f'{remote}/{branch_or_tag}'
     pr_branch = os.environ['PR_BRANCH'] or f'chore/merge-{repository_name}'
     delete_pr_branch = os.environ['DELETE_PR_BRANCH'] == 'true'
@@ -333,46 +352,50 @@ def main():
         os.environ['GIT_COMMITTER_EMAIL'] = os.environ['GIT_AUTHOR_EMAIL']
 
     with group(f'Prepare the {remote} remote'):
-        git_add_remote(remote, clone_url)
+        git_remote_add(remote, clone_url)
         git_fetch_branches_and_tags(remote)
 
-    push_ref = 'HEAD'
+    orig_head = git_head_branch()
 
-    with group(f'Merge {remote_ref} into {git_head_branch()}'):
+    # Prepare the commit summary and pull request title
+    commit_scope = os.path.basename(os.getcwd())
+    commit_description = f'merge {repository}@{branch_or_tag}'
+    pr_title = f'chore({commit_scope}): {commit_description}'
+
+    with group(f'Merge {remote_ref} into {orig_head}'):
         merge_success = git_merge_no_commit(merge_strategy, f'{remote_ref}')
 
         if git_merge_in_progress():
-            revert_excluded_paths(merge_exclude)
+            revert_excluded_paths(merge_exclude, 'HEAD')
 
-        if not merge_success:
-            if not resolve_all_merge_conflicts(conflict_resolution):
-                push_ref = git_rev_parse(remote_ref)
+            if not merge_success:
+                if not resolve_all_merge_conflicts(conflict_resolution):
+                    check_call(['git', 'merge', '--abort'])
+                    check_call(['git', 'clean', '-ffdx'])
+                    check_call(['git', 'checkout', '-b', pr_branch, remote_ref])
+                    revert_excluded_paths(merge_exclude, orig_head)
+                    commit_description = 'revert files excluded from merge'
 
-    # Prepare the commit summary and pull request title
-    scope = os.path.basename(os.getcwd())
-    description = f'merge {repository}@{branch_or_tag}'
-    summary = f'chore({scope}): {description}'
-
-    if push_ref == 'HEAD':
-        with group(f'Commit changes to {git_head_branch()}'):
-            if not git_merge_in_progress():
+    with group(f'Commit changes to {git_head_branch()}'):
+        if not git_merge_in_progress() and git_workdir_is_clean():
+            if git_head_branch() == orig_head:
                 print('Nothing to commit, working tree clean.')
 
                 if delete_pr_branch:
                     git_delete_remote_branch(pr_branch)
 
                 return 0
+        else:
+            git_commit(f'chore({commit_scope}): {commit_description}')
 
-            git_commit(summary)
-
-    with group(f'Push {push_ref} to {pr_branch}'):
-        git_force_push(push_ref, pr_branch)
+    with group(f'Push {git_head_branch()} to {pr_branch}'):
+        git_force_push(git_head_branch(), pr_branch)
 
     with group(f'Create pull request for {pr_branch}'):
         github_create_or_update_pull_request(
             base=git_head_branch(),
             head=pr_branch,
-            title=summary,
+            title=pr_title,
             body=f'This change integrates all commits from **{branch_or_tag}** '
                  f'in the [{repository}]({repository_url}) repository.'
         )
