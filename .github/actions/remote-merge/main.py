@@ -364,6 +364,7 @@ def main():
 
         if not merge_success:
             if not resolve_all_merge_conflicts(conflict_resolution):
+                # TODO: create branch with excluded paths checked out from HEAD
                 push_ref = git_rev_parse(remote_ref)
 
     # Prepare the commit summary and pull request title
