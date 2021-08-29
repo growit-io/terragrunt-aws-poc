@@ -1,0 +1,5 @@
+layer: root
+
+terraform:
+  source:
+    append: '-root'

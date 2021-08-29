@@ -1,0 +1,15 @@
+description: >-
+  Grants permission to manage member accounts in this organization, to create
+  new member accounts, and to assume the OrganizationAccountAccessRole role in
+  any member account of the organization.
+
+policy:
+  Version: '2012-10-17'
+  Statement:
+    - Effect: Allow
+      Action:
+        - organizations:*
+      Resource: '*'
+    - Effect: Allow
+      Action: sts:AssumeRole
+      Resource: arn:aws:iam::*:role/OrganizationAccountAccessRole

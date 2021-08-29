@@ -1,17 +1,16 @@
-# Terragrunt Template for Amazon Web Services
-[![Upstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml)
-[![Release](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml)
-[![Downstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml)
+# Terragrunt Configurations for Amazon Web Services
+[![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
+[![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
 
-This is a Terragrunt configuration repository template for Amazon Web Services
-with GitHub workflows to keep generated repositories synchronized with new
-releases of the template.
+This is a proof-of-concept Terragrunt configuration repository for Amazon Web
+Services based on the
+[terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template.
 
 This repository includes a single [parent `terragrunt.hcl`](terragrunt.hcl) that
-should be included by all child `terragrunt.hcl` files. The parent
-`terragrunt.hcl` file provides `terragrunt` and `remote_state` blocks, as well
-as an `inputs` attribute whose value will be the result of merging the `inputs`
-attributes of all `terragrunt.yml` files in the directory hierarchy.
+is included by all child `terragrunt.hcl` files. The parent `terragrunt.hcl`
+file provides `terragrunt` and `remote_state` blocks, as well as an `inputs`
+attribute whose value will be the result of merging the `inputs` attributes of
+all `terragrunt.yml` files in the directory hierarchy.
 
 For more details on this approach, and the definition of supported attributes
 in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
@@ -21,42 +20,27 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 ### GitHub workflows
 
 - [**Integration**](.github/workflows/integration.yml): Validates all commit
-  messages using `commitlint`.
+  messages using `commitlint` and creates Terraform execution plans for all
+  non-production configurations.
 - [**Release**](.github/workflows/release.yml): Maintains a changelog, release
-  tags, and releases on GitHub.
-- [**Downstream**](.github/workflows/downstream.yml): Notifies repositories
-  created from this template of new releases.
+  tags, and releases on GitHub and applies changes in either non-production, or
+  production configurations, depending on whether a release was created.
 - [**Upstream**](.github/workflows/upstream.yml): Keeps this repository
   synchronized with the template that it was created from.
 
-### GitHub actions
-
-- [**Remote Merge**](.github/actions/remote-merge): Merges the history of a
-  branch or tag in another repository into this repository.
-
 ## Usage
 
-1. Create a new repository on GitHub using this repository as a template.
-2. Wait for the initial workflow runs to complete in the new repository. The
-   initial workflow runs will create a pull request to integrate the history
-   of the template repository.
-3. Merge the pull request to integrate the history of this template into the
-   new repository. This allows the new repository to receive upstream changes
-   via pull requests whenever a new template release is created.
-4. Update [commitlint.config.js](commitlint.config.js) to define the commit
-   scopes that you plan to use in the new repository. The `scope-enum` value
-   should also include all commit scopes that are used in the template.
-5. Update [README.md](README.md) in the new repository:
-   - Update the status badges to point to the new repository's workflows. 
-   - Describe how the new repository differs from the template.
-6. Update the [Makefile](Makefile) and/or
-   [integration.yml](.github/workflows/integration.yml) workflow to run tests
-   specific to the new repository's purpose. If the new repository is going to
-   be a template as well, then you may want to include the existing tests from
-   the upstream template.
-7. Create a hierarchy of subdirectories with `terragrunt.hcl`, and optional
-   `terragrunt.yml` files to describe your configuration. See the
-   [examples](examples) directory for inspiration.
+1. Change the configuration and verify your changes using `make plan`. You can
+   optionally pass a `paths=<pattern>` variable to the `make` command in order
+   to run Terragrunt in a specific subset of directories. See the
+   [`Makefile`](Makefile) for details on how the `paths` variable is handled.
+2. Commit and push your changes to a branch and open a pull request.
+3. Wait for the status checks to complete, review execution plans and merge
+   the pull request to apply any changes made to non-development configurations.
+4. If you made any changes to production configurations, wait for the release
+   pull request to be created and review its Terraform execution plan.
+5. Merge the release pull request to apply all changes made to production
+   configurations.
 
 ## Directory index
 
@@ -68,6 +52,10 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
   Terragrunt configurations in the `aws` directory, and required child modules.
 - [docs](docs): Reference documentation for this Terragrunt configuration
   repository.
+
+## Configuration structure
+
+![Dependency graph](graph.svg)
 
 ## Changelog
 
