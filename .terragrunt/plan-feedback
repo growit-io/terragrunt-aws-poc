@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+
+import glob
+import os
+import json
+import sys
+
+from subprocess import check_call, check_output
+from contextlib import contextmanager
+
+terraform = 'terraform'
+
+changed = False
+changed_paths = []
+
+
+@contextmanager
+def cwd(path):
+    owd = os.getcwd()
+    try:
+        os.chdir(path)
+        yield
+    finally:
+        os.chdir(owd)
+
+
+def terraform_show_json(path):
+    with cwd(os.path.dirname(path)):
+        return check_output([terraform, 'show', '-json', os.path.basename(path)])
+
+
+def main(plan_filename):
+    global changed
+    global changed_paths
+
+    plan_file_pattern = '**/.terragrunt-cache/**/%s' % plan_filename
+
+    for plan_file in glob.glob(plan_file_pattern, recursive=True):
+        config_path = plan_file[0:plan_file.index('/.terragrunt-cache/')]
+        plan = json.loads(terraform_show_json(plan_file))
+
+        num_resource_changes = 0
+        num_output_changes = 0
+
+        if 'resource_changes' in plan:
+            for resource in plan['resource_changes']:
+                if resource['change']['actions'] != ['no-op']:
+                    num_resource_changes += 1
+
+        if 'output_changes' in plan:
+            for _, output in plan['output_changes'].items():
+                if output['actions'] != ['no-op']:
+                    num_output_changes += 1
+
+        if num_resource_changes > 0 or num_output_changes > 0:
+            changed = True
+            changed_paths.append(config_path)
+
+    if 'GITHUB_ACTIONS' in os.environ:
+        print('::set-output name=changed::%s' % str(changed).lower())
+        print('::set-output name=changed-paths::%s' % ' '.join(changed_paths))
+    else:
+        print(json.dumps({
+            'changed': changed,
+            'changed_paths': changed_paths
+        }))
+
+    return 0
+
+
+exit(main(sys.argv[1]))

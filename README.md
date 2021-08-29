@@ -1,10 +1,20 @@
-# Template
-[![Upstream](https://github.com/growit-io/template/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/upstream.yml)
-[![Release](https://github.com/growit-io/template/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/release.yml)
-[![Downstream](https://github.com/growit-io/template/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/template/actions/workflows/downstream.yml)
+# Terragrunt Template
+[![Upstream](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml)
+[![Release](https://github.com/growit-io/terragrunt/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/release.yml)
+[![Downstream](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml)
 
-This is a template for GitHub repositories with workflows to keep generated
-repositories synchronized with new releases of the template.
+This is a template for Terragrunt configuration repositories on GitHub with
+workflows to keep generated repositories synchronized with new releases of the
+template.
+
+This repository includes a single [parent `terragrunt.hcl`](terragrunt.hcl) that
+should be included by all child `terragrunt.hcl` files. The parent
+`terragrunt.hcl` file provides `terragrunt` and `remote_state` blocks, as well
+as an `inputs` attribute whose value will be the result of merging the `inputs`
+attributes of all `terragrunt.yml` files in the directory hierarchy.
+
+For more details on this approach, and the definition of supported attributes
+in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 
 ## Features
 
@@ -44,6 +54,9 @@ repositories synchronized with new releases of the template.
    specific to the new repository's purpose. If the new repository is going to
    be a template as well, then you may want to include the existing tests from
    the upstream template.
+7. Create a hierarchy of subdirectories with `terragrunt.hcl`, and optional
+   `terragrunt.yml` files to describe your configuration. See the
+   [examples](examples) directory for inspiration.
 
 ## Changelog
 

@@ -4,6 +4,7 @@ const Configuration = {
     'scope-empty': [2, 'never'],
     'scope-enum': [2, 'always', [
       'template',
+      'terragrunt',
     ]],
     'type-enum': [2, 'always', [
       'feat',
