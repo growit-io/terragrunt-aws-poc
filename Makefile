@@ -78,21 +78,24 @@ else
 endif
 
 .PHONY: graph
-graph:
+graph: graph-root
 ifneq ($(strip $(SUBDIRS)),)
 	@find $(SUBDIRS) ! \( -type d -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | while read -r dir; do \
 	  echo "==> $$dir [graph]" >&2; \
 	  ( \
 	    cd "$(CURDIR)/$$dir"; \
+	    $(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
+	      CURDIR='$(CURDIR)' "$(CURDIR)/.terragrunt/prettier-graph" | \
+	      dot -Tsvg >graph.svg; \
 	    if [ ! -f README.md ] || grep -q '<!-- auto-generated -->' README.md; then \
-	      $(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
-	        CURDIR='$(CURDIR)' "$(CURDIR)/.terragrunt/prettier-graph" | \
-	        dot -Tsvg >graph.svg; \
 	      echo "<!-- auto-generated -->\n# $$(basename "$$dir")\n\n## Dependencies\n\n![Dependency graph](graph.svg)" > README.md; \
 	    fi \
 	  ); \
 	done
 endif
+
+.PHONY: graph-root
+graph-root:
 	@echo "==> . [graph]" >&2; \
 	$(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
 	  CURDIR='$(CURDIR)' .terragrunt/prettier-graph | \
