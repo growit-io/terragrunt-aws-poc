@@ -55,12 +55,12 @@ locals {
   ##
 
   # The list of absolute paths of all the directories that can possibly contain
-  # a layers.yml file. The first directory is the directory which contains this
-  # terragrunt.hcl file, and the last directory in the list is the directory in
-  # which Terragrunt is working, the one from which this file was included.
+  # a terragrunt.yml file. The first directory is the directory which contains
+  # this terragrunt.hcl file and the last directory in the list is the directory
+  # in which Terragrunt is working, the one from which this file was included.
   possible_layer_directories = [
     for i in range(0, length(local.path_components)) :
-      join("/", concat(slice(local.path_components, 0, i)))
+      join("/", concat(slice(local.path_components, 0, i + 1)))
   ]
 
   # A list of absolute paths of all possibly existing terragrunt.yml files.
