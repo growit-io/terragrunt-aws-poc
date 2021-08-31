@@ -1,0 +1,64 @@
+name: 'Terragrunt Feedback Action'
+description: 'Provides feedback on completed Terragrunt Action jobs'
+inputs:
+  needs:
+    description: >-
+      `toJSON(needs)` of the feedback job with `changed-paths` outputs of the
+      completed Terragrunt Action jobs that the feedback depends on.
+    required: true
+runs:
+  using: composite
+  steps:
+    - id: main
+      shell: bash
+      run: |
+        changed_paths=$(jq -r <<<'${{ inputs.needs }}' '[.[].outputs["changed-paths"] | select(. != null)] | join(" ")')
+        failed_jobs=$(jq -r <<<'${{ inputs.needs }}' 'with_entries(select(.value.result != "success" and .value.result != "skipped")) | keys | join(" ")')
+
+        if [[ '${{ github.head_ref }}' = release-v* ]]; then
+          is_release_branch=true
+        else
+          is_release_branch=false
+        fi
+
+        comment="$(
+          if [[ -n $failed_jobs ]]; then
+            echo 'Some [checks](${{ github.event.pull_request.number }}/checks) were not successful. Please investigate the cause and either update this branch with a fix, or re-run all jobs if the problem seems to be transient.'
+          elif [[ -z $changed_paths ]]; then
+            echo '**No changes.** Your infrastructure matches the configuration.'
+          else
+            echo 'The execution plan reported changes to be applied in the following configuration paths:'
+            echo
+            for path in $changed_paths; do
+              echo "- \`$path\`"
+            done
+            echo
+
+            if $is_release_branch; then
+              echo -n '**Warning**: This pull request may affect production environments. '
+            fi
+
+            echo 'You should verify the execution plan to ensure that it matches your expectations before merging this pull request.'
+          fi
+        )"
+
+        echo "::set-output name=comment::$(jq --raw-input --slurp . <<<"$comment")"
+
+        if [[ -n $failed_jobs ]]; then
+          echo ::set-output name=failed::true
+        else
+          echo ::set-output name=failed::false
+        fi
+    - id: find-comment
+      uses: peter-evans/find-comment@v1
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+    - uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: ${{ fromJSON(steps.main.outputs.comment) }}
+        edit-mode: replace
+    - shell: bash
+      run: '! ${{ steps.main.outputs.failed }}'
