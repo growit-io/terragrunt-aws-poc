@@ -1,0 +1,5 @@
+remote_state:
+  backend: terragrunt
+  config:
+    path: ../states
+    key: apples
