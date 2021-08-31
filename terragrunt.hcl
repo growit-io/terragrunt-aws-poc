@@ -246,7 +246,7 @@ terraform {
   }
 
   after_hook "fix-backend-config" {
-    commands = ["init"]
+    commands = local.remote_state_backend == "s3" ? ["init"] : []
     execute = ["sed", "-E", "-i~", "-e", "s/(encrypt[ \\t]*=[ \\t]*)\"([^\"]+)\"/\\1\\2/", local.remote_state_generate.path]
   }
 
