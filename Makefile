@@ -17,7 +17,7 @@ TERRAFORM_apply_FLAGS = -input=false -lock-timeout=5m
 # at least one terragrunt.hcl file. Any hidden directories, and any directories
 # named "modules" are excluded.
 ifeq ($(strip $(paths)),)
-override paths = */workloads/dev
+override paths = *
 endif
 
 # SUBDIRS is the actual list of directories in which Terragrunt will be invoked
