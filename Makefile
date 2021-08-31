@@ -103,7 +103,7 @@ graph-root:
 
 .PHONY: clean
 clean:
-	find . -type d -name .terragrunt-cache -prune -exec rm -Rf {} \;
+	find . -type d \( -name .terragrunt-cache -o -name .terraform \) -prune -exec rm -Rf {} \;
 	if tty -s; then git clean -di; else git clean -fd; fi
 
 .PHONY: pull-state
