@@ -35,9 +35,3 @@ jobs:
           firstParent: false
           failOnWarnings: true
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
-
-  unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: make test-unit 2>&1
