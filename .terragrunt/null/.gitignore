@@ -1,0 +1,4 @@
+/backend.tf
+/backend.tf~
+/terraform.tfstate
+/terraform.tfstate.backup

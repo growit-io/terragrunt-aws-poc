@@ -69,6 +69,10 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 - [docs](docs): Reference documentation for this Terragrunt configuration
   repository.
 
+## Configuration structure
+
+![Dependency graph](graph.svg)
+
 ## Changelog
 
 All notable changes to this project will be documented in the

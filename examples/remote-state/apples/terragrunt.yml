@@ -1,0 +1,6 @@
+remote_state:
+  backend: terragrunt
+  config:
+    path: ../states
+    # The key defaults to the basename of this terragrunt.yml file's directory.
+    #key: apples

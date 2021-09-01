@@ -17,7 +17,7 @@ TERRAFORM_apply_FLAGS = -input=false -lock-timeout=5m
 # at least one terragrunt.hcl file. Any hidden directories, and any directories
 # named "modules" are excluded.
 ifeq ($(strip $(paths)),)
-override paths = */workloads/dev
+override paths = *
 endif
 
 # SUBDIRS is the actual list of directories in which Terragrunt will be invoked
@@ -78,21 +78,24 @@ else
 endif
 
 .PHONY: graph
-graph:
+graph: graph-root
 ifneq ($(strip $(SUBDIRS)),)
 	@find $(SUBDIRS) ! \( -type d -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | while read -r dir; do \
 	  echo "==> $$dir [graph]" >&2; \
 	  ( \
 	    cd "$(CURDIR)/$$dir"; \
+	    $(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
+	      CURDIR='$(CURDIR)' "$(CURDIR)/.terragrunt/prettier-graph" | \
+	      dot -Tsvg >graph.svg; \
 	    if [ ! -f README.md ] || grep -q '<!-- auto-generated -->' README.md; then \
-	      $(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
-	        CURDIR='$(CURDIR)' "$(CURDIR)/.terragrunt/prettier-graph" | \
-	        dot -Tsvg >graph.svg; \
 	      echo "<!-- auto-generated -->\n# $$(basename "$$dir")\n\n## Dependencies\n\n![Dependency graph](graph.svg)" > README.md; \
 	    fi \
 	  ); \
 	done
 endif
+
+.PHONY: graph-root
+graph-root:
 	@echo "==> . [graph]" >&2; \
 	$(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
 	  CURDIR='$(CURDIR)' .terragrunt/prettier-graph | \
@@ -100,7 +103,7 @@ endif
 
 .PHONY: clean
 clean:
-	find . -type d -name .terragrunt-cache -prune -exec rm -Rf {} \;
+	find . -type d \( -name .terragrunt-cache -o -name .terraform \) -prune -exec rm -Rf {} \;
 	if tty -s; then git clean -di; else git clean -fd; fi
 
 .PHONY: pull-state
@@ -122,8 +125,3 @@ push-state:
 		  (cd "./$$config_path" && $(TERRAGRUNT) state push $$(pwd)/tfstate.json); \
 		done; \
 	done
-
-.PHONY: test test-unit
-test test-unit:
-	@echo '==> .github/actions/remote-merge'
-	@$(MAKE) -C .github/actions/remote-merge $@
