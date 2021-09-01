@@ -8,6 +8,9 @@ from unittest.mock import patch
 
 import main
 
+# Disable all subprocess output during unit tests.
+main.quiet = True
+
 
 @contextlib.contextmanager
 def cwd(path):
@@ -155,11 +158,11 @@ class TestMain(unittest.TestCase):
         self.assertTrue(self.github_create_or_update_pull_request.called)
 
     def test_merge_exclude_with_unresolvable_conflicts(self):
-        pr_branch = 'chore/merge-upstream'
+        pr_branch = 'chore/merge-upstream-into-master'
         remote_version = '0.0.0'
         expected_version = '1.0.0'
         expected_summary = f'chore({os.path.basename(self.local.work_tree)}):' \
-                           ' revert files excluded from merge'
+                           ' merge owner/upstream@master'
 
         self.remote.write_file('README.md', '# Remote')
         self.remote.write_file('version.txt', remote_version)
@@ -200,6 +203,7 @@ class TestMain(unittest.TestCase):
 
         self.git_force_push_patch = patch('main.git_force_push')
         self.git_force_push = self.git_force_push_patch.start()
+        self.git_force_push.side_effect = self.fake_git_force_push
 
         self.git_delete_remote_branch_patch = patch('main.git_delete_remote_branch')
         self.git_delete_remote_branch = self.git_delete_remote_branch_patch.start()
@@ -216,6 +220,10 @@ class TestMain(unittest.TestCase):
     def fake_git_remote_add(self, name, url):
         self.assertIn('x-github-token', url)
         subprocess.check_call(['git', 'remote', 'add', name, self.remote.work_tree])
+
+    def fake_git_force_push(self, ref, branch):
+        self.assertEqual(main.git('merge-base', 'master', ref, check=False), 0,
+                         'a common ancestor is required to open a PR')
 
 
 if __name__ == '__main__':
