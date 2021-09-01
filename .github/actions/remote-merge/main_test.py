@@ -162,7 +162,7 @@ class TestMain(unittest.TestCase):
         remote_version = '0.0.0'
         expected_version = '1.0.0'
         expected_summary = f'chore({os.path.basename(self.local.work_tree)}):' \
-                           ' revert files excluded from merge'
+                           ' merge owner/upstream@master'
 
         self.remote.write_file('README.md', '# Remote')
         self.remote.write_file('version.txt', remote_version)

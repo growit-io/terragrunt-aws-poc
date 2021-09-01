@@ -23,7 +23,7 @@ def subprocess_call(command, *args, check=True, output=False):
     :param check: whether to check the command's exit code, or not
     :param output: whether to return the command's standard output
 
-    :returns: None if check=True and output=False, command's standard output
+    :returns: 0 if check=True and output=False, command's standard output
     if check=True and output=True, and the command's exit status if check=False
     and output=False.
 
@@ -414,7 +414,7 @@ def main():
     pr_title = f'chore({commit_scope}): {commit_description}'
 
     with group(f'Merge {remote_ref} into {orig_head}'):
-        merge_success = git_merge_no_commit(merge_strategy, f'{remote_ref}')
+        merge_success = git_merge_no_commit(merge_strategy, remote_ref)
 
         if git_merge_in_progress():
             revert_excluded_paths(merge_exclude, 'HEAD')
@@ -422,10 +422,23 @@ def main():
             if not merge_success:
                 if not resolve_all_merge_conflicts(conflict_resolution):
                     git('merge', '--abort')
-                    git('clean', '-ffdx')
-                    git('checkout', '-b', pr_branch, remote_ref)
+
+                    merge_base = orig_head
+
+                    if 0 == git('merge-base', orig_head, remote_ref, check=False):
+                        merge_base = git('merge-base', orig_head, remote_ref,
+                                         output=True).rstrip('\n')
+
+                    git('checkout', '-b', pr_branch, merge_base)
+                    git('merge', '--no-commit', '--allow-unrelated-histories',
+                        '-s', 'recursive', '-X', 'theirs', remote_ref,
+                        check=False)
+
                     revert_excluded_paths(merge_exclude, orig_head)
-                    commit_description = 'revert files excluded from merge'
+
+                    if not resolve_all_merge_conflicts(conflict_resolution):
+                        print('Unable to merge, even with "-X theirs"')
+                        return 1
 
     with group(f'Commit changes to {git_head_branch()}'):
         if not git_merge_in_progress() and git_workdir_is_clean():
@@ -456,4 +469,5 @@ def main():
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()
