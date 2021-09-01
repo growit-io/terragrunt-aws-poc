@@ -40,6 +40,9 @@ def subprocess_call(command, *args, check=True, output=False):
         if not output:
             kwargs['stdout'] = subprocess.DEVNULL
 
+    if not output:
+        print(' '.join(argv))
+
     if check:
         if output:
             return subprocess.check_output(argv, **kwargs).decode()
