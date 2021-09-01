@@ -428,14 +428,18 @@ def main():
 
                     merge_base = orig_head
 
-                    if 0 == git('merge-base', orig_head, remote_ref, check=False):
+                    # Attempt to perform the merge on the previous base, since
+                    # we would otherwise simply revert all changes. This gives
+                    # maintainers a chance to resolve some conflicts again.
+                    if 0 == git('merge-base', orig_head, remote_ref,
+                                check=False):
                         merge_base = git('merge-base', orig_head, remote_ref,
                                          output=True).rstrip('\n')
 
                     git('checkout', '-b', pr_branch, merge_base)
-                    git('merge', '--no-commit', '--allow-unrelated-histories',
-                        '-s', 'recursive', '-X', 'theirs', remote_ref,
-                        check=False)
+                    git('merge', '--no-commit', '--no-ff',
+                        '--allow-unrelated-histories', '-s', 'recursive',
+                        '-X', 'theirs', remote_ref, check=False)
 
                     revert_excluded_paths(merge_exclude, orig_head)
 
