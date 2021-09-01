@@ -1,5 +1,28 @@
 # Changelog
 
+### [0.0.4](https://www.github.com/growit-io/template/compare/v0.0.3...v0.0.4) (2021-09-01)
+
+
+### Bug Fixes
+
+* **template:** always merge with --no-commit --no-ff" to include reverts in merge commit ([fdcd96b](https://www.github.com/growit-io/template/commit/fdcd96b3e0000a0c6fbdeb815d2c2be512ee1c7d))
+* **template:** always use original HEAD as PR base, not the current HEAD ([b4562d3](https://www.github.com/growit-io/template/commit/b4562d3d61cb88de17649f4aa7bdaacdafbd74b6))
+* **template:** commit with -a to ensure that we include reverted files ([51c0b73](https://www.github.com/growit-io/template/commit/51c0b7351e44590478bc861146e2d3176cbd0b52))
+* **template:** maintain one pull request per remote and base branch ([e063985](https://www.github.com/growit-io/template/commit/e063985ea2d40d00441c4d58dc5d33add017506b))
+* **template:** retry with "-s recursive -X theirs" if conflicts remain after first merge ([d2d8690](https://www.github.com/growit-io/template/commit/d2d8690bd15ff4374017838ba3613046c8f585ce))
+
+
+### Automated Tests
+
+* **template:** ensure that histories are related before opening a PR ([465689c](https://www.github.com/growit-io/template/commit/465689c686ecf755af76f0f2a2b8933fd862272d))
+
+
+### Code Refactoring
+
+* **template:** show command line except for subprocess calls with output=True ([ee42333](https://www.github.com/growit-io/template/commit/ee42333ca28db5f2f60da0b63103fbb850e3dfa1))
+* **template:** show command output for fetch and merge ([b73009e](https://www.github.com/growit-io/template/commit/b73009ed3af0788a939425503e351400bd28cee6))
+* **template:** suppress remote-merge action output during unit tests ([ddff966](https://www.github.com/growit-io/template/commit/ddff9660b689dc54590d2c8c80421c94dad5751e))
+
 ### [0.0.3](https://www.github.com/growit-io/template/compare/v0.0.2...v0.0.3) (2021-08-29)
 
 
