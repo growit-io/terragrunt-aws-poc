@@ -203,6 +203,7 @@ class TestMain(unittest.TestCase):
 
         self.git_force_push_patch = patch('main.git_force_push')
         self.git_force_push = self.git_force_push_patch.start()
+        self.git_force_push.side_effect = self.fake_git_force_push
 
         self.git_delete_remote_branch_patch = patch('main.git_delete_remote_branch')
         self.git_delete_remote_branch = self.git_delete_remote_branch_patch.start()
@@ -219,6 +220,10 @@ class TestMain(unittest.TestCase):
     def fake_git_remote_add(self, name, url):
         self.assertIn('x-github-token', url)
         subprocess.check_call(['git', 'remote', 'add', name, self.remote.work_tree])
+
+    def fake_git_force_push(self, ref, branch):
+        self.assertEqual(main.git('merge-base', 'master', ref, check=False), 0,
+                         'a common ancestor is required to open a PR')
 
 
 if __name__ == '__main__':
