@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.0.3](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.0.2...v0.0.3) (2021-09-01)
+
+
+### CI/CD Workflows
+
+* **terragrunt-aws-poc:** ensure related histories when creating a PR ([7a2cde3](https://www.github.com/growit-io/terragrunt-aws-poc/commit/7a2cde36e4da3c1a3ba1833a8a3ab4919dafaf68))
+
 ### [0.0.2](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.0.1...v0.0.2) (2021-08-29)
 
 
