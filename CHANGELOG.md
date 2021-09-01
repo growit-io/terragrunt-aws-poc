@@ -1,5 +1,60 @@
 # Changelog
 
+## [0.1.0](https://www.github.com/growit-io/terragrunt-aws/compare/v0.0.3...v0.1.0) (2021-09-01)
+
+
+### Features
+
+* **terragrunt:** provide defaults for the "gcs" backend config ([6efb475](https://www.github.com/growit-io/terragrunt-aws/commit/6efb47599274cdb4ccd70c83665c7e1e2fe7a072))
+* **terragrunt:** support loading terragrunt.yml from the configuration directory itself as well ([bab92ee](https://www.github.com/growit-io/terragrunt-aws/commit/bab92eed08ca8f5a8a7b92d22e91af3297f0656c))
+
+
+### Bug Fixes
+
+* **template:** always merge with --no-commit --no-ff" to include reverts in merge commit ([fdcd96b](https://www.github.com/growit-io/terragrunt-aws/commit/fdcd96b3e0000a0c6fbdeb815d2c2be512ee1c7d))
+* **template:** always use original HEAD as PR base, not the current HEAD ([b4562d3](https://www.github.com/growit-io/terragrunt-aws/commit/b4562d3d61cb88de17649f4aa7bdaacdafbd74b6))
+* **template:** commit with -a to ensure that we include reverted files ([51c0b73](https://www.github.com/growit-io/terragrunt-aws/commit/51c0b7351e44590478bc861146e2d3176cbd0b52))
+* **template:** maintain one pull request per remote and base branch ([e063985](https://www.github.com/growit-io/terragrunt-aws/commit/e063985ea2d40d00441c4d58dc5d33add017506b))
+* **template:** retry with "-s recursive -X theirs" if conflicts remain after first merge ([d2d8690](https://www.github.com/growit-io/terragrunt-aws/commit/d2d8690bd15ff4374017838ba3613046c8f585ce))
+* **terragrunt:** run fix-backend-config hook only for the s3 backend ([94795d9](https://www.github.com/growit-io/terragrunt-aws/commit/94795d98556398a7bc0e897b34185576a6989301))
+
+
+### Build System
+
+* **terragrunt:** generate graphs in Terragrunt configuration directories with or without README.md ([1494446](https://www.github.com/growit-io/terragrunt-aws/commit/1494446f7cf65e7bea3564f8ccc54c29e9281d93))
+* **terragrunt:** remove .terraform directories with `make clean` ([987263c](https://www.github.com/growit-io/terragrunt-aws/commit/987263cfc3ad68d5aeeeee8d3e26ff74233b51a6))
+* **terragrunt:** set default configuration paths to `*` in Makefile ([291008a](https://www.github.com/growit-io/terragrunt-aws/commit/291008a007027005528f326bd145ccb655f10cc1))
+
+
+### Documentation
+
+* **terragrunt:** add basic example for `remote_state.backend: terragrunt` ([00858f7](https://www.github.com/growit-io/terragrunt-aws/commit/00858f7ffc11dc4b9a8e5c6b964809dc197ecb88))
+* **terragrunt:** demonstrate default `key` attribute for terragrunt backend config ([78d04b6](https://www.github.com/growit-io/terragrunt-aws/commit/78d04b635108a46cef3ab7ccd1e7118321624bab))
+* **terragrunt:** include graph.svg in toplevel README.md ([24a50da](https://www.github.com/growit-io/terragrunt-aws/commit/24a50da8092f859f0d342ea4e17bd254b5c548f7))
+
+
+### Automated Tests
+
+* **template:** ensure that histories are related before opening a PR ([465689c](https://www.github.com/growit-io/terragrunt-aws/commit/465689c686ecf755af76f0f2a2b8933fd862272d))
+
+
+### Code Refactoring
+
+* **template:** show command line except for subprocess calls with output=True ([ee42333](https://www.github.com/growit-io/terragrunt-aws/commit/ee42333ca28db5f2f60da0b63103fbb850e3dfa1))
+* **template:** show command output for fetch and merge ([b73009e](https://www.github.com/growit-io/terragrunt-aws/commit/b73009ed3af0788a939425503e351400bd28cee6))
+* **template:** suppress remote-merge action output during unit tests ([ddff966](https://www.github.com/growit-io/terragrunt-aws/commit/ddff9660b689dc54590d2c8c80421c94dad5751e))
+* **terragrunt:** make the parent terragrunt.hcl easier to understand and maintain ([d3357d3](https://www.github.com/growit-io/terragrunt-aws/commit/d3357d3660ad4d8e69ca1d460db7512d16e79d65))
+
+
+### CI/CD Workflows
+
+* **terragrunt-aws:** ensure that histories are related before opening a PR ([6de88e7](https://www.github.com/growit-io/terragrunt-aws/commit/6de88e7bd2e9f8c0ccc3fa54d1910e8b7f7a3c25))
+* **terragrunt:** add `terragrunt` and `feedback` actions to integration and release workflows ([4ac7bc1](https://www.github.com/growit-io/terragrunt-aws/commit/4ac7bc1396b35a0cd14a52b49e6a628541e07488))
+* **terragrunt:** apply examples/remote-state/states config before graph as well ([3b1b44d](https://www.github.com/growit-io/terragrunt-aws/commit/3b1b44daa86376e343f9f8a410d41b533c91afe2))
+* **terragrunt:** apply examples/remote-state/states config before plan or apply ([0e07499](https://www.github.com/growit-io/terragrunt-aws/commit/0e074995fe195307cf210a6c43c2f72f280ea28c))
+* **terragrunt:** install tfenv/tgenv only once per workflow job ([9212052](https://www.github.com/growit-io/terragrunt-aws/commit/92120527ab467d207a7a5c8d7d45e2b1e0b5013d))
+* **terragrunt:** remove unit-test from integration workflow and Makefile ([f0ab1b9](https://www.github.com/growit-io/terragrunt-aws/commit/f0ab1b9d559b30570427eea8ac2674259d956b4d))
+
 ### [0.0.3](https://www.github.com/growit-io/terragrunt-aws/compare/v0.0.2...v0.0.3) (2021-08-29)
 
 
