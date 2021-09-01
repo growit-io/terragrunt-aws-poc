@@ -382,14 +382,15 @@ def main():
     assert re.match('.+/.+', repository)
     repository_name = repository.split('/')[1]
     repository_url = github_repository_url(repository)
-    branch_or_tag = os.environ['BRANCH_OR_TAG'] or git_head_branch()
+    orig_head = git_head_branch()
+    branch_or_tag = os.environ['BRANCH_OR_TAG'] or orig_head
     merge_strategy = os.environ['MERGE_STRATEGY']
     merge_exclude = os.environ['MERGE_EXCLUDE']
     conflict_resolution = json.loads(os.environ['CONFLICT_RESOLUTION'])
     remote = os.environ['REMOTE'] or repository_name
     clone_url = github_clone_url(clone_token, repository)
     remote_ref = f'{remote}/{branch_or_tag}'
-    pr_branch = os.environ['PR_BRANCH'] or f'chore/merge-{repository_name}'
+    pr_branch = os.environ['PR_BRANCH'] or f'chore/merge-{repository_name}-into-{orig_head}'
     delete_pr_branch = os.environ['DELETE_PR_BRANCH'] == 'true'
 
     # Set environment variables required for Git merge and commit operations
@@ -405,8 +406,6 @@ def main():
     with group(f'Prepare the {remote} remote'):
         git_remote_add(remote, clone_url)
         git_fetch_branches_and_tags(remote)
-
-    orig_head = git_head_branch()
 
     # Prepare the commit summary and pull request title
     commit_scope = os.path.basename(os.getcwd())

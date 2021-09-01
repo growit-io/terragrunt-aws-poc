@@ -158,7 +158,7 @@ class TestMain(unittest.TestCase):
         self.assertTrue(self.github_create_or_update_pull_request.called)
 
     def test_merge_exclude_with_unresolvable_conflicts(self):
-        pr_branch = 'chore/merge-upstream'
+        pr_branch = 'chore/merge-upstream-into-master'
         remote_version = '0.0.0'
         expected_version = '1.0.0'
         expected_summary = f'chore({os.path.basename(self.local.work_tree)}):' \
