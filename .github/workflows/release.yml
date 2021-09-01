@@ -102,6 +102,11 @@ jobs:
         uses: ts-graphviz/setup-graphviz@v1
       - name: 'Checkout'
         uses: actions/checkout@v2
+      - name: 'Create necessary states'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: apply
+          config-paths: 'examples/remote-state/states'
       - name: 'Create or update dependency graphs'
         uses: ./.github/actions/terragrunt
         with:
