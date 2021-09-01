@@ -8,6 +8,9 @@ from unittest.mock import patch
 
 import main
 
+# Disable all subprocess output during unit tests.
+main.quiet = True
+
 
 @contextlib.contextmanager
 def cwd(path):

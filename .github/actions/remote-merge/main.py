@@ -3,11 +3,63 @@
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
 
-from subprocess import DEVNULL, STDOUT, call, check_call, check_output
 from contextlib import contextmanager
+
+# If set to True, external commands will not produce any output. This will be
+# mainly useful for unit tests, as in any other scenario we probably want to
+# see the output of subcommands to diagnose issues.
+quiet = False
+
+
+def subprocess_call(command, *args, check=True, output=False):
+    """Call the given command using the subprocess module and optionally
+    return its decoded output and/or check the command's exit status.
+
+    :param command: name of the system command to execute
+    :param check: whether to check the command's exit code, or not
+    :param output: whether to return the command's standard output
+
+    :returns: None if check=True and output=False, command's standard output
+    if check=True and output=True, and the command's exit status if check=False
+    and output=False.
+
+    :raises NotImplementError: if check=False and output=True
+    """
+    global quiet
+
+    argv = [command] + list(args)
+    kwargs = {}
+
+    if quiet:
+        kwargs['stderr'] = subprocess.DEVNULL
+
+        if not output:
+            kwargs['stdout'] = subprocess.DEVNULL
+
+    if check:
+        if output:
+            return subprocess.check_output(argv, **kwargs).decode()
+        else:
+            return subprocess.check_call(argv, **kwargs)
+    else:
+        if output:
+            raise NotImplementedError('check=False and output=True')
+        else:
+            return subprocess.call(argv, **kwargs)
+
+
+def git(*args, check=True, output=False):
+    """Call the git(1) command using the main.subprocess_call() method."""
+    return subprocess_call('git', *args, check=check, output=output)
+
+
+def gh(*args, check=True, output=False):
+    """Call the gh(1) command using the main.subprocess_call() method."""
+    return subprocess_call('gh', *args, check=check, output=output)
 
 
 @contextmanager
@@ -18,12 +70,16 @@ def group(description):
     apply to stdout only, at the moment. Anything printed to stderr will not be
     part of the output group.
     """
+    global quiet
+
     try:
-        print(f'::group::{description}')
-        sys.stdout.flush()
+        if not quiet:
+            print(f'::group::{description}')
+            sys.stdout.flush()
         yield
     finally:
-        print('::endgroup::')
+        if not quiet:
+            print('::endgroup::')
         sys.stdout.flush()
 
 
@@ -32,7 +88,7 @@ def git_status():
 
     :returns: whatever `git status --short` prints to stdout
     """
-    return check_output(['git', 'status', '--short']).decode()
+    return git('status', '--short', output=True)
 
 
 def git_workdir_is_clean():
@@ -49,8 +105,7 @@ def git_head_is_not_detached():
 
     :returns: True if HEAD is a valid symbolic reference; otherwise, False
     """
-    return 0 == call(['git', 'symbolic-ref', 'HEAD'],
-                     stdout=DEVNULL, stderr=DEVNULL)
+    return 0 == git('symbolic-ref', 'HEAD', check=False)
 
 
 def git_head_branch():
@@ -58,13 +113,12 @@ def git_head_branch():
 
     :returns: short name of the ref that the current HEAD ispointing to
     """
-    return check_output(['git', 'symbolic-ref', '--short', 'HEAD']).\
-        decode().rstrip()
+    return git('symbolic-ref', '--short', 'HEAD', output=True).rstrip()
 
 
 def git_remote_add(name, url):
     """Add a new Git remote with the specified name and repository URL."""
-    check_call(['git', 'remote', 'add', name, url])
+    git('remote', 'add', name, url)
 
 
 def git_fetch_branches_and_tags(remote):
@@ -73,9 +127,9 @@ def git_fetch_branches_and_tags(remote):
     allows us to keep local tags unmodified and run `git merge {remote}/{tag}`
     to merge either a remote branch or tag.
     """
-    check_call(['git', 'fetch', '-q', '--no-tags', '--prune', remote,
-                f'+refs/heads/*:refs/remotes/{remote}/*',
-                f'+refs/tags/*:refs/tags/{remote}/*'], stderr=STDOUT)
+    git('fetch', '-q', '--no-tags', '--prune', remote,
+        f'+refs/heads/*:refs/remotes/{remote}/*',
+        f'+refs/tags/*:refs/tags/{remote}/*')
 
 
 def git_merge_no_commit(strategy, ref):
@@ -90,8 +144,8 @@ def git_merge_no_commit(strategy, ref):
     already up to date, and False if there were conflicts or other reasons that
     prevented the merge operation.
     """
-    return 0 == call(['git', 'merge', '-q', '-s', strategy, '--no-commit',
-                      '--allow-unrelated-histories', ref], stderr=STDOUT)
+    return 0 == git('merge', '-q', '-s', strategy, '--no-commit',
+                    '--allow-unrelated-histories', ref, check=False)
 
 
 def git_unmerged_paths(status):
@@ -145,10 +199,9 @@ def revert_excluded_paths(exclude_patterns, ref):
     for path in git_ls_files_ignored(exclude_patterns):
         print(f'Reverting {path} to {ref}')
 
-        check_call(['git', 'reset', '-q', '--', path])
+        git('reset', '-q', '--', path)
 
-        if 0 != call(['git', 'checkout', '-q', ref, '--', path],
-                     stderr=DEVNULL):
+        if 0 != git('checkout', '-q', ref, '--', path, check=False):
             os.unlink(path)
 
 
@@ -164,10 +217,9 @@ def git_ls_files_ignored(exclude_patterns):
             f.write(exclude_patterns)
             f.close()
 
-        output = check_output([
-            'git', 'ls-files', '--cached', '--ignored',
-            f'--exclude-from={exclude.name}'
-        ]).decode().rstrip('\n')
+        output = git('ls-files', '--cached', '--ignored',
+                     f'--exclude-from={exclude.name}',
+                     output=True).rstrip('\n')
 
         if output == '':
             return []
@@ -219,19 +271,19 @@ def git_reset_and_checkout(tree_ish, path):
     branch, then it will be removed from the working directory.
     """
     print(f'Reverting {path} to {tree_ish}')
-    check_call(['git', 'reset', '-q', '--', path])
-    check_call(['git', 'checkout', '-q', tree_ish, '--', path])
+    git('reset', '-q', '--', path)
+    git('checkout', '-q', tree_ish, '--', path)
 
 
 def git_rev_parse(ref):
     """Return the commit sha of the given ref."""
-    return check_output(['git', 'rev-parse', ref]).decode().rstrip()
+    return git('rev-parse', ref, output=True).rstrip()
 
 
 def git_merge_in_progress():
     """Returns whether a merge operation is on progress, or not.
     """
-    toplevel = check_output(['git', 'rev-parse', '--show-toplevel']).decode().rstrip()
+    toplevel = git('rev-parse', '--show-toplevel', output=True).rstrip()
     return os.path.isfile(os.path.join(toplevel, '.git', 'MERGE_HEAD'))
 
 
@@ -241,18 +293,18 @@ def git_commit(message):
     :returns: True if the commit was successfully created, and False if there
     was any reason that prevented the commit operation.
     """
-    check_call(['git', 'commit', '-m', message], stderr=STDOUT)
+    git('commit', '-m', message)
 
 
 def git_force_push(ref, branch):
     """Force-push the given ref to the given branch."""
-    check_call(['git', 'push', '-f', 'origin', f'{ref}:refs/heads/{branch}'])
+    git('push', '-f', 'origin', f'{ref}:refs/heads/{branch}')
 
 
 def git_delete_remote_branch(branch):
     """Delete the given branch in the remote Git repository.
     """
-    check_call(['git', 'push', 'origin', f':refs/heads/{branch}'])
+    git('push', 'origin', f':refs/heads/{branch}')
 
 
 def github_create_or_update_pull_request(head, base, title, body):
@@ -262,22 +314,21 @@ def github_create_or_update_pull_request(head, base, title, body):
     # TODO: check if the pull request exists rather than blindly creating one
     # TODO: avoid having to grant 'read:org' and 'read:discussion' to token
 
-    if 0 == call(['gh', 'pr', 'create', '-B', base, '-H', head, '-t', title,
-                  '-b', body], stderr=STDOUT):
+    if 0 == gh('pr', 'create', '-B', base, '-H', head, '-t', title, '-b', body,
+               check=False):
         return 0
 
     print('Creating pull request failed. Attempting to edit the existing one.')
 
     # This command requires 'read:org' and 'read:discussion' scopes, which is
     # more than we would need if we used the API directly.
-    check_call(['gh', 'pr', 'edit', '-B', base, '-t', title, '-b', body, head],
-               stderr=STDOUT)
+    gh('pr', 'edit', '-B', base, '-t', title, '-b', body, head)
 
 
 def github_template_repository():
     """Return the repository that the current one was created from."""
     info = json.loads(
-        check_output(['gh', 'repo', 'view', '--json', 'templateRepository'])
+        gh('repo', 'view', '--json', 'templateRepository', output=True)
     )['templateRepository']
 
     return info['owner']['login'] + '/' + info['name']
@@ -370,9 +421,9 @@ def main():
 
             if not merge_success:
                 if not resolve_all_merge_conflicts(conflict_resolution):
-                    check_call(['git', 'merge', '--abort'])
-                    check_call(['git', 'clean', '-ffdx'])
-                    check_call(['git', 'checkout', '-b', pr_branch, remote_ref])
+                    git('merge', '--abort')
+                    git('clean', '-ffdx')
+                    git('checkout', '-b', pr_branch, remote_ref)
                     revert_excluded_paths(merge_exclude, orig_head)
                     commit_description = 'revert files excluded from merge'
 
