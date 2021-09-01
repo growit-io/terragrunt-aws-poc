@@ -297,7 +297,7 @@ def git_commit(message):
     :returns: True if the commit was successfully created, and False if there
     was any reason that prevented the commit operation.
     """
-    git('commit', '-m', message)
+    git('commit', '-a', '-m', message)
 
 
 def git_force_push(ref, branch):
