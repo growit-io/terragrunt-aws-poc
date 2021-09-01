@@ -457,7 +457,7 @@ def main():
 
     with group(f'Create pull request for {pr_branch}'):
         github_create_or_update_pull_request(
-            base=git_head_branch(),
+            base=orig_head,
             head=pr_branch,
             title=pr_title,
             body=f'This change integrates all commits from **{branch_or_tag}** '
