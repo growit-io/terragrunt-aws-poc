@@ -58,6 +58,10 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
    `terragrunt.yml` files to describe your configuration. See the
    [examples](examples) directory for inspiration.
 
+## Configuration structure
+
+![Dependency graph](graph.svg)
+
 ## Changelog
 
 All notable changes to this project will be documented in the
