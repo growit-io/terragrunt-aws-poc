@@ -43,6 +43,12 @@ runs:
         )"
 
         echo "::set-output name=comment::$(jq --raw-input --slurp . <<<"$comment")"
+
+        if [[ -n $failed_jobs ]]; then
+          echo ::set-output name=failed::true
+        else
+          echo ::set-output name=failed::false
+        fi
     - id: find-comment
       uses: peter-evans/find-comment@v1
       with:
@@ -54,3 +60,5 @@ runs:
         issue-number: ${{ github.event.pull_request.number }}
         body: ${{ fromJSON(steps.main.outputs.comment) }}
         edit-mode: replace
+    - shell: bash
+      run: '! ${{ steps.main.outputs.failed }}'

@@ -22,6 +22,9 @@ inputs:
   aws-secret-access-key:
     description: 'IAM user secret access key to pass to the `make` command'
     required: false
+  google-service-account:
+    description: 'Google service account JSON data'
+    required: false
   tfenv-version:
     description: 'Branch, tag or commit hash for tfenv'
     required: true
@@ -40,26 +43,35 @@ runs:
   using: composite
   steps:
     - run: |
-        echo ::group::Clone tfenv
-        git clone -q https://github.com/tfutils/tfenv.git ~/.tfenv
-        git -C ~/.tfenv checkout -q ${{ inputs.tfenv-version }}
-        echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
-        echo ::endgroup::
+        if [ ! -d ~/.tfenv ]; then
+          echo ::group::Clone tfenv
+          git clone -q https://github.com/tfutils/tfenv.git ~/.tfenv
+          git -C ~/.tfenv checkout -q ${{ inputs.tfenv-version }}
+          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+          echo ::endgroup::
 
-        echo ::group::Clone tgenv
-        git clone -q https://github.com/cunymatthieu/tgenv.git ~/.tgenv
-        git -C ~/.tgenv checkout -q ${{ inputs.tgenv-version }}
-        echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
-        echo ::endgroup::
+          echo ::group::Run tfenv install
+          PATH="$HOME/.tfenv/bin:$PATH" tfenv install
+          echo ::endgroup::
+        fi
 
-        echo ::group::Run tfenv install
-        PATH="$HOME/.tfenv/bin:$PATH" tfenv install
-        echo ::endgroup::
+        if [ ! -d ~/.tgenv ]; then
+          echo ::group::Clone tgenv
+          git clone -q https://github.com/cunymatthieu/tgenv.git ~/.tgenv
+          git -C ~/.tgenv checkout -q ${{ inputs.tgenv-version }}
+          echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
+          echo ::endgroup::
 
-        echo ::group::Run tgenv install
-        PATH="$HOME/.tgenv/bin:$PATH" tgenv install
-        echo ::endgroup::
+          echo ::group::Run tgenv install
+          PATH="$HOME/.tgenv/bin:$PATH" tgenv install
+          echo ::endgroup::
+        fi
       shell: bash
+    - uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ inputs.google-service-account }}
+        export_default_credentials: true
+        credentials_file_path: /tmp/google-service-account-${{ github.job }}-${{ github.run_ir }}.json
     - id: main
       run: |
         if ${{ inputs.init }}; then
@@ -75,4 +87,5 @@ runs:
       env:
         AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+        GOOGLE_SERVICE_ACCOUNT: ${{ inputs.google-service-account }}
         TF_IN_AUTOMATION: 'true'

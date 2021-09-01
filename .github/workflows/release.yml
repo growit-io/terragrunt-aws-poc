@@ -110,6 +110,11 @@ jobs:
         uses: ts-graphviz/setup-graphviz@v1
       - name: 'Checkout'
         uses: actions/checkout@v2
+      - name: 'Create necessary states'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: apply
+          config-paths: 'examples/remote-state/states'
       - name: 'Create or update dependency graphs'
         uses: ./.github/actions/terragrunt
         with:
@@ -117,11 +122,14 @@ jobs:
           config-paths: '*'
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+      - name: 'Generate commit message'
+        id: commit
+        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): update dependency graphs"'
       - name: 'Create pull request'
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          commit-message: 'chore: update dependency graphs'
+          commit-message: ${{ steps.commit.outputs.summary }}
           branch: chore/update-dependency-graphs
           delete-branch: true
-          title: 'chore: update dependency graphs'
+          title: ${{ steps.commit.outputs.summary }}
