@@ -36,8 +36,37 @@ jobs:
           failOnWarnings: true
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
-  unit-tests:
+  examples:
+    name: 'Examples'
+    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: make test-unit 2>&1
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create necessary states'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: apply
+          config-paths: 'examples/remote-state/states'
+      - name: 'Create execution plans'
+        id: main
+        uses: ./.github/actions/terragrunt
+        with:
+          command: plan
+          config-paths: 'examples'
+    outputs:
+      changed-paths: ${{ steps.main.outputs.changed-paths }}
+
+  feedback:
+    name: 'Feedback'
+    needs: [examples]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Generate feedback'
+        id: feedback
+        uses: ./.github/actions/feedback
+        with:
+          needs: ${{ toJSON(needs) }}
