@@ -152,21 +152,27 @@ locals {
   # be determined from the outputs of another Terragrunt configuration.
   remote_state_backend = lookup(local.config_remote_state, "backend", "local")
 
-  # Default bucket to use for the S3 backend, constructed using the relative
-  # path components from the root to the configuration directory which defines
-  # the `remote_state` configuration, including only subdirectories that belong
-  # to a named layer.
+  # Default value for `bucket` config attribute of the GCS backend.
+  remote_state_config_defaults_gcs_bucket = join("-", flatten([
+    local.config_remote_state_context.leading_layer_subdirectories,
+    "terraform-state"
+  ]))
+
+  # Default value for the `prefix` config attribute of the GCS backend.
+  remote_state_config_defaults_gcs_prefix = join("/", flatten([
+    local.config_remote_state_context.trailing_subdirectories
+  ]))
+
+  # Default value for the `bucket` attribute of the S3 backend.
   remote_state_config_defaults_s3_bucket = join("-", flatten([
     local.config_remote_state_context.leading_layer_subdirectories,
     "terraform-state"
   ]))
 
-  # The DynamoDB table name for the S3 backend defaults to the bucket name.
+  # Default value for the `dynamodb_table` attribute of the S3 backend.
   remote_state_config_defaults_s3_dynamodb_table = local.remote_state_config_defaults_s3_bucket
 
-  # Default value for the `key` attribute of the S3 backend config, constructed
-  # using all relative path components from the directory which provides the
-  # `remote_state` attribute down to the child terragrunt.hcl directory.
+  # Default value for the `key` attribute of the S3 backend.
   remote_state_config_defaults_s3_key = join("/", flatten([
     local.config_remote_state_context.trailing_subdirectories,
     "terraform.tfstate"
@@ -176,11 +182,10 @@ locals {
   remote_state_config_defaults_terragrunt_key = basename(local.config_remote_state_context.directory)
 
   remote_state_config_defaults = {
-    # TODO: define gcs backend defaults
-    #gcs = {
-    #  bucket = local.remote_state_config_defaults_gcs_bucket
-    #  prefix = local.remote_state_config_defaults_gcs_prefix
-    #}
+    gcs = {
+      bucket = local.remote_state_config_defaults_gcs_bucket
+      prefix = local.remote_state_config_defaults_gcs_prefix
+    }
 
     s3 = {
       dynamodb_table = local.remote_state_config_defaults_s3_dynamodb_table
