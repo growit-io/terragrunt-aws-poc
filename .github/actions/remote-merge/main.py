@@ -130,7 +130,7 @@ def git_fetch_branches_and_tags(remote):
     allows us to keep local tags unmodified and run `git merge {remote}/{tag}`
     to merge either a remote branch or tag.
     """
-    git('fetch', '-q', '--no-tags', '--prune', remote,
+    git('fetch', '--no-tags', '--prune', remote,
         f'+refs/heads/*:refs/remotes/{remote}/*',
         f'+refs/tags/*:refs/tags/{remote}/*')
 
@@ -147,7 +147,7 @@ def git_merge_no_commit(strategy, ref):
     already up to date, and False if there were conflicts or other reasons that
     prevented the merge operation.
     """
-    return 0 == git('merge', '-q', '-s', strategy, '--no-commit',
+    return 0 == git('merge', '-s', strategy, '--no-commit', '--no-ff',
                     '--allow-unrelated-histories', ref, check=False)
 
 
@@ -274,6 +274,7 @@ def git_reset_and_checkout(tree_ish, path):
     branch, then it will be removed from the working directory.
     """
     print(f'Reverting {path} to {tree_ish}')
+
     git('reset', '-q', '--', path)
     git('checkout', '-q', tree_ish, '--', path)
 
