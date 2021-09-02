@@ -72,7 +72,8 @@ ifeq ($(strip $(command)),)
 	@echo 'Usage: run-all command=init|validate|plan|apply|... [args=...]' >&2
 	@exit 2
 else
-	@set -e; for dir in $(SUBDIRS); do \
+	@set -e; \
+	for dir in $(SUBDIRS); do \
 	  echo "==> $$dir [run-all $(command)]" >&2; \
 	  (cd ./$$dir && $(TERRAGRUNT) run-all $(TERRAGRUNT_FLAGS) $(command) $(TERRAFORM_$(command)_FLAGS) $(args)); \
 	done
@@ -81,7 +82,8 @@ endif
 .PHONY: graph
 graph: graph-root
 ifneq ($(strip $(SUBDIRS)),)
-	@find $(SUBDIRS) ! \( -type d -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | while read -r dir; do \
+	@set -e; \
+	find $(SUBDIRS) ! \( -type d -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | while read -r dir; do \
 	  echo "==> $$dir [graph]" >&2; \
 	  ( \
 	    cd "$(CURDIR)/$$dir"; \
@@ -104,7 +106,8 @@ graph-root:
 
 .PHONY: pull-state
 pull-state:
-	@for dir in $(SUBDIRS); do \
+	@set -e; \
+	for dir in $(SUBDIRS); do \
 		find $$dir/* ! \( -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | \
 		while read config_path; do \
 		  echo "==> $$config_path [state pull]" >&2; \
@@ -114,17 +117,19 @@ pull-state:
 
 .PHONY: push-state
 push-state:
-	@for dir in $(SUBDIRS); do \
-		find $$dir/* ! \( -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | \
-		while read config_path; do \
-		  echo "==> $$config_path [state push]" >&2; \
-		  (cd "./$$config_path" && $(TERRAGRUNT) state push $$(pwd)/tfstate.json); \
-		done; \
+	@set -e; \
+	for dir in $(SUBDIRS); do \
+	  find $$dir/* ! \( -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | \
+	  while read config_path; do \
+	    echo "==> $$config_path [state push]" >&2; \
+	    (cd "./$$config_path" && $(TERRAGRUNT) state push $$(pwd)/tfstate.json); \
+	  done; \
 	done
 
 .PHONY: tflint
 tflint:
-	@status=; \
+	@set -e; \
+	status=; \
 	terraform_module_dirs=$$(find . \
 	  ! \( -type d \( -name .terragrunt-cache -o -name .terraform \) -prune \) \
 	  -type f -name '*.tf' -exec dirname {} \; | sort -u); \
@@ -140,7 +145,8 @@ tflint:
 
 .PHONY: fmt-check
 fmt-check:
-	@status=0; \
+	@set -e; \
+	status=0; \
   	find . -type f -name 'terragrunt.hcl' -exec cp {} {}.tf \;; \
 	$(TERRAFORM) fmt -check -diff -recursive >.terraform-fmt.out || status=$$?; \
 	sed -E \
@@ -156,7 +162,8 @@ fmt-check:
 
 .PHONY: fmt-fix
 fmt-fix:
-	@status=0; \
+	@set -e; \
+	status=0; \
   	find . -type f -name 'terragrunt.hcl' -exec cp {} {}.tf \;; \
 	$(TERRAFORM) fmt -write=true -recursive >.terraform-fmt.out || status=$$?; \
 	sed -E -e 's/^(.*\.hcl)\.tf$$/\1/' .terraform-fmt.out; \
