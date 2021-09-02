@@ -73,11 +73,6 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create necessary states'
-        uses: ./.github/actions/terragrunt
-        with:
-          command: apply
-          config-paths: 'examples/remote-state/states'
       - name: 'Create execution plans'
         id: main
         uses: ./.github/actions/terragrunt
