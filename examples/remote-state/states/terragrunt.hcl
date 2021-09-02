@@ -5,11 +5,11 @@ include {
 inputs = {
   terraform_remote_states = {
     apples = {
-      path = "${get_terragrunt_dir()}/apples.tfstate"
+      path = "../states/apples.tfstate"
     }
 
     oranges = {
-      path = "${get_terragrunt_dir()}/oranges.tfstate"
+      path = "../states/oranges.tfstate"
     }
   }
 }
