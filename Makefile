@@ -45,7 +45,7 @@ default:
 ifneq ($(strip $(show)),)
 	@echo '$($(show))'
 else
-	@$(MAKE) validate
+	@$(MAKE) fmt-check tflint validate
 endif
 
 .PHONY: init validate show output
