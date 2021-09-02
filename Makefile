@@ -7,6 +7,7 @@ TERRAGRUNT_FLAGS = \
   --terragrunt-parallelism $(TERRAGRUNT_PARALLELISM) \
   --terragrunt-non-interactive
 
+TERRAFORM = terraform
 TERRAFORM_init_FLAGS = -input=false
 TERRAFORM_plan_FLAGS = -input=false -lock=false -refresh=false
 TERRAFORM_apply_FLAGS = -input=false -lock-timeout=5m
@@ -136,6 +137,22 @@ tflint:
 	  rm .tflint.out; \
 	done; \
 	exit $$status
+
+.PHONY: fmt-check
+fmt-check:
+	@status=0; \
+  	find . -type f -name 'terragrunt.hcl' -exec cp {} {}.tf \;; \
+	$(TERRAFORM) fmt -check -diff -recursive >.terraform-fmt.out || status=$$?; \
+	sed -E \
+	  -e '/^[^-+@ ]/d' \
+	  -e 's/^([-+].*\.hcl)\.tf$$/\1/' \
+	  .terraform-fmt.out; \
+  	rm -f .terraform-fmt.out; \
+  	find . -type f -name 'terragrunt.hcl.tf' -delete; \
+  	if [ $$status -ne 0 ]; then \
+  	  echo 'Run "make fmt-fix" to rewrite all Terraform and/or Terragrunt configuration files to the canonical format.'; \
+	fi; \
+  	exit $$status
 
 .PHONY: clean
 clean:
