@@ -55,6 +55,17 @@ jobs:
       - name: 'Run TFLint'
         run: make tflint
 
+  fmt-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Run terraform fmt -check -recursive'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: fmt-check
+          init: false
+
   examples:
     name: 'Examples'
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
