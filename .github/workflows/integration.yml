@@ -36,6 +36,36 @@ jobs:
           failOnWarnings: true
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Setup TFLint'
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.31.0
+      - name: 'Setup TFLint plugin cache'
+        uses: actions/cache@v2
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+      - name: 'Download TFLint plugins'
+        run: tflint --init
+      - name: 'Run TFLint'
+        run: make tflint
+
+  fmt-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Run terraform fmt -check -recursive'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: fmt-check
+          init: false
+
   examples:
     name: 'Examples'
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
@@ -43,11 +73,6 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create necessary states'
-        uses: ./.github/actions/terragrunt
-        with:
-          command: apply
-          config-paths: 'examples/remote-state/states'
       - name: 'Create execution plans'
         id: main
         uses: ./.github/actions/terragrunt
