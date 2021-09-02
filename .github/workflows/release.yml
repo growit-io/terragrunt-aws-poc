@@ -98,11 +98,15 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
       - name: 'Generate Terraform module documentation'
+        id: terraform-docs
         uses: terraform-docs/gh-actions@v0.6.0
         with:
           find-dir: .
           output-file: README.md
           output-method: inject
+      - name: 'Fix permissions in work tree'
+        if: steps.terraform-docs.outputs.num_changed > 0
+        run: sudo chown -R $(id -u):$(id -g) .
       - name: 'Generate dependency graphs'
         uses: ./.github/actions/terragrunt
         with:
