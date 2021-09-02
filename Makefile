@@ -58,7 +58,7 @@ ifeq ($(CI),true)
 endif
 	@$(MAKE) run-all command=$@ args='-out=tfplan $(args)'
 ifeq ($(CI),true)
-	@$(CURDIR)/.terragrunt/plan-feedback tfplan
+	@$(CURDIR)/.terragrunt/bin/plan-feedback tfplan
 endif
 
 .PHONY: apply
@@ -85,7 +85,7 @@ ifneq ($(strip $(SUBDIRS)),)
 	  ( \
 	    cd "$(CURDIR)/$$dir"; \
 	    $(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
-	      CURDIR='$(CURDIR)' "$(CURDIR)/.terragrunt/prettier-graph" | \
+	      CURDIR='$(CURDIR)' "$(CURDIR)/.terragrunt/bin/prettier-graph" | \
 	      dot -Tsvg >graph.svg; \
 	    if [ ! -f README.md ] || grep -q '<!-- auto-generated -->' README.md; then \
 	      echo "<!-- auto-generated -->\n# $$(basename "$$dir")\n\n## Dependencies\n\n![Dependency graph](graph.svg)" > README.md; \
@@ -98,7 +98,7 @@ endif
 graph-root:
 	@echo "==> . [graph]" >&2; \
 	$(TERRAGRUNT) graph-dependencies --terragrunt-ignore-external-dependencies | \
-	  CURDIR='$(CURDIR)' .terragrunt/prettier-graph | \
+	  CURDIR='$(CURDIR)' .terragrunt/bin/prettier-graph | \
 	  dot -Tsvg >graph.svg
 
 .PHONY: clean

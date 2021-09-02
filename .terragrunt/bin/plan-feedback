@@ -5,7 +5,7 @@ import os
 import json
 import sys
 
-from subprocess import check_call, check_output
+from subprocess import check_output
 from contextlib import contextmanager
 
 terraform = 'terraform'
