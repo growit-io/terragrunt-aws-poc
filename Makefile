@@ -101,11 +101,6 @@ graph-root:
 	  CURDIR='$(CURDIR)' .terragrunt/bin/prettier-graph | \
 	  dot -Tsvg >graph.svg
 
-.PHONY: clean
-clean:
-	find . -type d \( -name .terragrunt-cache -o -name .terraform \) -prune -exec rm -Rf {} \;
-	if tty -s; then git clean -di; else git clean -fd; fi
-
 .PHONY: pull-state
 pull-state:
 	@for dir in $(SUBDIRS); do \
@@ -125,3 +120,24 @@ push-state:
 		  (cd "./$$config_path" && $(TERRAGRUNT) state push $$(pwd)/tfstate.json); \
 		done; \
 	done
+
+.PHONY: tflint
+tflint:
+	@status=; \
+	terraform_module_dirs=$$(find . \
+	  ! \( -type d \( -name .terragrunt-cache -o -name .terraform \) -prune \) \
+	  -type f -name '*.tf' -exec dirname {} \; | sort -u); \
+	tflint --config $(CURDIR)/.tflint.hcl --init; \
+	for dir in $$terraform_module_dirs; do \
+	  echo "==> $${dir##./} (tflint)"; \
+	  tflint --config $(CURDIR)/.tflint.hcl -f compact $$dir >.tflint.out \
+	    || { case $$? in 3) status=$${status:-$$?};; *) status=$$? ;; esac; }; \
+	  sed -E -e "s,^(:[0-9]+:[0-9]+:),$${dir##./}/main.tf\\1," .tflint.out; \
+	  rm .tflint.out; \
+	done; \
+	exit $$status
+
+.PHONY: clean
+clean:
+	find . -type d \( -name .terragrunt-cache -o -name .terraform \) -prune -exec rm -Rf {} \;
+	if tty -s; then git clean -di; else git clean -fd; fi
