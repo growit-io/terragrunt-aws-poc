@@ -36,6 +36,25 @@ jobs:
           failOnWarnings: true
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Setup TFLint'
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.31.0
+      - name: 'Setup TFLint plugin cache'
+        uses: actions/cache@v2
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+      - name: 'Download TFLint plugins'
+        run: tflint --init
+      - name: 'Run TFLint'
+        run: make tflint
+
   examples:
     name: 'Examples'
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
