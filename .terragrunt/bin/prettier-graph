@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-exec sed \
-  -e '2i\
+input="$(cat)"
+
+function main() {
+  # shellcheck disable=SC1004
+  sed -E \
+    -e '2i\
 	graph [truecolor=true bgcolor="#ffffff00"]' \
-  -e '3i\
+    -e '2i\
 	node [shape=box3d style=filled fillcolor="#c0c0c0ff" color="#404040ff"]' \
-  -e '4i\
+    -e '2i\
 	edge [color="#808080ff"]' \
-  -e "s,$CURDIR/,,g" \
-  -e "s,$CURDIR,root,g" \
-  -e "/\"\.terragrunt\/mock\"/d"
+    -e "s,$CURDIR/,,g" \
+    -e 's,"\.terragrunt/mock","terragrunt.hcl",' \
+    -e 's,("terragrunt\.hcl") ;,\1 [shape=note];,' |
+  grep -v "\"$CURDIR\""
+}
+
+if [[ -n ${DEBUG:-} ]]; then
+  main <<<"$input" >&2
+fi
+
+main <<<"$input"
