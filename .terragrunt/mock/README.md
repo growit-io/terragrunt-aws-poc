@@ -1,15 +1,11 @@
-# oranges
-
-## Dependencies
-
-![Dependency graph](graph.svg)
+# Usage
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.0 |
+| terraform | >= 0.11 |
 
 ## Providers
 
@@ -32,3 +28,4 @@ No input.
 No output.
 
 <!--- END_TF_DOCS --->
+
