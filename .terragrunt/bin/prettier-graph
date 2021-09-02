@@ -10,4 +10,4 @@ exec sed \
 	edge [color="#808080ff"]' \
   -e "s,$CURDIR/,,g" \
   -e "s,$CURDIR,root,g" \
-  -e "/\"\.terragrunt\/null\"/d"
+  -e "/\"\.terragrunt\/mock\"/d"
