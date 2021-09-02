@@ -1,4 +1,4 @@
-# Parent terragrunt.hcl (not an actual configuration)
+# Parent terragrunt.hcl
 #
 # This terragrunt.hcl file is not an actual Terragrunt configuration, but meant
 # to be included by (all) other terragrunt.hcl files in this repository via the
@@ -7,6 +7,7 @@
 # For example:
 #
 #     # Child terragrunt.hcl
+#
 #     include {
 #       path = find_in_parent_folders()
 #     }
@@ -63,7 +64,7 @@ locals {
   # in which Terragrunt is working, the one from which this file was included.
   directory_hierarchy = [
     for i in range(0, length(local.subdirectory_hierarchy)) :
-      join("/", concat(slice(local.subdirectory_hierarchy, 0, i + 1)))
+    join("/", concat(slice(local.subdirectory_hierarchy, 0, i + 1)))
   ]
 
   # The list of absolute paths of all possibly existing terragrunt.yml files.
@@ -75,11 +76,11 @@ locals {
   # from optional terragrunt.yml files.
   config_data_hierarchy = [
     for i in range(0, length(local.config_file_hierarchy)) :
-      merge({
-        remote_state = {}
-        terraform = {}
-        inputs = {}
-      }, try(yamldecode(file(local.config_file_hierarchy[i])), {}))
+    merge({
+      remote_state = {}
+      terraform    = {}
+      inputs       = {}
+    }, try(yamldecode(file(local.config_file_hierarchy[i])), {}))
   ]
 
   # A list of objects describing the directory hierarchy with metadata loaded
@@ -87,23 +88,23 @@ locals {
   # aid further processing of the configuration hierarchy.
   config_hierarchy = [
     for i in range(0, length(local.config_data_hierarchy)) :
-      merge(local.config_data_hierarchy[i], {
-        directory = local.directory_hierarchy[i]
-        subdirectory = try(local.subdirectory_hierarchy[i + 1], "")
-        leading_subdirectories = [
-          for j in range(1, i + 1) :
-            local.subdirectory_hierarchy[j]
-        ]
-        leading_layer_subdirectories = [
-          for j in range(1, i + 1) :
-            local.subdirectory_hierarchy[j]
-            if try(local.config_data_hierarchy[j - 1].layer, "") != ""
-        ]
-        trailing_subdirectories = [
-          for j in range(i + 1, length(local.config_file_hierarchy)) :
-            local.subdirectory_hierarchy[j]
-        ]
-      })
+    merge(local.config_data_hierarchy[i], {
+      directory    = local.directory_hierarchy[i]
+      subdirectory = try(local.subdirectory_hierarchy[i + 1], "")
+      leading_subdirectories = [
+        for j in range(1, i + 1) :
+        local.subdirectory_hierarchy[j]
+      ]
+      leading_layer_subdirectories = [
+        for j in range(1, i + 1) :
+        local.subdirectory_hierarchy[j]
+        if try(local.config_data_hierarchy[j - 1].layer, "") != ""
+      ]
+      trailing_subdirectories = [
+        for j in range(i + 1, length(local.config_file_hierarchy)) :
+        local.subdirectory_hierarchy[j]
+      ]
+    })
   ]
 
   # Merged `inputs` from all configurations in the directory hierarchy.
@@ -119,7 +120,7 @@ locals {
   # Elements of the configuration hierarchy which have a `layer` attribute.
   layer_config_hierarchy = [
     for config in local.config_hierarchy :
-      config if lookup(config, "layer", "") != ""
+    config if lookup(config, "layer", "") != ""
   ]
 
   # Automatic input variables derived from the `layer` attributes and the
@@ -143,8 +144,8 @@ locals {
   # the child terragrunt.hcl directory's configuration.
   config_remote_state_context = flatten([[
     for config in reverse(local.config_hierarchy) : config
-      if lookup(config.remote_state, "backend", "") != "" ||
-         lookup(config.remote_state, "config", {}) != {}
+    if lookup(config.remote_state, "backend", "") != "" ||
+    lookup(config.remote_state, "config", {}) != {}
   ], reverse(local.config_hierarchy)[0]])[0]
 
   # The last value of the `remote_state.backend` attribute in the configuration
@@ -189,14 +190,14 @@ locals {
 
     s3 = {
       dynamodb_table = local.remote_state_config_defaults_s3_dynamodb_table
-      bucket = local.remote_state_config_defaults_s3_bucket
-      key = local.remote_state_config_defaults_s3_key
-      encrypt = true
+      bucket         = local.remote_state_config_defaults_s3_bucket
+      key            = local.remote_state_config_defaults_s3_key
+      encrypt        = true
     }
 
     terragrunt = {
       output = "terraform_remote_states"
-      key = local.remote_state_config_defaults_terragrunt_key
+      key    = local.remote_state_config_defaults_terragrunt_key
     }
   }
 
@@ -213,7 +214,7 @@ locals {
   ]) : ""
 
   remote_state_generate = merge({
-    path = "backend.tf"
+    path      = "backend.tf"
     if_exists = "overwrite_terragrunt"
   }, lookup(local.config_remote_state, "generate", {}))
 
@@ -225,14 +226,14 @@ locals {
 
   github_branch = trimprefix(trimprefix(trimprefix(get_env("GITHUB_REF", ""), "refs/"), "heads/"), "tags/")
 
-  git_commit = run_cmd("--terragrunt-quiet", "git", "rev-parse", "--short", "HEAD")
-  git_branch = try(run_cmd("--terragrunt-quiet", "git", "symbolic-ref", "-q", "--short", "HEAD"), local.github_branch)
+  git_commit        = run_cmd("--terragrunt-quiet", "git", "rev-parse", "--short", "HEAD")
+  git_branch        = try(run_cmd("--terragrunt-quiet", "git", "symbolic-ref", "-q", "--short", "HEAD"), local.github_branch)
   git_branch_remote = try(run_cmd("--terragrunt-quiet", "git", "config", "--get", "branch.${local.git_branch}.remote"), "origin")
-  git_remote_url = try(run_cmd("--terragrunt-quiet", "git", "config", "--get", "remote.${local.git_branch_remote}.url"), "")
+  git_remote_url    = try(run_cmd("--terragrunt-quiet", "git", "config", "--get", "remote.${local.git_branch_remote}.url"), "")
 
   git_inputs = {
-    git_commit = local.git_commit
-    git_branch = local.git_branch
+    git_commit     = local.git_commit
+    git_branch     = local.git_branch
     git_repository = trimsuffix(local.git_remote_url, ".git")
   }
 
@@ -254,14 +255,14 @@ locals {
   # value. The format string may contain references to inputs via `${input}`.
   terraform_source_prefix_format = concat([
     for config in reverse(local.config_hierarchy) : config.terraform.source
-      if try(tostring(config.terraform.source) != "", false)
+    if try(tostring(config.terraform.source) != "", false)
   ], [""])[0]
 
   # Similar to `terraform_source_prefix_format`, but this is a string that will
   # be appended to the generated `terraform.source`.
   terraform_source_suffix_format = join("", [
     for config in local.config_hierarchy : config.terraform.source.append
-      if try(config.terraform.source.append, "") != ""
+    if try(config.terraform.source.append, "") != ""
   ])
 
   terraform_source_format = join("", [
@@ -273,10 +274,10 @@ locals {
     for part in regexall(
       "(?P<prefix>[^$]*)[$]{(?P<variable>[^}]+)}(?P<suffix>[^$]*)",
       local.terraform_source_format
-    ) : join("", [
-      part.prefix,
-      local.inputs[part.variable],
-      part.suffix
+      ) : join("", [
+        part.prefix,
+        local.inputs[part.variable],
+        part.suffix
     ])
   ])
 
@@ -288,14 +289,14 @@ locals {
   ##
 
   debug_vars = {
-    config_hierarchy = local.config_hierarchy
-    config_remote_state = local.config_remote_state
-    config_remote_state_context = local.config_remote_state_context
+    config_hierarchy             = local.config_hierarchy
+    config_remote_state          = local.config_remote_state
+    config_remote_state_context  = local.config_remote_state_context
     remote_state_config_defaults = local.remote_state_config_defaults
-    remote_state_backend = local.remote_state_backend
-    remote_state_config = local.remote_state_config
-    terraform_source = local.terraform_source
-    inputs = local.inputs
+    remote_state_backend         = local.remote_state_backend
+    remote_state_config          = local.remote_state_config
+    terraform_source             = local.terraform_source
+    inputs                       = local.inputs
   }
 
   debug = false
@@ -305,17 +306,17 @@ terraform {
   source = local.terraform_source
 
   extra_arguments "auto-migrate-state" {
-    commands = ["init"]
+    commands  = ["init"]
     arguments = ["-backend=true", "-migrate-state"]
   }
 
   after_hook "fix-backend-config" {
     commands = local.remote_state_backend == "s3" ? ["init"] : []
-    execute = ["sed", "-E", "-i~", "-e", "s/(encrypt[ \\t]*=[ \\t]*)\"([^\"]+)\"/\\1\\2/", local.remote_state_generate.path]
+    execute  = ["sed", "-E", "-i~", "-e", "s/(encrypt[ \\t]*=[ \\t]*)\"([^\"]+)\"/\\1\\2/", local.remote_state_generate.path]
   }
 
   after_hook "debug" {
-    commands = local.debug ? ["validate"] : []
+    commands     = local.debug ? ["validate"] : []
     run_on_error = true
 
     # https://github.com/hashicorp/terraform/issues/23322#issuecomment-716627898
@@ -323,7 +324,7 @@ terraform {
   }
 
   after_hook "state_dependency_debug" {
-    commands = local.debug ? ["validate"] : []
+    commands     = local.debug ? ["validate"] : []
     run_on_error = true
 
     # https://github.com/hashicorp/terraform/issues/23322#issuecomment-716627898
@@ -332,7 +333,7 @@ terraform {
 }
 
 dependency "state" {
-  config_path = local.remote_state_backend != "terragrunt" ? "${local.root_dir}/.terragrunt/null" : local.state_dependency_config_path
+  config_path  = local.remote_state_backend != "terragrunt" ? "${local.root_dir}/.terragrunt/mock" : local.state_dependency_config_path
   skip_outputs = local.remote_state_backend != "terragrunt" || abspath("${local.root_dir}/${path_relative_to_include()}") == abspath(local.state_dependency_config_path)
 }
 
@@ -344,7 +345,7 @@ remote_state {
     dependency.state.outputs[local.remote_state_config.output][local.remote_state_config.key].config
   )
 
-  generate = local.remote_state_generate
+  generate     = local.remote_state_generate
   disable_init = local.remote_state_backend != "terragrunt" ? local.remote_state_disable_init : true
 }
 
