@@ -1,6 +1,6 @@
-output "root" {
-  description = "Same value as the `root` input variable."
-  value       = var.root
+output "cloud" {
+  description = "Same value as the `cloud` input variable."
+  value       = var.cloud
 }
 
 output "example" {

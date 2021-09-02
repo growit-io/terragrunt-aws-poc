@@ -1,11 +1,11 @@
-# Terragrunt Template
-[![Upstream](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml)
-[![Release](https://github.com/growit-io/terragrunt/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/release.yml)
-[![Downstream](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml)
+# Terragrunt Template for Amazon Web Services
+[![Upstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml)
+[![Release](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml)
+[![Downstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml)
 
-This is a template for Terragrunt configuration repositories on GitHub with
-workflows to keep generated repositories synchronized with new releases of the
-template.
+This is a Terragrunt configuration repository template for Amazon Web Services
+with GitHub workflows to keep generated repositories synchronized with new
+releases of the template.
 
 This repository includes a single [parent `terragrunt.hcl`](terragrunt.hcl) that
 should be included by all child `terragrunt.hcl` files. The parent
@@ -57,6 +57,17 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 7. Create a hierarchy of subdirectories with `terragrunt.hcl`, and optional
    `terragrunt.yml` files to describe your configuration. See the
    [examples](examples) directory for inspiration.
+
+## Directory index
+
+- [aws](aws): Contains `terragrunt.yml` files and Terragrunt configurations
+  (child `terragrunt.hcl` files) for Amazon Web Services.
+- [examples](examples): Contains examples that you can learn from, or copy
+  directly into the root of this repository to get started.
+- [modules](modules): Should contain all Terraform root modules used by
+  Terragrunt configurations in the `aws` directory, and required child modules.
+- [docs](docs): Reference documentation for this Terragrunt configuration
+  repository.
 
 ## Configuration structure
 

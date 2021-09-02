@@ -20,11 +20,11 @@
 <!-- examples/hello&#45;world -->
 <g id="node2" class="node">
 <title>examples/hello&#45;world</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="168,-108 4,-108 0,-104 0,-72 164,-72 168,-76 168,-108"/>
-<polyline fill="none" stroke="#404040" points="164,-104 0,-104 "/>
-<polyline fill="none" stroke="#404040" points="164,-104 164,-72 "/>
-<polyline fill="none" stroke="#404040" points="164,-104 168,-108 "/>
-<text text-anchor="middle" x="84" y="-86.3" font-family="Times,serif" font-size="14.00">examples/hello&#45;world</text>
+<polygon fill="#c0c0c0" stroke="#404040" points="245.9,-108 81.9,-108 77.9,-104 77.9,-72 241.9,-72 245.9,-76 245.9,-108"/>
+<polyline fill="none" stroke="#404040" points="241.9,-104 77.9,-104 "/>
+<polyline fill="none" stroke="#404040" points="241.9,-104 241.9,-72 "/>
+<polyline fill="none" stroke="#404040" points="241.9,-104 245.9,-108 "/>
+<text text-anchor="middle" x="161.9" y="-86.3" font-family="Times,serif" font-size="14.00">examples/hello&#45;world</text>
 </g>
 <!-- examples/hello&#45;world&#45;&gt;terragrunt.hcl -->
 <g id="edge1" class="edge">
