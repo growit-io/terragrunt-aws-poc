@@ -87,8 +87,8 @@ jobs:
     outputs:
       changed-paths: ${{ steps.main.outputs.changed-paths }}
 
-  graph:
-    name: 'Graph'
+  generate:
+    name: 'Generate'
     needs: release
     if: '! needs.release.outputs.release_created'
     runs-on: ubuntu-latest
@@ -97,19 +97,20 @@ jobs:
         uses: ts-graphviz/setup-graphviz@v1
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create necessary states'
-        uses: ./.github/actions/terragrunt
+      - name: 'Generate Terraform module documentation'
+        uses: terraform-docs/gh-actions@v0.6.0
         with:
-          command: apply
-          config-paths: 'examples/remote-state/states'
-      - name: 'Create or update dependency graphs'
+          find-dir: .
+          output-file: README.md
+          output-method: inject
+      - name: 'Generate dependency graphs'
         uses: ./.github/actions/terragrunt
         with:
           command: graph
           config-paths: '*'
       - name: 'Generate commit message'
         id: commit
-        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): update dependency graphs"'
+        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): update generated documentation"'
       - name: 'Create pull request'
         uses: peter-evans/create-pull-request@v3
         with:
