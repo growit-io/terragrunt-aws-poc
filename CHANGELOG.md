@@ -1,5 +1,38 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/growit-io/terragrunt/compare/v0.1.0...v0.1.1) (2021-09-02)
+
+
+### Build System
+
+* **terragrunt:** add `fmt-check` target to Makefile ([ceb7cea](https://www.github.com/growit-io/terragrunt/commit/ceb7cea0917ae3a559656ec2a846cbedee687fa4))
+* **terragrunt:** add `fmt-fix` target to Makefile ([f664ed4](https://www.github.com/growit-io/terragrunt/commit/f664ed48df4cfb41c5f964aac9a1632643aec152))
+* **terragrunt:** add `set -e` to every multi-command target in Makefile ([9d6b063](https://www.github.com/growit-io/terragrunt/commit/9d6b063f036933868720ace76ce2fc7ae50ffec5))
+* **terragrunt:** add `tflint` target to Makefile ([f9d20e7](https://www.github.com/growit-io/terragrunt/commit/f9d20e7ba54226493c2ad6ca144c1e7f8df69d49))
+* **terragrunt:** add examples/remote-state/states/terraform.tfstate ([383af47](https://www.github.com/growit-io/terragrunt/commit/383af47cd8e7147eddb31b85e75a60da6561e0b7))
+* **terragrunt:** include `fmt-check` and `tflint` in default targets ([802909b](https://www.github.com/growit-io/terragrunt/commit/802909b693c3eae1a660d13cae5d99d9a04943b0))
+
+
+### Code Refactoring
+
+* **terragrunt:** move scripts called from Makefile to `.terragrunt/bin` directory ([2584ca1](https://www.github.com/growit-io/terragrunt/commit/2584ca14e8768e7070647dd68f1a95a7ba92c457))
+* **terragrunt:** rename `.terragrunt/null` directory to `.terragrunt/mock` ([07a44a1](https://www.github.com/growit-io/terragrunt/commit/07a44a1472cac8f47c277988071bb5b1aae9b0a5))
+* **terragrunt:** update file comment block in parent terragrunt.hcl ([a6c6b28](https://www.github.com/growit-io/terragrunt/commit/a6c6b289f16ff3b8994954b429d88970d0bc4b3d))
+
+
+### Documentation
+
+* **terragrunt:** show parent terragrunt.hcl file in dependency graphs ([c7d388f](https://www.github.com/growit-io/terragrunt/commit/c7d388fc23ea4e71003955696ac4c830c325a3b6))
+
+
+### CI/CD Workflows
+
+* **terragrunt:** add `fmt-check` job to integration.yml workflow ([b29c176](https://www.github.com/growit-io/terragrunt/commit/b29c17639e6a7449eb5feb8ec4a5928cc4e8ede9))
+* **terragrunt:** add `terraform-docs` step to release.yml workflow ([a4ba1b0](https://www.github.com/growit-io/terragrunt/commit/a4ba1b0badaa699263a85b0e190ae21fc299b215))
+* **terragrunt:** add `tflint` job to integration.yml workflow ([a4cd33e](https://www.github.com/growit-io/terragrunt/commit/a4cd33e02eb6be79ef2eaaa53486fc589fe75b92))
+* **terragrunt:** fix permission issues after running `terragrunt-docs` ([dee5b43](https://www.github.com/growit-io/terragrunt/commit/dee5b43134f2bff073f9cd5308524f479f9f042d))
+* **terragrunt:** remove "Create necessary states" step from CI/CD workflows ([0b6ed1f](https://www.github.com/growit-io/terragrunt/commit/0b6ed1f9e61ee7b11e928a99bb785651fbe65768))
+
 ## [0.1.0](https://www.github.com/growit-io/terragrunt/compare/v0.0.2...v0.1.0) (2021-09-01)
 
 
