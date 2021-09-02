@@ -1,4 +1,4 @@
-# Parent terragrunt.hcl (not an actual configuration)
+# Parent terragrunt.hcl
 #
 # This terragrunt.hcl file is not an actual Terragrunt configuration, but meant
 # to be included by (all) other terragrunt.hcl files in this repository via the
@@ -7,6 +7,7 @@
 # For example:
 #
 #     # Child terragrunt.hcl
+#
 #     include {
 #       path = find_in_parent_folders()
 #     }
