@@ -154,6 +154,18 @@ fmt-check:
 	fi; \
   	exit $$status
 
+.PHONY: fmt-fix
+fmt-fix:
+	@status=0; \
+  	find . -type f -name 'terragrunt.hcl' -exec cp {} {}.tf \;; \
+	$(TERRAFORM) fmt -write=true -recursive >.terraform-fmt.out || status=$$?; \
+	sed -E -e 's/^(.*\.hcl)\.tf$$/\1/' .terraform-fmt.out; \
+  	rm -f .terraform-fmt.out; \
+  	find . -type f -name 'terragrunt.hcl.tf' | while read file; do \
+  	  mv "$$file" "$$(dirname $$file)/$$(basename $$file .tf)"; \
+  	done; \
+  	exit $$status
+
 .PHONY: clean
 clean:
 	find . -type d \( -name .terragrunt-cache -o -name .terraform \) -prune -exec rm -Rf {} \;
