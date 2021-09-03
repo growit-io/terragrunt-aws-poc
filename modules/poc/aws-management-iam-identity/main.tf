@@ -39,7 +39,7 @@ resource "aws_iam_user" "this" {
   for_each = var.users
 
   name = each.key
-  path = each.value.path
+  path = lookup(each.value, "path", "/")
 }
 
 resource "aws_iam_user_group_membership" "this" {
@@ -51,13 +51,13 @@ resource "aws_iam_user_group_membership" "this" {
   # ensure the referential integrity of our configuration by requiring the group
   # to be defined as an allowed group via the var.groups input variable.
   groups = [
-    for group in each.value.groups : local.allowed_groups[group]
+    for group in lookup(each.value, "groups", []) : local.allowed_groups[group]
   ]
 }
 
 resource "aws_iam_access_key" "this" {
-  for_each = merge([for k, v in var.users : { (k) = v } if v.access_key]...)
+  for_each = merge([for k, v in var.users : { (k) = v } if lookup(v, "access_key", false)]...)
 
   user    = aws_iam_user.this[each.key].name
-  pgp_key = each.value.pgp_key
+  pgp_key = lookup(each.value, "pgp_key", null)
 }

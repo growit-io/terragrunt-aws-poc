@@ -1,19 +1,18 @@
 variable "groups" {
-  type = map(any)
-
+  type        = any
   default     = {}
   description = <<-EOT
     A map of objects describing the IAM groups to create in the AWS Organization management account.
 
     The map keys are the names of the IAM groups and the map values require the following attributes:
 
-    - **path** (`string`): IAM path under which to create the group.
+    - **path** (`string`, default: `"/"`): IAM path under which to create the group.
     - **policies** (`set(string)`): The names or ARNs of IAM policies to attach to the group. When IAM policy names are given instead of ARNs, the names must correspond to a map key in either the `policies`, or the `policy_arns` input variable.
   EOT
 }
 
 variable "policies" {
-  type        = map(any)
+  type        = any
   default     = {}
   description = <<-EOT
     A map of objects describing managed IAM policies to create in the AWS Organizations management account. The names of these managed IAM policies are automatically available for reference in the `groups` input variable.
