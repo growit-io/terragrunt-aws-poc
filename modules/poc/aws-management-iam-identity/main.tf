@@ -1,7 +1,9 @@
 terraform {
+  required_version = "~> 1.0"
+
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 3.53.0"
     }
   }
@@ -13,13 +15,13 @@ provider "aws" {
   default_tags {
     tags = {
       Organization = var.organization
-      Tier = var.tier
-      Stage = var.stage
-      Layer = var.layer
-      Stack = var.stack
+      Tier         = var.tier
+      Stage        = var.stage
+      Layer        = var.layer
+      Stack        = var.stack
 
-      TerraformModule = path.module != "." ? path.module : basename(abspath(path.module))
-      TerraformRoot = path.root != "." ? path.root : basename(abspath(path.root))
+      TerraformModule    = path.module != "." ? path.module : basename(abspath(path.module))
+      TerraformRoot      = path.root != "." ? path.root : basename(abspath(path.root))
       TerraformWorkspace = terraform.workspace
 
       GitRepository = var.git_repository
@@ -56,6 +58,6 @@ resource "aws_iam_user_group_membership" "this" {
 resource "aws_iam_access_key" "this" {
   for_each = merge([for k, v in var.users : { (k) = v } if v.access_key]...)
 
-  user = aws_iam_user.this[each.key].name
+  user    = aws_iam_user.this[each.key].name
   pgp_key = each.value.pgp_key
 }

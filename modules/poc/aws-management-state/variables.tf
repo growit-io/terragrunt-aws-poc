@@ -1,51 +1,6 @@
-variable "organization" {
-  type = string
-}
-
-variable "tier" {
-  type = string
-}
-
-variable "stage" {
-  type = string
-}
-
-variable "layer" {
-  type = string
-}
-
-variable "git_branch" {
-  type = string
-}
-
-variable "git_commit" {
-  type = string
-}
-
-variable "git_repository" {
-  type = string
-}
-
 variable "default_region" {
-  type = string
-}
-
-variable "terraform_remote_state_backend" {
-  type = string
-
-  validation {
-    condition = var.terraform_remote_state_backend == "s3"
-    error_message = "This root module only supports the S3 backend, for now."
-  }
-}
-
-variable "terraform_remote_state_config" {
-  type = object({
-    region = string
-    bucket = string
-    encrypt = bool
-    dynamodb_table = string
-  })
+  type        = string
+  description = "The default region in which to create S3 buckets for Terraform remote stat storage. This should normally an organization-wide default value provided via the `TF_VAR_default_region` environment variable."
 }
 
 variable "terraform_remote_states" {
@@ -64,4 +19,43 @@ variable "terraform_remote_states" {
 
     error_message = "One or more keys in terraform_remote_state are not valid."
   }
+
+  description = <<-EOT
+    A map of objects describing the Terraform remote states to include in the outputs of this module. The S3 storage and IAM policies for these remote states will be created by this module, unless the `create` attribute is set to `false.
+
+    The objects in this map support the following attributes:
+
+    - **bucket** (string, default: generated randomly): Name of the S3 bucket that will store Terraform states.
+    - **create** (bool, default: `true`): Whether to create the S3 bucket and DynamoDB table, or not.
+    - **create_access_policies** (bool, default: `true`): Whether to create IAM read-only and read-write access policies.
+    - **dynamodb_table** (string, default: bucket name): Name of the DynamoDB table that will be used for locking Terraform states.
+    - **force_destroy** (bool, default: `false`): Value of the `force_destroy` attribute for the created S3 bucket. You should set this to `true` and apply the configuration before removing any element from the map in order to destroy the S3 bucket. Alternatively, you can empty the corresponding S3 bucket manually, before removing an element from the map.
+    - **policy_name_prefix** (string, default: based on map key): A common prefix to prepend to each managed IAM policy name. Defaults to a CamelCase mutation of the map key.
+    - **policy_name_suffix** (string, default: `""`): A common suffix to append to each managed IAM policy name.
+  EOT
+}
+
+variable "organization" {
+  type        = string
+  description = "The value of the `Organization` tag for all resources created by this module."
+}
+
+variable "tier" {
+  type        = string
+  description = "The value of the `Tier` tag for all resources created by this module."
+}
+
+variable "stage" {
+  type        = string
+  description = "The value of the `Stage` tag for all resources created by this module."
+}
+
+variable "layer" {
+  type        = string
+  description = "The value of the `Layer` tag for all resources created by this module."
+}
+
+variable "git_repository" {
+  type        = string
+  description = "The value of the `GitRepository` tag for all resources created by this module."
 }

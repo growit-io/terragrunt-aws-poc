@@ -102,20 +102,27 @@ jobs:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
 
-  graph:
-    name: 'Graph'
+  generate:
+    name: 'Generate'
+    needs: release
+    if: '! needs.release.outputs.release_created'
     runs-on: ubuntu-latest
     steps:
       - name: 'Setup Graphviz'
         uses: ts-graphviz/setup-graphviz@v1
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create necessary states'
-        uses: ./.github/actions/terragrunt
+      - name: 'Generate Terraform module documentation'
+        id: terraform-docs
+        uses: terraform-docs/gh-actions@v0.6.0
         with:
-          command: apply
-          config-paths: 'examples/remote-state/states'
-      - name: 'Create or update dependency graphs'
+          find-dir: .
+          output-file: README.md
+          output-method: inject
+      - name: 'Fix permissions in work tree'
+        if: steps.terraform-docs.outputs.num_changed > 0
+        run: sudo chown -R $(id -u):$(id -g) .
+      - name: 'Generate dependency graphs'
         uses: ./.github/actions/terragrunt
         with:
           command: graph
@@ -124,7 +131,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
       - name: 'Generate commit message'
         id: commit
-        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): update dependency graphs"'
+        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): update generated documentation"'
       - name: 'Create pull request'
         uses: peter-evans/create-pull-request@v3
         with:

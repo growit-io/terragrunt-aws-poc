@@ -1,7 +1,9 @@
 terraform {
+  required_version = "~> 1.0"
+
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 3.53.0"
     }
   }
@@ -13,13 +15,13 @@ provider "aws" {
   default_tags {
     tags = {
       Organization = var.organization
-      Tier = var.tier
-      Stage = var.stage
-      Layer = var.layer
-      Stack = var.stack
+      Tier         = var.tier
+      Stage        = var.stage
+      Layer        = var.layer
+      Stack        = var.stack
 
-      TerraformModule = path.module != "." ? path.module : basename(abspath(path.module))
-      TerraformRoot = path.root != "." ? path.root : basename(abspath(path.root))
+      TerraformModule    = path.module != "." ? path.module : basename(abspath(path.module))
+      TerraformRoot      = path.root != "." ? path.root : basename(abspath(path.root))
       TerraformWorkspace = terraform.workspace
 
       GitRepository = var.git_repository
@@ -28,17 +30,17 @@ provider "aws" {
 }
 
 resource "aws_organizations_organizational_unit" "this" {
-  name = coalesce(var.name, title(var.organizational_unit))
+  name      = coalesce(var.name, title(var.organizational_unit))
   parent_id = var.parent.organizational_unit.id
 }
 
 resource "aws_organizations_policy" "this" {
   for_each = var.organization_policies
 
-  name = each.key
+  name        = each.key
   description = each.value["description"]
 
-  type = each.value["type"]
+  type    = each.value["type"]
   content = jsonencode(each.value["content"])
 }
 

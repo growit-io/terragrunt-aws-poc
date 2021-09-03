@@ -7,6 +7,6 @@ dependency "parent" {
 }
 
 inputs = {
-  name = "Prod"
+  name   = "Prod"
   parent = dependency.parent.outputs
 }

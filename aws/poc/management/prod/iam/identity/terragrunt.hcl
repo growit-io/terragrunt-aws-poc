@@ -7,6 +7,6 @@ dependency "access" {
 }
 
 inputs = {
-  users = yamldecode(file("users.yml"))
+  users  = yamldecode(file("users.yml"))
   groups = dependency.access.outputs.groups
 }
