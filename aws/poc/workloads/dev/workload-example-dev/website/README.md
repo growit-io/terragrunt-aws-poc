@@ -1,6 +1,13 @@
-<!-- auto-generated -->
-# website
+# Website
+
+This configuration uses the
+[aws-workloads-website](../../../../../../modules/poc/aws-workloads-website)
+root module to create a static example website hosted in an S3 bucket.
 
 ## Dependencies
+
+This configuration depends on the
+[workload-example-dev](../../../../management/dev/organizations/accounts/workload-example-dev)
+configuration to specify the AWS account in which the website is to be deployed.
 
 ![Dependency graph](graph.svg)
