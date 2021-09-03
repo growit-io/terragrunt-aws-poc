@@ -1,6 +1,6 @@
 variable "default_region" {
   type        = string
-  description = "The default region in which to create S3 buckets for Terraform remote stat storage. This should normally an organization-wide default value provided via the `TF_VAR_default_region` environment variable."
+  description = "The default region in which to create S3 buckets for Terraform remote state storage. This should normally an organization-wide default value provided via the `TF_VAR_default_region` environment variable."
 }
 
 variable "terraform_remote_states" {

@@ -1,4 +1,4 @@
-# aws-management-state
+# aws-management-terraform-state
 
 This module creates the required resources for
 [Terraform S3 backend](https://www.terraform.io/docs/language/settings/backends/s3.html)

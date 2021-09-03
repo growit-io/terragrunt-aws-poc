@@ -7,5 +7,5 @@ terraform:
 remote_state:
   backend: terragrunt
   config:
-    path: ../boot/state
+    path: ../boot/terraform-state
     key: management_prod

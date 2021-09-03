@@ -1,7 +1,8 @@
-# State
+# Terraform State
+[//]: # (TODO: rename this configuration to terraform-state)
 
 This configuration uses the
-[aws-management-state](../../../../../modules/poc/aws-management-state)
+[aws-management-terraform-state](../../../../../modules/poc/aws-management-terraform-state)
 root module to create the
 [Terraform remote state](https://www.terraform.io/docs/language/state/remote.html)
 S3 buckets, DynamoDB tables and IAM policies required by each tier and

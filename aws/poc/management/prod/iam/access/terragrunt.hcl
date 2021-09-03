@@ -2,9 +2,8 @@ include {
   path = find_in_parent_folders()
 }
 
-# Provides the TerraformStateRead{Only,Write}Access{Boot,Dev,Prod} policies
-dependency "boot_state" {
-  config_path = "../../../boot/state"
+dependency "boot_terraform_state" {
+  config_path = "../../../boot/terraform-state"
 }
 
 dependency "workload_example_dev_account" {
@@ -25,7 +24,7 @@ inputs = {
   }
 
   policy_arns = merge([
-    dependency.boot_state.outputs.access_policy_arns,
+    dependency.boot_terraform_state.outputs.access_policy_arns,
     dependency.workload_example_dev_account.outputs.policy_arns,
     dependency.workload_example_prod_account.outputs.policy_arns,
   ]...)

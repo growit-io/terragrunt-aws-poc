@@ -6,8 +6,8 @@ and to control locking of the state via a DynamoDB table. It can also create two
 IAM policies which provide either read-only, or read-write access to these
 resources.
 
-The outputs of this module can be used to define a Terraform remote state
-backend configuration.
+The `backend` and `config` outputs of this module can be used to generate a
+Terraform S3 backend configuration.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
