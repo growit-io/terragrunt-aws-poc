@@ -111,7 +111,7 @@ pull-state:
 		find $$dir/* ! \( -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | \
 		while read config_path; do \
 		  echo "==> $$config_path [state pull]" >&2; \
-		  (cd "./$$config_path" && $(TERRAGRUNT) state pull > tfstate.json); \
+		  (cd "./$$config_path" && $(TERRAGRUNT) state pull > terraform.tfstate); \
 		done; \
 	done
 
@@ -122,7 +122,7 @@ push-state:
 	  find $$dir/* ! \( -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; | \
 	  while read config_path; do \
 	    echo "==> $$config_path [state push]" >&2; \
-	    (cd "./$$config_path" && $(TERRAGRUNT) state push $$(pwd)/tfstate.json); \
+	    (cd "./$$config_path" && $(TERRAGRUNT) state push $$(pwd)/terraform.tfstate) <&2; \
 	  done; \
 	done
 
