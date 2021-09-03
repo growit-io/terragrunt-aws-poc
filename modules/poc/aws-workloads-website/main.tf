@@ -1,4 +1,6 @@
 terraform {
+  required_version = "~> 1.0.4"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -8,7 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  region = var.region == "" ? var.default_region : var.region
+  region = coalesce(var.region, var.default_region)
 
   assume_role {
     role_arn = var.account.role_arns.WebsiteAdministrator
@@ -36,5 +38,4 @@ module "this" {
 
   organization = var.organization
   stage        = var.stage
-  region       = coalesce(var.region, var.default_region)
 }

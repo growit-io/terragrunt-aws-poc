@@ -1,4 +1,6 @@
 terraform {
+  required_version = "~> 1.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -46,12 +48,12 @@ resource "aws_iam_group" "this" {
   for_each = var.groups
 
   name = each.key
-  path = each.value.path
+  path = lookup(each.value, "path", "/")
 }
 
 resource "aws_iam_group_policy_attachment" "this" {
   for_each = merge([for group in keys(var.groups) : {
-    for policy in var.groups[group].policies : "${group}/${policy}" => {
+    for policy in lookup(var.groups[group], "policies", []) : "${group}/${policy}" => {
       group  = group
       policy = policy
     }
