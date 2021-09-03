@@ -1,4 +1,9 @@
-# Usage
+# access-policies
+
+This Terraform module creates two IAM policies granting either read-only, or
+read-write access to a given set of
+[Terraform S3 backend](https://www.terraform.io/docs/language/settings/backends/s3.html)
+resources.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -47,4 +52,3 @@ No Modules.
 | read\_write\_policy\_name | The name of the managed IAM policy which grants read-write access to the S3 bucket and DynamoDB table. |
 
 <!--- END_TF_DOCS --->
-

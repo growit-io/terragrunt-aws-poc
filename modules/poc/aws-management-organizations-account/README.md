@@ -1,4 +1,12 @@
-# Usage
+# aws-management-organizations-account
+
+This Terraform module creates an
+[AWS Organizations](https://aws.amazon.com/organizations/)
+member account, and optionally creates and attaches policies to the account.
+
+The `aws` provider will be configured to use the current AWS credentials which
+are expected to provide administrative access to the organization management
+account.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -59,4 +67,3 @@ No Modules.
 | role\_arns | A mapping between role name and ARN for each IAM role managed by this module. |
 
 <!--- END_TF_DOCS --->
-

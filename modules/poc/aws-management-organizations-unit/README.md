@@ -1,4 +1,13 @@
-# Usage
+# aws-management-organizations-unit
+
+This Terraform module creates an
+[AWS Organizations](https://aws.amazon.com/organizations/)
+organizational unit (OU), and optionally creates and attaches policies to the
+OU.
+
+The `aws` provider will be configured to use the current AWS credentials which
+are expected to provide administrative access to the organization management
+account.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -51,4 +60,3 @@ No Modules.
 | organizational\_unit | An object describing the organizational unit created by this module. |
 
 <!--- END_TF_DOCS --->
-

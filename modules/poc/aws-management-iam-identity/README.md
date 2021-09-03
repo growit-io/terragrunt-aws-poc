@@ -1,4 +1,12 @@
-# Usage
+# aws-management-iam-identity
+
+This Terraform module creates IAM users, manages their group memberships, and
+optionally creates a managed access key (normally only for non-human service
+accounts.)
+
+The `aws` provider will be configured to use the current AWS credentials which
+are expected to provide administrative access to the organization management
+account.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -50,4 +58,3 @@ No Modules.
 | users | The set of names of all IAM users managed by this module. |
 
 <!--- END_TF_DOCS --->
-
