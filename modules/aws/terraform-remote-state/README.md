@@ -1,4 +1,13 @@
-# Usage
+# terraform-remote-state
+
+This module can be used to create the necessary resources to store
+[Terraform state in an S3 bucket](https://www.terraform.io/docs/language/settings/backends/s3.html),
+and to control locking of the state via a DynamoDB table. It can also create two
+IAM policies which provide either read-only, or read-write access to these
+resources.
+
+The outputs of this module can be used to define a Terraform remote state
+backend configuration.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -57,4 +66,3 @@
 | read\_write\_access\_policy\_name | The name of the managed IAM policy which grants read-write access to the S3 bucket and DynamoDB table. If the `create_access_policies` variable is `false`, then this value will be an empty string. |
 
 <!--- END_TF_DOCS --->
-

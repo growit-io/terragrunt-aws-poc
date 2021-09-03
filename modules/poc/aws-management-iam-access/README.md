@@ -1,4 +1,12 @@
-# Usage
+# aws-management-iam-access
+
+This Terraform module creates IAM groups and IAM policies that may be attached
+to these groups to control access to organization member accounts and resources
+in the management account itself.
+
+The `aws` provider will be configured to use the current AWS credentials which
+are expected to provide administrative access to the organization management
+account.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -48,4 +56,3 @@ No Modules.
 | groups | The names of IAM groups managed by this module. |
 
 <!--- END_TF_DOCS --->
-

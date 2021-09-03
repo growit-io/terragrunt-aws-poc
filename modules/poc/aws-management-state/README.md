@@ -1,4 +1,17 @@
-# Usage
+# aws-management-state
+
+This module creates the required resources for
+[Terraform S3 backend](https://www.terraform.io/docs/language/settings/backends/s3.html)
+remote state configurations, and IAM policies for either read-only, or
+read-write access.
+
+The outputs of this module can be used to define a Terraform remote state
+backend configuration, and are suitable for use as the virtual
+["terragrunt" backend in `terragrunt.yml` files](../../../docs/terragrunt/README.md#the-remote_state-attribute).
+
+The `aws` provider will be configured to use the current AWS credentials which
+are expected to provide administrative access to the organization management
+account.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -42,4 +55,3 @@ No resources.
 | terraform\_remote\_states | A mapping between the keys used in the `terraform_remote_states` input variable and objects describing the corresponding Terraform remote state backend. |
 
 <!--- END_TF_DOCS --->
-

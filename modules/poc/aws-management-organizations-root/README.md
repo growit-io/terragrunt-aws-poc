@@ -1,4 +1,13 @@
-# Usage
+# aws-management-organizations-root
+
+This Terraform module creates the
+[AWS Organizations](https://aws.amazon.com/organizations/)
+organization itself, and optionally creates and attaches policies to the
+organization.
+
+The `aws` provider is will use the currently configured AWS credentials, which
+are expected to provide administrative access to the organization management
+account.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -51,4 +60,3 @@ No Modules.
 | organizational\_unit | An object describing the root organizational unit of the organization. |
 
 <!--- END_TF_DOCS --->
-
