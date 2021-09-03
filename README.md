@@ -36,7 +36,7 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
    [`Makefile`](Makefile) for details on how the `paths` variable is handled.
 2. Commit and push your changes to a branch and open a pull request.
 3. Wait for the status checks to complete, review execution plans and merge
-   the pull request to apply any changes made to non-development configurations.
+   the pull request to apply any changes made to non-production configurations.
 4. If you made any changes to production configurations, wait for the release
    pull request to be created and review its Terraform execution plan.
 5. Merge the release pull request to apply all changes made to production
