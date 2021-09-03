@@ -1,54 +1,54 @@
 variable "create" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "create_access_policies" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "bucket" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "dynamodb_table" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "encrypt" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "force_destroy" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "policy_name_prefix" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "policy_name_suffix" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "policy_path" {
-  type = string
+  type    = string
   default = "/"
 }
 
 variable "read_only_policy_name" {
-  type = string
+  type    = string
   default = "TerraformStateReadOnlyAccess"
 }
 
 variable "read_write_policy_name" {
-  type = string
+  type    = string
   default = "TerraformStateReadWriteAccess"
 }

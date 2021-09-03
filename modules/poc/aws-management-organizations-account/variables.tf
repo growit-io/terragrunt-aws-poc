@@ -3,17 +3,17 @@ variable "account" {
 }
 
 variable "email_separator" {
-  type = string
+  type    = string
   default = "+"
 }
 
 variable "email" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "roles" {
-  type = any
+  type    = any
   default = {}
 }
 
@@ -28,7 +28,7 @@ variable "parent" {
 }
 
 variable "organization_policies" {
-  type = any
+  type    = any
   default = {}
 }
 

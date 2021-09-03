@@ -1,9 +1,9 @@
 variable "users" {
   type = map(object({
     access_key = bool
-    groups = set(string)
-    path = string
-    pgp_key = string
+    groups     = set(string)
+    path       = string
+    pgp_key    = string
   }))
 
   default = {}

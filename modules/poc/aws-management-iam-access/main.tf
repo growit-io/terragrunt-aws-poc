@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 3.53.0"
     }
   }
@@ -13,13 +13,13 @@ provider "aws" {
   default_tags {
     tags = {
       Organization = var.organization
-      Tier = var.tier
-      Stage = var.stage
-      Layer = var.layer
-      Stack = var.stack
+      Tier         = var.tier
+      Stage        = var.stage
+      Layer        = var.layer
+      Stack        = var.stack
 
-      TerraformModule = path.module != "." ? path.module : basename(abspath(path.module))
-      TerraformRoot = path.root != "." ? path.root : basename(abspath(path.root))
+      TerraformModule    = path.module != "." ? path.module : basename(abspath(path.module))
+      TerraformRoot      = path.root != "." ? path.root : basename(abspath(path.root))
       TerraformWorkspace = terraform.workspace
 
       GitRepository = var.git_repository
@@ -36,10 +36,10 @@ locals {
 resource "aws_iam_policy" "this" {
   for_each = var.policies
 
-  name = each.key
-  path = lookup(each.value, "path", "/")
+  name        = each.key
+  path        = lookup(each.value, "path", "/")
   description = each.value["description"]
-  policy = jsonencode(each.value["policy"])
+  policy      = jsonencode(each.value["policy"])
 }
 
 resource "aws_iam_group" "this" {
@@ -51,10 +51,10 @@ resource "aws_iam_group" "this" {
 
 resource "aws_iam_group_policy_attachment" "this" {
   for_each = merge([for group in keys(var.groups) : {
-  for policy in var.groups[group].policies : "${group}/${policy}" => {
-    group = group
-    policy = policy
-  }
+    for policy in var.groups[group].policies : "${group}/${policy}" => {
+      group  = group
+      policy = policy
+    }
   }]...)
 
   group = aws_iam_group.this[each.value.group].name

@@ -1,5 +1,5 @@
 variable "name_prefix" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -12,12 +12,12 @@ variable "read_write_name" {
 }
 
 variable "name_suffix" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "path" {
-  type = string
+  type    = string
   default = "/"
 }
 

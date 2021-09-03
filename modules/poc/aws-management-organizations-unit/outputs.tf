@@ -8,7 +8,7 @@ output "management_account_email" {
 
 output "organizational_unit" {
   value = {
-    id = aws_organizations_organizational_unit.this.id
+    id   = aws_organizations_organizational_unit.this.id
     name = aws_organizations_organizational_unit.this.name
   }
 }

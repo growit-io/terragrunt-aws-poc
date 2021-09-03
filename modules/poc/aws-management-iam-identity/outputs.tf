@@ -11,7 +11,7 @@ output "access_keys" {
 output "plaintext_access_keys" {
   value = {
     for user, access_key in aws_iam_access_key.this : user => {
-      id = access_key.id
+      id     = access_key.id
       secret = access_key.secret
     } if access_key.secret != null
   }
@@ -22,7 +22,7 @@ output "plaintext_access_keys" {
 output "encrypted_access_keys" {
   value = {
     for user, access_key in aws_iam_access_key.this : user => {
-      id = access_key.id
+      id               = access_key.id
       encrypted_secret = access_key.encrypted_secret
     } if access_key.encrypted_secret != null
   }

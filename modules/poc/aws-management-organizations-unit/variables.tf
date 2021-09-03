@@ -1,11 +1,11 @@
 variable "name" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "parent" {
   type = object({
-    management_account_id = string
+    management_account_id    = string
     management_account_email = string
 
     organizational_unit = object({
@@ -15,7 +15,7 @@ variable "parent" {
 }
 
 variable "organization_policies" {
-  type = any
+  type    = any
   default = {}
 }
 

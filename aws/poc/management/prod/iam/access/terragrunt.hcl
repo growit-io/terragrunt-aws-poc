@@ -19,8 +19,8 @@ inputs = {
   groups = yamldecode(file("groups.yml"))
 
   policies = {
-    AccountAdministratorAccess = yamldecode(file("policies/account-administrator-access.yml"))
-    SecurityAdministratorAccess = yamldecode(file("policies/security-administrator-access.yml"))
+    AccountAdministratorAccess   = yamldecode(file("policies/account-administrator-access.yml"))
+    SecurityAdministratorAccess  = yamldecode(file("policies/security-administrator-access.yml"))
     TerraformAdministratorAccess = yamldecode(file("policies/terraform-administrator-access.yml"))
   }
 

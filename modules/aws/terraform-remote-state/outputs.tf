@@ -4,9 +4,9 @@ output "backend" {
 
 output "config" {
   value = {
-    region = data.aws_region.current.id
-    bucket = local.bucket
-    encrypt = var.encrypt
+    region         = data.aws_region.current.id
+    bucket         = local.bucket
+    encrypt        = var.encrypt
     dynamodb_table = local.dynamodb_table
   }
 }

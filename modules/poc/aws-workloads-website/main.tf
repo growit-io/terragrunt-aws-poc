@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 3.53.0"
     }
   }
@@ -17,13 +17,13 @@ provider "aws" {
   default_tags {
     tags = {
       Organization = var.organization
-      Tier = var.tier
-      Stage = var.stage
-      Account = var.account.name
-      Layer = var.layer
+      Tier         = var.tier
+      Stage        = var.stage
+      Account      = var.account.name
+      Layer        = var.layer
 
-      TerraformModule = path.module != "." ? path.module : basename(abspath(path.module))
-      TerraformRoot = path.root != "." ? path.root : basename(abspath(path.root))
+      TerraformModule    = path.module != "." ? path.module : basename(abspath(path.module))
+      TerraformRoot      = path.root != "." ? path.root : basename(abspath(path.root))
       TerraformWorkspace = terraform.workspace
 
       GitRepository = var.git_repository
@@ -35,6 +35,6 @@ module "this" {
   source = "../../aws/s3-website-example"
 
   organization = var.organization
-  stage = var.stage
-  region = coalesce(var.region, var.default_region)
+  stage        = var.stage
+  region       = coalesce(var.region, var.default_region)
 }

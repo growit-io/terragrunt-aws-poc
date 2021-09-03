@@ -3,12 +3,12 @@ variable "bucket" {
 }
 
 variable "encrypt" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "force_destroy" {
-  type = bool
+  type    = bool
   default = false
 }
 

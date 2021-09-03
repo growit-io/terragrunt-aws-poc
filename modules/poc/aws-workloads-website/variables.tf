@@ -1,5 +1,5 @@
 variable "region" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -21,7 +21,7 @@ variable "stage" {
 
 variable "account" {
   type = object({
-    id = string
+    id   = string
     name = string
     role_arns = object({
       WebsiteAdministrator = string

@@ -11,11 +11,11 @@ output "email" {
 }
 
 output "role_arns" {
-  value = {for name, role in aws_iam_role.this : name => role.arn}
+  value = { for name, role in aws_iam_role.this : name => role.arn }
 }
 
 output "policy_arns" {
-  value = {for policy in values(aws_iam_policy.this) : policy.name => policy.arn}
+  value = { for policy in values(aws_iam_policy.this) : policy.name => policy.arn }
 }
 
 output "organization" {

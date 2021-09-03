@@ -34,16 +34,16 @@ variable "terraform_remote_state_backend" {
   type = string
 
   validation {
-    condition = var.terraform_remote_state_backend == "s3"
+    condition     = var.terraform_remote_state_backend == "s3"
     error_message = "This root module only supports the S3 backend, for now."
   }
 }
 
 variable "terraform_remote_state_config" {
   type = object({
-    region = string
-    bucket = string
-    encrypt = bool
+    region         = string
+    bucket         = string
+    encrypt        = bool
     dynamodb_table = string
   })
 }
