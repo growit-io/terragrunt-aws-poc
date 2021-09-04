@@ -61,16 +61,17 @@ template.
 5. Merge the release pull request to apply all changes made to production
    configurations.
 
-## Directory index
+## Subdirectories
 
-- [aws](aws): Contains `terragrunt.yml` files and Terragrunt configurations
-  (child `terragrunt.hcl` files) for Amazon Web Services.
-- [examples](examples): Contains examples that you can learn from, or copy
-  directly into the root of this repository to get started.
-- [modules](modules): Should contain all Terraform root modules used by
-  Terragrunt configurations in the `aws` directory, and required child modules.
-- [docs](docs): Reference documentation for this Terragrunt configuration
-  repository.
+- [**aws**](aws): Contains `terragrunt.yml`, child `terragrunt.hcl`, and
+  additional data files to define the configuration of the "poc" organization on
+  AWS.
+- [**examples**](examples): Contains examples that demonstrate some features of
+  this configuration repository.
+- [**modules**](modules): Contains all Terraform root modules used by Terragrunt
+  configurations in the `aws` directory, and required child modules.
+- [**docs**](docs): Contains the reference documentation for this Terragrunt
+  configuration repository.
 
 ## Configuration structure
 
