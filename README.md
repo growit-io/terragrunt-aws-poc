@@ -1,4 +1,4 @@
-# Terragrunt Configurations for Amazon Web Services
+# Organization Configuration for Amazon Web Services
 [![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
 [![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 
