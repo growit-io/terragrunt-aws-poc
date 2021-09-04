@@ -1,4 +1,4 @@
-# Organization Configuration for Amazon Web Services
+# Terragrunt Configurations for Amazon Web Services
 [![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
 [![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 
@@ -22,7 +22,7 @@ For more details on this approach, and the supported attributes in
 [feature documentation](docs/terragrunt/README.md).
 
 This repository was originally generated from the
-[terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template, and is
+[terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template and is
 [automatically kept synchronized](.github/workflows) with new releases of the
 template.
 
@@ -66,10 +66,10 @@ template.
 - [**aws**](aws): Contains `terragrunt.yml`, child `terragrunt.hcl`, and
   additional data files to define the configuration of the "poc" organization on
   AWS.
-- [**examples**](examples): Contains examples that demonstrate some features of
-  this configuration repository.
 - [**modules**](modules): Contains all Terraform root modules used by Terragrunt
   configurations in the `aws` directory, and required child modules.
+- [**examples**](examples): Contains example Terragrunt configurations that
+  demonstrate parent `terragrunt.hcl` features.
 - [**docs**](docs): Contains the reference documentation for this Terragrunt
   configuration repository.
 
