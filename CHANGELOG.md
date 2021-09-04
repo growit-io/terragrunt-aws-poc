@@ -1,5 +1,34 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.1.0...v0.1.1) (2021-09-04)
+
+
+### Code Refactoring
+
+* **terragrunt-aws-poc:** rename `state` configuration to `terraform-state` ([82e34cc](https://www.github.com/growit-io/terragrunt-aws-poc/commit/82e34cca545789bfd4a226e58609130ad33d8391))
+
+
+### Build System
+
+* **terragrunt-aws-poc:** pull states to `terraform.tfstate` instead of `tfstate.json` ([1735e24](https://www.github.com/growit-io/terragrunt-aws-poc/commit/1735e24f966e11cfdc4413d517e2d28264330fd3))
+
+
+### Documentation
+
+* **terragrunt-aws-poc:** correct a mistake in the Usage section ([fcf291f](https://www.github.com/growit-io/terragrunt-aws-poc/commit/fcf291f8f0faae51a25d77fd4aecc60f36ee100c))
+* **terragrunt-aws-poc:** describe CI/CD workflows in more detail ([6403cba](https://www.github.com/growit-io/terragrunt-aws-poc/commit/6403cba637a37e3a1823a29a3c1eb10d0c12546e))
+* **terragrunt-aws-poc:** document all Terragrunt configurations ([7894d2a](https://www.github.com/growit-io/terragrunt-aws-poc/commit/7894d2a822da387f016f03266878e2324e840564))
+* **terragrunt-aws-poc:** move workflow descriptions to .github/workflows/README.md ([d802869](https://www.github.com/growit-io/terragrunt-aws-poc/commit/d802869a7fcff10bcb4654841d8707a0d4bf8896))
+* **terragrunt-aws-poc:** provide a summary for each Terraform module ([2da4dcf](https://www.github.com/growit-io/terragrunt-aws-poc/commit/2da4dcff5f3e62a61d05281c02409e9d80021276))
+* **terragrunt-aws-poc:** rename and update the "Directory index" section ([5b2c008](https://www.github.com/growit-io/terragrunt-aws-poc/commit/5b2c008d0db95958a80134ae7fe4bf113bd1e046))
+* **terragrunt-aws-poc:** update project title in README.md ([4593c14](https://www.github.com/growit-io/terragrunt-aws-poc/commit/4593c149fec614dbd887588fd1abc9d2b8bb1349))
+* **terragrunt-aws-poc:** update the introduction and Features section ([ff670b4](https://www.github.com/growit-io/terragrunt-aws-poc/commit/ff670b41008960f02ef66e6b45d8035b66897843))
+
+
+### CI/CD Workflows
+
+* **terragrunt-aws-poc:** rename commitlint.config.js to .commitlint.config.js ([640b7c4](https://www.github.com/growit-io/terragrunt-aws-poc/commit/640b7c40182551011b6dcc877216997c318aaeec))
+
 ## [0.1.0](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.0.2...v0.1.0) (2021-09-03)
 
 
