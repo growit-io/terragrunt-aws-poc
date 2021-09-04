@@ -39,7 +39,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| default\_region | The default region in which to create S3 buckets for Terraform remote stat storage. This should normally an organization-wide default value provided via the `TF_VAR_default_region` environment variable. | `string` | n/a | yes |
+| default\_region | The default region in which to create S3 buckets for Terraform remote state storage. This should normally an organization-wide default value provided via the `TF_VAR_default_region` environment variable. | `string` | n/a | yes |
 | git\_repository | The value of the `GitRepository` tag for all resources created by this module. | `string` | n/a | yes |
 | layer | The value of the `Layer` tag for all resources created by this module. | `string` | n/a | yes |
 | organization | The value of the `Organization` tag for all resources created by this module. | `string` | n/a | yes |
