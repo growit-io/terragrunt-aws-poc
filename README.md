@@ -2,24 +2,50 @@
 [![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
 [![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 
-This is a proof-of-concept Terragrunt configuration repository for Amazon Web
-Services based on the
-[terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template.
+This is a proof-of-concept Terragrunt configuration repository for an entire
+[AWS Organizations](https://aws.amazon.com/organizations/)
+organization on Amazon Web Services.
 
 This repository includes a single [parent `terragrunt.hcl`](terragrunt.hcl) that
 is included by all child `terragrunt.hcl` files. The parent `terragrunt.hcl`
-file provides `terragrunt` and `remote_state` blocks, as well as an `inputs`
+file provides
+[`terraform`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#terraform)
+and
+[`remote_state`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#remote_state)
+blocks, as well as an
+[`inputs`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#inputs)
 attribute whose value will be the result of merging the `inputs` attributes of
 all `terragrunt.yml` files in the directory hierarchy.
 
-For more details on this approach, and the definition of supported attributes
-in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
+For more details on this approach, and the supported attributes in
+`terragrunt.yml` files, see the
+[feature documentation](docs/terragrunt/README.md).
+
+This repository was originally generated from the
+[terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template, and is
+[automatically kept synchronized](.github/workflows) with new releases of the
+template.
 
 ## Features
 
-- [GitHub workflows](.github/workflows) to validate pull requests, and to deploy
+- [Hierarchically defined Terragrunt configurations](docs/terragrunt/README.md)
+  via `terragrunt.yml` files to overcome some limitations, and to extend
+  Terragrunt's core functionality.
+  - [Flexible directory layout for simple and complex use cases](docs/terragrunt/README.md#the-layer-attribute)
+  - [Hierarchically defined Terraform root module inputs](docs/terragrunt/README.md#the-inputs-attribute)
+  - [Conventions-based Terraform root module selection](docs/terragrunt/README.md#the-terraform-attribute)
+  - [Terraform-managed state backend configurations](docs/terragrunt/README.md#the-remote_state-attribute)
+- [Terragrunt configurations](aws/poc) that follow AWS recommendations for
+  [organizing environments using multiple accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html).
+- [TFLint configuration](.tflint.hcl) to ensure that all Terraform modules are
+  robust and well-documented.
+- [commitlint configuration](commitlint.config.js) to ensure that all commits
+  follow the [Conventional Commits](https://www.conventionalcommits.org/)
+  specification, so that semantically versioned releases can be created
+  automatically.
+- [GitHub workflows](.github/workflows) to validate pull requests, to deploy
   Terragrunt configurations whenever changes are merged into the main branch,
-  for example.
+  and to perform many other types of maintenance chores.
 
 ## Usage
 
