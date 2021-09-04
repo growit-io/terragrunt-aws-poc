@@ -39,7 +39,7 @@ template.
   [organizing environments using multiple accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html).
 - [TFLint configuration](.tflint.hcl) to ensure that all Terraform modules are
   robust and well-documented.
-- [commitlint configuration](commitlint.config.js) to ensure that all commits
+- [commitlint configuration](.commitlint.config.js) to ensure that all commits
   follow the [Conventional Commits](https://www.conventionalcommits.org/)
   specification, so that semantically versioned releases can be created
   automatically.
