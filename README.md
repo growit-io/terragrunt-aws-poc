@@ -1,6 +1,6 @@
 # Terragrunt Configurations for Amazon Web Services
-[![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 [![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
+[![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 
 This is a proof-of-concept Terragrunt configuration repository for Amazon Web
 Services based on the
@@ -17,16 +17,9 @@ in `terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
 
 ## Features
 
-### GitHub workflows
-
-- [**Integration**](.github/workflows/integration.yml): Validates all commit
-  messages using `commitlint` and creates Terraform execution plans for all
-  non-production configurations.
-- [**Release**](.github/workflows/release.yml): Maintains a changelog, release
-  tags, and releases on GitHub and applies changes in either non-production, or
-  production configurations, depending on whether a release was created.
-- [**Upstream**](.github/workflows/upstream.yml): Keeps this repository
-  synchronized with the template that it was created from.
+- [GitHub workflows](.github/workflows) to validate pull requests, and to deploy
+  Terragrunt configurations whenever changes are merged into the main branch,
+  for example.
 
 ## Usage
 
