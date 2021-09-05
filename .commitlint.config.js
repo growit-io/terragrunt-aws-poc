@@ -5,6 +5,7 @@ const Configuration = {
     'scope-enum': [2, 'always', [
       'template',
       'terragrunt',
+      'terragrunt-aws',
     ]],
     'type-enum': [2, 'always', [
       'feat',
