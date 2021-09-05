@@ -9,12 +9,12 @@ function main() {
     -e '2i\
 	graph [truecolor=true bgcolor="#ffffff00"]' \
     -e '2i\
-	node [shape=box3d style=filled fillcolor="#c0c0c0ff" color="#404040ff"]' \
+	node [shape=box3d style=filled fillcolor="#4447ccff" color="#5754ddff" fontcolor="#c9d1d8ff"]' \
     -e '2i\
-	edge [color="#808080ff"]' \
+	edge [color="#4ba8f1ff"]' \
     -e "s,$CURDIR/,,g" \
     -e 's,"\.terragrunt/mock","terragrunt.hcl",' \
-    -e 's,("terragrunt\.hcl") ;,\1 [shape=note];,' |
+    -e 's,("terragrunt\.hcl") ;,\1 [shape=note fillcolor="#4179eaff"];,' |
   grep -v "\"$CURDIR\""
 }
 
