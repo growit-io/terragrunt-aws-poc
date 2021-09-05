@@ -36,7 +36,7 @@ variable "organization_policies" {
   EOT
 }
 
-variable "default_region" {
+variable "region" {
   type        = string
   description = "The region to configure for the default `aws` provider in this module."
 }

@@ -5,4 +5,4 @@ terraform:
     append: '${organization}/${platform}-${tier}-'
 
 inputs:
-  default_region: eu-central-1
+  region: eu-central-1

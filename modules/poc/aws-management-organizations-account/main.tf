@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  region = var.default_region
+  region = var.region
 
   default_tags {
     tags = {
@@ -31,7 +31,7 @@ provider "aws" {
 
 provider "aws" {
   alias  = "member"
-  region = var.default_region
+  region = var.region
 
   assume_role {
     role_arn = "arn:aws:iam::${local.member_account_id}:role/OrganizationAccountAccessRole"
