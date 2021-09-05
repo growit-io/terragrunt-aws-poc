@@ -1,5 +1,21 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.1.1...v0.1.2) (2021-09-05)
+
+
+### Code Refactoring
+
+* **terragrunt-aws-poc:** rename aws/poc/management/boot/organizations/roots/organization ([5db0c3b](https://www.github.com/growit-io/terragrunt-aws-poc/commit/5db0c3bf67bc26b122522d263bfc665d5a588e08))
+* **terragrunt-aws-poc:** rename top-level layer from `cloud` to `platform` ([0aca31a](https://www.github.com/growit-io/terragrunt-aws-poc/commit/0aca31a0364dd21e77462b571a4a394184bdfdff))
+
+
+### Documentation
+
+* **terragrunt-aws-poc:** complete the initial documentation ([2d056a9](https://www.github.com/growit-io/terragrunt-aws-poc/commit/2d056a9f4f4416cce68408d9cc697f1734840e37))
+* **terragrunt-aws-poc:** document the first to configuration layers ([6963471](https://www.github.com/growit-io/terragrunt-aws-poc/commit/69634710be4dd17a5100e28e3b25126e82678001))
+* **terragrunt-aws-poc:** tweak initial documentation after cursory review ([8538e91](https://www.github.com/growit-io/terragrunt-aws-poc/commit/8538e912394a5367b85dc6c077f4f538b66098b0))
+* **terragrunt-aws-poc:** update title and Subdirectories section in README.md ([32cb5df](https://www.github.com/growit-io/terragrunt-aws-poc/commit/32cb5df39df8a2dced3afca1bae7940f72515f4f))
+
 ### [0.1.1](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.1.0...v0.1.1) (2021-09-04)
 
 
