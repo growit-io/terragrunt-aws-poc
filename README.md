@@ -118,22 +118,20 @@ hierarchy.
 The following inputs are provided to every Terraform root module via `TF_VAR_`
 environment variables:
 
-- **cloud** (`string`): The name of the first subdirectory which leads to the
-  child `terragrunt.hcl` file. The value can be either [`aws`](aws), or
-  [`examples`](examples).
 - **git_branch** (`string`): The name of the currently checked out Git branch.
 - **git_commit** (`string`): The SHA-1 hash of the latest commit on the
   currently checked out Git branch.
 - **git_repository** (`string`): The URL of the `origin` remote in the Git
   repository configuration.
+- **platform** (`string`): The name of the first subdirectory which leads to the
+  child `terragrunt.hcl` file. The value can be either [`aws`](aws), or
+  [`examples`](examples).
 - **root_dir** (`string`): The absolute path of the directory which contains
   the parent `terragrunt.hcl` file.
 - **terraform_remote_state_backend** (`string`): The name of the Terraform
   remote state for the current Terragrunt configuration.
 - **terraform_remote_state_config** (`object(any)`): The configuration of the
   Terraform remote state backend for the current Terragrunt configuration.
-
-[//]: # (TODO: rename `cloud` input to `platform`)
 
 ## Documentation
 
