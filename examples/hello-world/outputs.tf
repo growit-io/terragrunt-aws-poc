@@ -1,6 +1,6 @@
-output "root" {
-  description = "Same value as the `root` input variable."
-  value       = var.root
+output "platform" {
+  description = "Same value as the `platform` input variable."
+  value       = var.platform
 }
 
 output "example" {
