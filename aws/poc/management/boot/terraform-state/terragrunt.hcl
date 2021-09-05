@@ -12,9 +12,11 @@ inputs = {
     }
 
     management_dev  = {}
+    management_test = {}
     management_prod = {}
 
     workloads_dev  = {}
+    workloads_test = {}
     workloads_prod = {}
   }
 }
