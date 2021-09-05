@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  region = coalesce(var.region, var.default_region)
+  region = var.region
 
   assume_role {
     role_arn = var.account.role_arns.WebsiteAdministrator

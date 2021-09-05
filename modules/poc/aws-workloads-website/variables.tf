@@ -17,13 +17,7 @@ variable "account" {
 
 variable "region" {
   type        = string
-  default     = ""
-  description = "The region in which to deploy the website. Defaults to the value of the `default_region` variable."
-}
-
-variable "default_region" {
-  type        = string
-  description = "The default region in which to deploy the website, if no value is provided for the `region` variable. This should normally be an organization-wide default value provided via the `TF_VAR_default_region` environment variable."
+  description = "The region in which to deploy the website."
 }
 
 variable "organization" {

@@ -31,7 +31,7 @@ variable "policy_arns" {
   description = "A map of IAM policy names and corresponding ARNs that will be available for referencing in the `groups` variable."
 }
 
-variable "default_region" {
+variable "region" {
   type        = string
   description = "The region to configure for the default `aws` provider in this module."
 }

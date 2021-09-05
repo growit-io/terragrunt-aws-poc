@@ -21,7 +21,8 @@ and that module names should start with the prefix `${platform}-${tier}-`.
 The following additional inputs are provided to all Terraform root modules via
 `TF_VAR_` environment variables:
 
-- **default_region** (`string`): The default AWS region in which to operate
-  when no other region is explicitly passed to the root module.
+- **region** (`string`): The AWS region in which the root module should operate.
+  by default. Especially production configurations are expected to override this
+  input variable below the account-level of the configuration hierarchy.
 - **tier** (`string`): The name of the subdirectory which defines the respective
   configuration tier.

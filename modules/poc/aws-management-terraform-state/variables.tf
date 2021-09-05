@@ -1,8 +1,3 @@
-variable "default_region" {
-  type        = string
-  description = "The default region in which to create S3 buckets for Terraform remote state storage. This should normally an organization-wide default value provided via the `TF_VAR_default_region` environment variable."
-}
-
 variable "terraform_remote_states" {
   type = any
 
@@ -33,6 +28,11 @@ variable "terraform_remote_states" {
     - **policy_name_prefix** (string, default: based on map key): A common prefix to prepend to each managed IAM policy name. Defaults to a CamelCase mutation of the map key.
     - **policy_name_suffix** (string, default: `""`): A common suffix to append to each managed IAM policy name.
   EOT
+}
+
+variable "region" {
+  type        = string
+  description = "The region in which to create S3 buckets for Terraform remote state storage."
 }
 
 variable "organization" {

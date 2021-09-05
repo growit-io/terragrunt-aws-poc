@@ -18,7 +18,7 @@ variable "groups" {
   description = "A set of names of IAM groups that are assumed to exist in the AWS Organizations management account."
 }
 
-variable "default_region" {
+variable "region" {
   type        = string
   description = "The region to configure for the default `aws` provider in this module."
 }
