@@ -3,7 +3,7 @@ include {
 }
 
 dependency "parent" {
-  config_path = "../../roots/organization"
+  config_path = "../../root"
 }
 
 inputs = {

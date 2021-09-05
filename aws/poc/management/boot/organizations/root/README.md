@@ -1,4 +1,4 @@
-# Organization
+# Root Stack
 
 This configuration uses
 the [aws-management-organizations-root](../../../../../../../modules/poc/aws-management-organizations-root)
