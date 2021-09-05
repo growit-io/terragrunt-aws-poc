@@ -1,6 +1,6 @@
-output "cloud" {
-  description = "Same value as the `cloud` input variable."
-  value       = var.cloud
+output "platform" {
+  description = "Same value as the `platform` input variable."
+  value       = var.platform
 }
 
 output "example" {

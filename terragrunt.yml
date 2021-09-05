@@ -1,4 +1,4 @@
-layer: cloud
+layer: platform
 
 terraform:
   source: '${root_dir}/modules//'
