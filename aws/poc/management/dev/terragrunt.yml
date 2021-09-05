@@ -1,11 +1,11 @@
 layer: layer
 
-terraform:
-  source:
-    append: '${layer}-'
-
 remote_state:
   backend: terragrunt
   config:
     path: ../boot/terraform-state
     key: management_dev
+
+terraform:
+  source:
+    append: '${layer}-'
