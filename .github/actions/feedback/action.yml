@@ -27,7 +27,7 @@ runs:
           elif [[ -z $changed_paths ]]; then
             echo '**No changes.** Your infrastructure matches the configuration.'
           else
-            echo 'The execution plan reported changes to be applied in the following configuration paths:'
+            echo 'The execution plan reported pending changes in the following configuration paths:'
             echo
             for path in $changed_paths; do
               echo "- \`$path\`"
