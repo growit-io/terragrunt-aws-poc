@@ -2,26 +2,11 @@
 [![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
 [![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 
-This is a proof-of-concept Terragrunt configuration repository for an entire
-[AWS Organizations](https://aws.amazon.com/organizations/)
-organization on Amazon Web Services.
-
-This repository includes a single [parent `terragrunt.hcl`](terragrunt.hcl) that
-is included by all child `terragrunt.hcl` files. The parent `terragrunt.hcl`
-file provides
-[`terraform`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#terraform)
-and
-[`remote_state`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#remote_state)
-blocks, as well as an
-[`inputs`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#inputs)
-attribute whose value will be the result of merging the `inputs` attributes of
-all `terragrunt.yml` files in the directory hierarchy.
-
-For more details on this approach, and the supported attributes in
-`terragrunt.yml` files, see the
-[feature documentation](docs/terragrunt/README.md).
-
-This repository was originally generated from the
+This is a proof-of-concept Terragrunt configuration repository for the
+["poc" organization](aws/poc) on Amazon Web Services, following Amazon's
+recommendations for
+[organizing environments using multiple accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html).
+This repository was generated from the
 [terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template and is
 [automatically kept synchronized](.github/workflows) with new releases of the
 template.
@@ -29,16 +14,11 @@ template.
 ## Features
 
 - [Hierarchically defined Terragrunt configurations](docs/terragrunt/README.md)
-  via `terragrunt.yml` files to overcome some limitations, and to extend
-  Terragrunt's core functionality.
-  - [Flexible directory layout for simple and complex use cases](docs/terragrunt/README.md#the-layer-attribute)
-  - [Hierarchically defined Terraform root module inputs](docs/terragrunt/README.md#the-inputs-attribute)
-  - [Conventions-based Terraform root module selection](docs/terragrunt/README.md#the-terraform-attribute)
-  - [Terraform-managed state backend configurations](docs/terragrunt/README.md#the-remote_state-attribute)
-- [Terragrunt configurations](aws/poc) that follow AWS recommendations for
-  [organizing environments using multiple accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html).
-- [TFLint configuration](.tflint.hcl) to ensure that all Terraform modules are
-  robust and well-documented.
+  via `terragrunt.yml` files to overcome the
+  [single-include limitation](https://terragrunt.gruntwork.io/docs/rfc/imports/)
+  and keep Terragrunt configurations as "DRY" as possible.
+- [TFLint configuration](.tflint.hcl) to ensure that all Terraform modules in
+  this repository meet at least basic quality standards.
 - [commitlint configuration](.commitlint.config.js) to ensure that all commits
   follow the [Conventional Commits](https://www.conventionalcommits.org/)
   specification, so that semantically versioned releases can be created
@@ -49,42 +29,125 @@ template.
 
 ## Usage
 
-1. Change the configuration and verify your changes using `make plan`. You can
-   optionally pass a `paths=<pattern>` variable to the `make` command in order
-   to run Terragrunt in a specific subset of directories. See the
+### Prerequisites for development
+
+- [`tfenv`](https://github.com/tfutils/tfenv) and a
+  [compatible version](.terraform-version) of Terraform installed
+  via `tfenv install`
+- [`tgenv`](https://github.com/cunymatthieu/tgenv) and a
+  [compatible version](.terragrunt-version) of Terragrunt installed
+  via `tgenv install`
+- [AWS CLI](https://aws.amazon.com/cli/) configured to grant at least
+  developer-level access to organization resources
+- [GNU Make](https://www.gnu.org/software/make/) (already
+  comes preinstalled on macOS), or a compatible implementation
+
+### Typical development workflow
+
+1. Clone the configuration repository on your local machine.
+2. Change the configuration and verify your changes using `make plan`, or apply
+   them directly using `make apply`.
+
+   You can optionally pass a `paths=<patterns>` argument to the `make` command
+   in order to run Terragrunt in a subset of directories. See the
    [`Makefile`](Makefile) for details on how the `paths` variable is handled.
-2. Commit and push your changes to a branch and open a pull request.
-3. Wait for the status checks to complete, review execution plans and merge
-   the pull request to apply any changes made to non-production configurations.
-4. If you made any changes to production configurations, wait for the release
+
+   The default value of the `paths` variable will target only configurations
+   which can be modified by IAM users with developer-level access to the
+   organization.
+3. Commit and push your changes to a branch and open a pull request.
+4. Wait for the status checks to complete, review execution plans and merge
+   the pull request to apply any pending changes to non-production resources.
+5. If you made any changes to production configurations, wait for the release
    pull request to be created and review its Terraform execution plan.
-5. Merge the release pull request to apply all changes made to production
-   configurations.
+6. Merge the release pull request to apply any pending changes to production
+   resources.
 
-## Subdirectories
+### Terragrunt configuration conventions
 
-- [**aws**](aws): Contains `terragrunt.yml`, child `terragrunt.hcl`, and
-  additional data files to define the configuration of the "poc" organization on
-  AWS.
-- [**modules**](modules): Contains all Terraform root modules used by Terragrunt
-  configurations in the `aws` directory, and required child modules.
-- [**examples**](examples): Contains example Terragrunt configurations that
-  demonstrate parent `terragrunt.hcl` features.
-- [**docs**](docs): Contains the reference documentation for this Terragrunt
-  configuration repository.
+These are the top-level conventions for Terragrunt configurations. Most
+subdirectories in the configuration directory hierarchy will augment these
+conventions in some way via attributes in `terragrunt.yml` files.
 
-## Configuration structure
+#### Single parent `terragrunt.hcl` file
+
+This repository provides a single parent [`terragrunt.hcl`](terragrunt.hcl) file
+which is included by all child `terragrunt.hcl` files via an
+[`include`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#include)
+block such as the following:
+
+```hcl
+# Child terragrunt.hcl
+
+include {
+  path = find_in_parent_folders()
+}
+```
+
+The parent `terragrunt.hcl`
+is flexible enough to provide
+[`terraform`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#terraform)
+and
+[`remote_state`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#remote_state)
+blocks, as well as an
+[`inputs`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#inputs)
+attribute which will normally be directly suitable for any
+child `terragrunt.hcl` file in this repository. The only additional statements
+in a child `terragrunt.hcl` file should be
+[`dependency`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#dependency)
+blocks and configuration-specific inputs.
+
+The following graph shows the dependencies among all Terragrunt configurations
+in this repository which include the parent `terragrunt.hcl` file:
 
 ![Dependency graph](graph.svg)
+
+For more details on this approach, and the recognized attributes in
+`terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
+
+#### Terraform root module source
+
+The top-level [`terragrunt.yml`](terragrunt.yml) file specifies that all
+Terraform root modules should be located under the [`modules`](modules)
+directory in this repository. The root module naming convention is further
+refined by additional `terragrunt.yml` files in the configuration directory
+hierarchy.
+
+#### Terraform root module inputs
+
+The following inputs are provided to every Terraform root module via `TF_VAR_`
+environment variables:
+
+- **cloud** (`string`): The name of the first subdirectory which leads to the
+  child `terragrunt.hcl` file. The value can be either [`aws`](aws), or
+  [`examples`](examples).
+- **git_branch** (`string`): The name of the currently checked out Git branch.
+- **git_commit** (`string`): The SHA-1 hash of the latest commit on the
+  currently checked out Git branch.
+- **git_repository** (`string`): The URL of the `origin` remote in the Git
+  repository configuration.
+- **root_dir** (`string`): The absolute path of the directory which contains
+  the parent `terragrunt.hcl` file.
+- **terraform_remote_state_backend** (`string`): The name of the Terraform
+  remote state for the current Terragrunt configuration.
+- **terraform_remote_state_config** (`object(any)`): The configuration of the
+  Terraform remote state backend for the current Terragrunt configuration.
+
+[//]: # (TODO: rename `cloud` input to `platform`)
+
+## Documentation
+
+The [`docs`](docs) directory contains the reference documentation for this
+Terragrunt configuration repository.
 
 ## Changelog
 
 All notable changes to this project will be documented in the
-[CHANGELOG.md](CHANGELOG.md) file.
+[`CHANGELOG.md`](CHANGELOG.md) file.
 
 ## Contributing
 
-See the file [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+See the file [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution guidelines.
 
 ## License
 

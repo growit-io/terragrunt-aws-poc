@@ -9,7 +9,7 @@ the [Conventional Commits](https://www.conventionalcommits.org/) specification,
 with the following exceptions:
 
 - The `scope` field is mandatory in this project and should match one of
-`scope-enum` values defined in the file [commitlint.config.js](commitlint.config.js).
+`scope-enum` values defined in the file [commitlint.config.js](.commitlint.config.js).
 
 The maintainers of this project may have to squash all commits and create a new
 commit message when merging your pull request, if your commit messages don't
