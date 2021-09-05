@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/growit-io/terragrunt-aws/compare/v0.2.0...v0.2.1) (2021-09-05)
+
+
+### CI/CD Workflows
+
+* **terragrunt-aws:** enable the `aws` plugin for TFLint ([b1b7af8](https://www.github.com/growit-io/terragrunt-aws/commit/b1b7af87566d2d35fbc525bed13d660d97661f17))
+
 ## [0.2.0](https://www.github.com/growit-io/terragrunt-aws/compare/v0.1.1...v0.2.0) (2021-09-05)
 
 
