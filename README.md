@@ -1,11 +1,14 @@
-# Terragrunt Configurations for Amazon Web Services
+<img src="icon.png" align="right" width="25%" />
+
+# AWS Organizations "PoC" Configuration
 [![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
 [![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 
-This is a proof-of-concept Terragrunt configuration repository for the
-["poc" organization](aws/poc) on Amazon Web Services, following Amazon's
-recommendations for
+This is a proof-of-concept [Terragrunt](https://terragrunt.gruntwork.io/)
+configuration repository for a [hypothetical "poc" organization](aws/poc)
+on Amazon Web Services that follows Amazon's recommendations for
 [organizing environments using multiple accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html).
+
 This repository was generated from the
 [terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template and is
 [automatically kept synchronized](.github/workflows) with new releases of the
@@ -13,19 +16,19 @@ template.
 
 ## Features
 
-- [Hierarchically defined Terragrunt configurations](docs/terragrunt/README.md)
-  via `terragrunt.yml` files to overcome the
+- [Hierarchically defined configurations](docs/terragrunt/README.md) via
+  `terragrunt.yml` files to overcome the
   [single-include limitation](https://terragrunt.gruntwork.io/docs/rfc/imports/)
   and keep Terragrunt configurations as "DRY" as possible.
 - [TFLint configuration](.tflint.hcl) to ensure that all Terraform modules in
-  this repository meet at least basic quality standards.
+  this repository meet basic quality standards.
 - [commitlint configuration](.commitlint.config.js) to ensure that all commits
   follow the [Conventional Commits](https://www.conventionalcommits.org/)
   specification, so that semantically versioned releases can be created
   automatically.
-- [GitHub workflows](.github/workflows) to validate pull requests, to deploy
-  Terragrunt configurations whenever changes are merged into the main branch,
-  and to perform many other types of maintenance chores.
+- [GitHub workflows](.github/workflows) to validate pull requests, deploy
+  configuration changes, create releases, and to automate miscellaneous
+  maintenance chores.
 
 ## Usage
 
@@ -53,23 +56,27 @@ template.
    [`Makefile`](Makefile) for details on how the `paths` variable is handled.
 
    The default value of the `paths` variable will target only configurations
-   which can be modified by IAM users with developer-level access to the
+   which can be modified by IAM users with developer-level access in the
    organization.
-3. Commit and push your changes to a branch and open a pull request.
-4. Wait for the status checks to complete, review execution plans and merge
+3. Commit and push your changes to a branch and open a pull request. Make sure
+   to read the [contributing guide](CONTRIBUTING.md), so that the pull request
+   will be ready to be merged after review.
+4. Wait for all status checks to complete, review execution plans and merge
    the pull request to apply any pending changes to non-production resources.
 5. If you made any changes to production configurations, wait for the release
    pull request to be created and review its Terraform execution plan.
 6. Merge the release pull request to apply any pending changes to production
    resources.
 
-### Terragrunt configuration conventions
+## Terragrunt configuration conventions
 
-These are the top-level conventions for Terragrunt configurations. Most
-subdirectories in the configuration directory hierarchy will augment these
-conventions in some way via attributes in `terragrunt.yml` files.
+These are the top-level conventions which apply to all Terragrunt configurations
+in this repository. Most subdirectories in the configuration directory hierarchy
+will augment these conventions in some way via `terragrunt.yml` files. For more
+details on this approach, and the recognized attributes in `terragrunt.yml`
+files, see the [documentation](docs/terragrunt/README.md).
 
-#### Single parent `terragrunt.hcl` file
+### Single parent `terragrunt.hcl` file
 
 This repository provides a single parent [`terragrunt.hcl`](terragrunt.hcl) file
 which is included by all child `terragrunt.hcl` files via an
@@ -77,8 +84,6 @@ which is included by all child `terragrunt.hcl` files via an
 block such as the following:
 
 ```hcl
-# Child terragrunt.hcl
-
 include {
   path = find_in_parent_folders()
 }
@@ -97,15 +102,12 @@ in a child `terragrunt.hcl` file should be
 [`dependency`](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#dependency)
 blocks and configuration-specific inputs.
 
-The following graph shows the dependencies among all Terragrunt configurations
-in this repository which include the parent `terragrunt.hcl` file:
+The following automatically generated graph shows the dependencies among all
+Terragrunt configurations which include the parent `terragrunt.hcl` file:
 
 ![Dependency graph](graph.svg)
 
-For more details on this approach, and the recognized attributes in
-`terragrunt.yml` files, see the [documentation](docs/terragrunt/README.md).
-
-#### Terraform root module source
+### Terraform root module source
 
 The top-level [`terragrunt.yml`](terragrunt.yml) file specifies that all
 Terraform root modules should be located under the [`modules`](modules)
@@ -113,7 +115,7 @@ directory in this repository. The root module naming convention is further
 refined by additional `terragrunt.yml` files in the configuration directory
 hierarchy.
 
-#### Terraform root module inputs
+### Terraform root module inputs
 
 The following inputs are provided to every Terraform root module via `TF_VAR_`
 environment variables:
