@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/growit-io/terragrunt-aws/compare/v0.1.1...v0.2.0) (2021-09-05)
+
+
+### Features
+
+* **terragrunt:** expect all root modules in the `modules` directory, by default ([c318d27](https://www.github.com/growit-io/terragrunt-aws/commit/c318d276ba31e9d3bdf2e241d05f09355bdd5ebf))
+
+
+### Documentation
+
+* **terragrunt:** expand the documentation in the top-level README.md ([97dfdca](https://www.github.com/growit-io/terragrunt-aws/commit/97dfdcade719e2893b687045e0057e83d8ca8378))
+
+
+### Code Refactoring
+
+* **terragrunt:** change color scheme of generated dependency graphs ([449eae7](https://www.github.com/growit-io/terragrunt-aws/commit/449eae7337cc35aa1ba229aa82afe4833e9f9007))
+* **terragrunt:** rename top-level configuration layer from `root` to `platform` ([c4e649e](https://www.github.com/growit-io/terragrunt-aws/commit/c4e649efc83334c38b89057cf12ac140765d706e))
+* **terragrunt:** tweak wording of the feedback comment ([b50b75a](https://www.github.com/growit-io/terragrunt-aws/commit/b50b75aa26d8377b7b427fce1dece1bbb91f5cac))
+
+
+### CI/CD Workflows
+
+* **terragrunt:** rename commitlint.config.js to .commitlint.config.js ([a0ac571](https://www.github.com/growit-io/terragrunt-aws/commit/a0ac571432ba46bdd355d61147ef782748efb0b8))
+
 ### [0.1.1](https://www.github.com/growit-io/terragrunt-aws/compare/v0.1.0...v0.1.1) (2021-09-02)
 
 
