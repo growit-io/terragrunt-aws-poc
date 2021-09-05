@@ -12,40 +12,40 @@
 <!-- terragrunt.hcl -->
 <g id="node1" class="node">
 <title>terragrunt.hcl</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="168.5,-36 56.5,-36 56.5,0 174.5,0 174.5,-30 168.5,-36"/>
-<polyline fill="none" stroke="#404040" points="168.5,-36 168.5,-30 "/>
-<polyline fill="none" stroke="#404040" points="174.5,-30 168.5,-30 "/>
-<text text-anchor="middle" x="115.5" y="-14.3" font-family="Times,serif" font-size="14.00">terragrunt.hcl</text>
+<polygon fill="#4179ea" stroke="#5754dd" points="168.5,-36 56.5,-36 56.5,0 174.5,0 174.5,-30 168.5,-36"/>
+<polyline fill="none" stroke="#5754dd" points="168.5,-36 168.5,-30 "/>
+<polyline fill="none" stroke="#5754dd" points="174.5,-30 168.5,-30 "/>
+<text text-anchor="middle" x="115.5" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">terragrunt.hcl</text>
 </g>
 <!-- examples/remote&#45;state/apples -->
 <g id="node2" class="node">
 <title>examples/remote&#45;state/apples</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="231,-180 4,-180 0,-176 0,-144 227,-144 231,-148 231,-180"/>
-<polyline fill="none" stroke="#404040" points="227,-176 0,-176 "/>
-<polyline fill="none" stroke="#404040" points="227,-176 227,-144 "/>
-<polyline fill="none" stroke="#404040" points="227,-176 231,-180 "/>
-<text text-anchor="middle" x="115.5" y="-158.3" font-family="Times,serif" font-size="14.00">examples/remote&#45;state/apples</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="231,-180 4,-180 0,-176 0,-144 227,-144 231,-148 231,-180"/>
+<polyline fill="none" stroke="#5754dd" points="227,-176 0,-176 "/>
+<polyline fill="none" stroke="#5754dd" points="227,-176 227,-144 "/>
+<polyline fill="none" stroke="#5754dd" points="227,-176 231,-180 "/>
+<text text-anchor="middle" x="115.5" y="-158.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">examples/remote&#45;state/apples</text>
 </g>
 <!-- examples/remote&#45;state/states -->
 <g id="node3" class="node">
 <title>examples/remote&#45;state/states</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="229.5,-108 5.5,-108 1.5,-104 1.5,-72 225.5,-72 229.5,-76 229.5,-108"/>
-<polyline fill="none" stroke="#404040" points="225.5,-104 1.5,-104 "/>
-<polyline fill="none" stroke="#404040" points="225.5,-104 225.5,-72 "/>
-<polyline fill="none" stroke="#404040" points="225.5,-104 229.5,-108 "/>
-<text text-anchor="middle" x="115.5" y="-86.3" font-family="Times,serif" font-size="14.00">examples/remote&#45;state/states</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="229.5,-108 5.5,-108 1.5,-104 1.5,-72 225.5,-72 229.5,-76 229.5,-108"/>
+<polyline fill="none" stroke="#5754dd" points="225.5,-104 1.5,-104 "/>
+<polyline fill="none" stroke="#5754dd" points="225.5,-104 225.5,-72 "/>
+<polyline fill="none" stroke="#5754dd" points="225.5,-104 229.5,-108 "/>
+<text text-anchor="middle" x="115.5" y="-86.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">examples/remote&#45;state/states</text>
 </g>
 <!-- examples/remote&#45;state/apples&#45;&gt;examples/remote&#45;state/states -->
 <g id="edge1" class="edge">
 <title>examples/remote&#45;state/apples&#45;&gt;examples/remote&#45;state/states</title>
-<path fill="none" stroke="#808080" d="M115.5,-143.7C115.5,-135.98 115.5,-126.71 115.5,-118.11"/>
-<polygon fill="#808080" stroke="#808080" points="119,-118.1 115.5,-108.1 112,-118.1 119,-118.1"/>
+<path fill="none" stroke="#4ba8f1" d="M115.5,-143.7C115.5,-135.98 115.5,-126.71 115.5,-118.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="119,-118.1 115.5,-108.1 112,-118.1 119,-118.1"/>
 </g>
 <!-- examples/remote&#45;state/states&#45;&gt;terragrunt.hcl -->
 <g id="edge2" class="edge">
 <title>examples/remote&#45;state/states&#45;&gt;terragrunt.hcl</title>
-<path fill="none" stroke="#808080" d="M115.5,-71.7C115.5,-63.98 115.5,-54.71 115.5,-46.11"/>
-<polygon fill="#808080" stroke="#808080" points="119,-46.1 115.5,-36.1 112,-46.1 119,-46.1"/>
+<path fill="none" stroke="#4ba8f1" d="M115.5,-71.7C115.5,-63.98 115.5,-54.71 115.5,-46.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="119,-46.1 115.5,-36.1 112,-46.1 119,-46.1"/>
 </g>
 </g>
 </svg>
