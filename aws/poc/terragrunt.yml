@@ -2,7 +2,7 @@ layer: tier
 
 terraform:
   source:
-    append: '${organization}/${cloud}-${tier}-'
+    append: '${organization}/${platform}-${tier}-'
 
 inputs:
   default_region: eu-central-1

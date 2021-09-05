@@ -1,9 +1,9 @@
-variable "cloud" {
+variable "platform" {
   description = "The name of the first subdirectory under to the root directory, leading to the current Terragrunt configuration directory."
   type        = string
 
   validation {
-    condition     = var.cloud == "examples"
+    condition     = var.platform == "examples"
     error_message = "The value should match the name of the first subdirectory that leads to this module, under the root directory of the repository. The expected name for this directory is \"examples\"."
   }
 }
