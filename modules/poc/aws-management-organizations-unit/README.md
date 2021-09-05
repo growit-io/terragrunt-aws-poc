@@ -39,7 +39,6 @@ No Modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| default\_region | The region to configure for the default `aws` provider in this module. | `string` | n/a | yes |
 | git\_repository | The value of the `GitRepository` tag for all resources created by this module. | `string` | n/a | yes |
 | layer | The value of the `Layer` tag for all resources created by this module. | `string` | n/a | yes |
 | name | The name of the organizational unit to create. If empty, the name will be automatically generated based on the value of the `organization_unit` variable. | `string` | `""` | no |
@@ -47,6 +46,7 @@ No Modules.
 | organization\_policies | A map of objects describing organization policies to create and attach to the organizational unit.<br><br>The map keys should be usable as Terraform resource names and the objects must have the following attributes:<br><br>- **type** (string): The type of policy to create. For example, `SERVICE_CONTROL_POLICY`.<br>- **description** (string): A description of the policy.<br>- **content** (string): The policy document itself as an object suitable for [`jsonencode`](https://www.terraform.io/docs/language/functions/jsonencode.html). | <pre>map(object({<br>    type        = string<br>    description = string<br>    content     = any<br>  }))</pre> | `{}` | no |
 | organizational\_unit | Used to construct the name of the organizational unit if the `name` variable is not given explicitly. This value should normally be provided automatically via the parent terragrunt.hcl file in this repository. | `string` | n/a | yes |
 | parent | An object describing the parent of the organizational unit to create. This should be the outputs of either this module, or the [aws-management-organizations-root](../aws-management-organizations-root) module. | <pre>object({<br>    management_account_id    = string<br>    management_account_email = string<br><br>    organizational_unit = object({<br>      id = string<br>    })<br>  })</pre> | n/a | yes |
+| region | The region to configure for the default `aws` provider in this module. | `string` | n/a | yes |
 | stack | The value of the `Stack` tag for all resources created by this module. | `string` | n/a | yes |
 | stage | The value of the `Stage` tag for all resources created by this module. | `string` | n/a | yes |
 | tier | The value of the `Tier` tag for all resources created by this module. | `string` | n/a | yes |

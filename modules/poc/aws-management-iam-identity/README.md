@@ -38,11 +38,11 @@ No Modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| default\_region | The region to configure for the default `aws` provider in this module. | `string` | n/a | yes |
 | git\_repository | The value of the `GitRepository` tag for all resources created by this module. | `string` | n/a | yes |
 | groups | A set of names of IAM groups that are assumed to exist in the AWS Organizations management account. | `set(string)` | n/a | yes |
 | layer | The value of the `Layer` tag for all resources created by this module. | `string` | n/a | yes |
 | organization | The value of the `Organization` tag for all resources created by this module. | `string` | n/a | yes |
+| region | The region to configure for the default `aws` provider in this module. | `string` | n/a | yes |
 | stack | The value of the `Stack` tag for all resources created by this module. | `string` | n/a | yes |
 | stage | The value of the `Stage` tag for all resources created by this module. | `string` | n/a | yes |
 | tier | The value of the `Tier` tag for all resources created by this module. | `string` | n/a | yes |
