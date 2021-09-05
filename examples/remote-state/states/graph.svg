@@ -12,25 +12,25 @@
 <!-- terragrunt.hcl -->
 <g id="node1" class="node">
 <title>terragrunt.hcl</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="167,-36 55,-36 55,0 173,0 173,-30 167,-36"/>
-<polyline fill="none" stroke="#404040" points="167,-36 167,-30 "/>
-<polyline fill="none" stroke="#404040" points="173,-30 167,-30 "/>
-<text text-anchor="middle" x="114" y="-14.3" font-family="Times,serif" font-size="14.00">terragrunt.hcl</text>
+<polygon fill="#4179ea" stroke="#5754dd" points="167,-36 55,-36 55,0 173,0 173,-30 167,-36"/>
+<polyline fill="none" stroke="#5754dd" points="167,-36 167,-30 "/>
+<polyline fill="none" stroke="#5754dd" points="173,-30 167,-30 "/>
+<text text-anchor="middle" x="114" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">terragrunt.hcl</text>
 </g>
 <!-- examples/remote&#45;state/states -->
 <g id="node2" class="node">
 <title>examples/remote&#45;state/states</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="228,-108 4,-108 0,-104 0,-72 224,-72 228,-76 228,-108"/>
-<polyline fill="none" stroke="#404040" points="224,-104 0,-104 "/>
-<polyline fill="none" stroke="#404040" points="224,-104 224,-72 "/>
-<polyline fill="none" stroke="#404040" points="224,-104 228,-108 "/>
-<text text-anchor="middle" x="114" y="-86.3" font-family="Times,serif" font-size="14.00">examples/remote&#45;state/states</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="228,-108 4,-108 0,-104 0,-72 224,-72 228,-76 228,-108"/>
+<polyline fill="none" stroke="#5754dd" points="224,-104 0,-104 "/>
+<polyline fill="none" stroke="#5754dd" points="224,-104 224,-72 "/>
+<polyline fill="none" stroke="#5754dd" points="224,-104 228,-108 "/>
+<text text-anchor="middle" x="114" y="-86.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">examples/remote&#45;state/states</text>
 </g>
 <!-- examples/remote&#45;state/states&#45;&gt;terragrunt.hcl -->
 <g id="edge1" class="edge">
 <title>examples/remote&#45;state/states&#45;&gt;terragrunt.hcl</title>
-<path fill="none" stroke="#808080" d="M114,-71.7C114,-63.98 114,-54.71 114,-46.11"/>
-<polygon fill="#808080" stroke="#808080" points="117.5,-46.1 114,-36.1 110.5,-46.1 117.5,-46.1"/>
+<path fill="none" stroke="#4ba8f1" d="M114,-71.7C114,-63.98 114,-54.71 114,-46.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="117.5,-46.1 114,-36.1 110.5,-46.1 117.5,-46.1"/>
 </g>
 </g>
 </svg>
