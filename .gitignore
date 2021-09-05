@@ -1,15 +1,18 @@
-# Created by Makefile targets
-tfplan
-tfstate.json
-
 # Terragrunt cache directories
 .terragrunt-cache/
 
 # Terraform provider lock files
+# TODO: generate cross-platform compatible .terraform.lock.hcl files
 .terraform.lock.hcl
 
 # Terraform cache directories
 .terraform/
+
+# Local Terraform state files
+terraform.tfstate
+
+# Terraform execution plans
+tfplan
 
 # Project configuration files for JetBrains IDEs like IntelliJ CE
 /.idea/

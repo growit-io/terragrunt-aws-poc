@@ -1,5 +1,8 @@
 # Example Terragrunt Configurations
 
+This directory contains some example configurations that demonstrate various
+[parent `terragrunt.hcl`](../terragrunt.hcl) features.
+
 - [**hello-world**](hello-world): A minimal example that shows how to use the
   [parent `terragrunt.hcl`](../terragrunt.hcl) in this repository in combination
   with the [`terragrunt.yml`](terragrunt.yml) file in this directory to define
