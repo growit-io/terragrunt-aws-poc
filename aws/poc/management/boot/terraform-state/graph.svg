@@ -12,25 +12,25 @@
 <!-- terragrunt.hcl -->
 <g id="node1" class="node">
 <title>terragrunt.hcl</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="214,-36 102,-36 102,0 220,0 220,-30 214,-36"/>
-<polyline fill="none" stroke="#404040" points="214,-36 214,-30 "/>
-<polyline fill="none" stroke="#404040" points="220,-30 214,-30 "/>
-<text text-anchor="middle" x="161" y="-14.3" font-family="Times,serif" font-size="14.00">terragrunt.hcl</text>
+<polygon fill="#4179ea" stroke="#5754dd" points="214,-36 102,-36 102,0 220,0 220,-30 214,-36"/>
+<polyline fill="none" stroke="#5754dd" points="214,-36 214,-30 "/>
+<polyline fill="none" stroke="#5754dd" points="220,-30 214,-30 "/>
+<text text-anchor="middle" x="161" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">terragrunt.hcl</text>
 </g>
 <!-- aws/poc/management/boot/terraform&#45;state -->
 <g id="node2" class="node">
 <title>aws/poc/management/boot/terraform&#45;state</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="322,-108 4,-108 0,-104 0,-72 318,-72 322,-76 322,-108"/>
-<polyline fill="none" stroke="#404040" points="318,-104 0,-104 "/>
-<polyline fill="none" stroke="#404040" points="318,-104 318,-72 "/>
-<polyline fill="none" stroke="#404040" points="318,-104 322,-108 "/>
-<text text-anchor="middle" x="161" y="-86.3" font-family="Times,serif" font-size="14.00">aws/poc/management/boot/terraform&#45;state</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="322,-108 4,-108 0,-104 0,-72 318,-72 322,-76 322,-108"/>
+<polyline fill="none" stroke="#5754dd" points="318,-104 0,-104 "/>
+<polyline fill="none" stroke="#5754dd" points="318,-104 318,-72 "/>
+<polyline fill="none" stroke="#5754dd" points="318,-104 322,-108 "/>
+<text text-anchor="middle" x="161" y="-86.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">aws/poc/management/boot/terraform&#45;state</text>
 </g>
 <!-- aws/poc/management/boot/terraform&#45;state&#45;&gt;terragrunt.hcl -->
 <g id="edge1" class="edge">
 <title>aws/poc/management/boot/terraform&#45;state&#45;&gt;terragrunt.hcl</title>
-<path fill="none" stroke="#808080" d="M161,-71.7C161,-63.98 161,-54.71 161,-46.11"/>
-<polygon fill="#808080" stroke="#808080" points="164.5,-46.1 161,-36.1 157.5,-46.1 164.5,-46.1"/>
+<path fill="none" stroke="#4ba8f1" d="M161,-71.7C161,-63.98 161,-54.71 161,-46.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="164.5,-46.1 161,-36.1 157.5,-46.1 164.5,-46.1"/>
 </g>
 </g>
 </svg>

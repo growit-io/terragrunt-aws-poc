@@ -12,40 +12,40 @@
 <!-- terragrunt.hcl -->
 <g id="node1" class="node">
 <title>terragrunt.hcl</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="174,-36 62,-36 62,0 180,0 180,-30 174,-36"/>
-<polyline fill="none" stroke="#404040" points="174,-36 174,-30 "/>
-<polyline fill="none" stroke="#404040" points="180,-30 174,-30 "/>
-<text text-anchor="middle" x="121" y="-14.3" font-family="Times,serif" font-size="14.00">terragrunt.hcl</text>
+<polygon fill="#4179ea" stroke="#5754dd" points="174,-36 62,-36 62,0 180,0 180,-30 174,-36"/>
+<polyline fill="none" stroke="#5754dd" points="174,-36 174,-30 "/>
+<polyline fill="none" stroke="#5754dd" points="180,-30 174,-30 "/>
+<text text-anchor="middle" x="121" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">terragrunt.hcl</text>
 </g>
 <!-- examples/remote&#45;state/oranges -->
 <g id="node2" class="node">
 <title>examples/remote&#45;state/oranges</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="242,-180 4,-180 0,-176 0,-144 238,-144 242,-148 242,-180"/>
-<polyline fill="none" stroke="#404040" points="238,-176 0,-176 "/>
-<polyline fill="none" stroke="#404040" points="238,-176 238,-144 "/>
-<polyline fill="none" stroke="#404040" points="238,-176 242,-180 "/>
-<text text-anchor="middle" x="121" y="-158.3" font-family="Times,serif" font-size="14.00">examples/remote&#45;state/oranges</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="242,-180 4,-180 0,-176 0,-144 238,-144 242,-148 242,-180"/>
+<polyline fill="none" stroke="#5754dd" points="238,-176 0,-176 "/>
+<polyline fill="none" stroke="#5754dd" points="238,-176 238,-144 "/>
+<polyline fill="none" stroke="#5754dd" points="238,-176 242,-180 "/>
+<text text-anchor="middle" x="121" y="-158.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">examples/remote&#45;state/oranges</text>
 </g>
 <!-- examples/remote&#45;state/states -->
 <g id="node3" class="node">
 <title>examples/remote&#45;state/states</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="235,-108 11,-108 7,-104 7,-72 231,-72 235,-76 235,-108"/>
-<polyline fill="none" stroke="#404040" points="231,-104 7,-104 "/>
-<polyline fill="none" stroke="#404040" points="231,-104 231,-72 "/>
-<polyline fill="none" stroke="#404040" points="231,-104 235,-108 "/>
-<text text-anchor="middle" x="121" y="-86.3" font-family="Times,serif" font-size="14.00">examples/remote&#45;state/states</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="235,-108 11,-108 7,-104 7,-72 231,-72 235,-76 235,-108"/>
+<polyline fill="none" stroke="#5754dd" points="231,-104 7,-104 "/>
+<polyline fill="none" stroke="#5754dd" points="231,-104 231,-72 "/>
+<polyline fill="none" stroke="#5754dd" points="231,-104 235,-108 "/>
+<text text-anchor="middle" x="121" y="-86.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">examples/remote&#45;state/states</text>
 </g>
 <!-- examples/remote&#45;state/oranges&#45;&gt;examples/remote&#45;state/states -->
 <g id="edge1" class="edge">
 <title>examples/remote&#45;state/oranges&#45;&gt;examples/remote&#45;state/states</title>
-<path fill="none" stroke="#808080" d="M121,-143.7C121,-135.98 121,-126.71 121,-118.11"/>
-<polygon fill="#808080" stroke="#808080" points="124.5,-118.1 121,-108.1 117.5,-118.1 124.5,-118.1"/>
+<path fill="none" stroke="#4ba8f1" d="M121,-143.7C121,-135.98 121,-126.71 121,-118.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="124.5,-118.1 121,-108.1 117.5,-118.1 124.5,-118.1"/>
 </g>
 <!-- examples/remote&#45;state/states&#45;&gt;terragrunt.hcl -->
 <g id="edge2" class="edge">
 <title>examples/remote&#45;state/states&#45;&gt;terragrunt.hcl</title>
-<path fill="none" stroke="#808080" d="M121,-71.7C121,-63.98 121,-54.71 121,-46.11"/>
-<polygon fill="#808080" stroke="#808080" points="124.5,-46.1 121,-36.1 117.5,-46.1 124.5,-46.1"/>
+<path fill="none" stroke="#4ba8f1" d="M121,-71.7C121,-63.98 121,-54.71 121,-46.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="124.5,-46.1 121,-36.1 117.5,-46.1 124.5,-46.1"/>
 </g>
 </g>
 </svg>

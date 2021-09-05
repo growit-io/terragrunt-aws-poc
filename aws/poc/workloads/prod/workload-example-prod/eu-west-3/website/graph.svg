@@ -12,85 +12,85 @@
 <!-- terragrunt.hcl -->
 <g id="node1" class="node">
 <title>terragrunt.hcl</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="327.5,-36 215.5,-36 215.5,0 333.5,0 333.5,-30 327.5,-36"/>
-<polyline fill="none" stroke="#404040" points="327.5,-36 327.5,-30 "/>
-<polyline fill="none" stroke="#404040" points="333.5,-30 327.5,-30 "/>
-<text text-anchor="middle" x="274.5" y="-14.3" font-family="Times,serif" font-size="14.00">terragrunt.hcl</text>
+<polygon fill="#4179ea" stroke="#5754dd" points="327.5,-36 215.5,-36 215.5,0 333.5,0 333.5,-30 327.5,-36"/>
+<polyline fill="none" stroke="#5754dd" points="327.5,-36 327.5,-30 "/>
+<polyline fill="none" stroke="#5754dd" points="333.5,-30 327.5,-30 "/>
+<text text-anchor="middle" x="274.5" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">terragrunt.hcl</text>
 </g>
-<!-- aws/poc/management/boot/organizations/roots/organization -->
+<!-- aws/poc/management/boot/organizations/root -->
 <g id="node2" class="node">
-<title>aws/poc/management/boot/organizations/roots/organization</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="496,-108 57,-108 53,-104 53,-72 492,-72 496,-76 496,-108"/>
-<polyline fill="none" stroke="#404040" points="492,-104 53,-104 "/>
-<polyline fill="none" stroke="#404040" points="492,-104 492,-72 "/>
-<polyline fill="none" stroke="#404040" points="492,-104 496,-108 "/>
-<text text-anchor="middle" x="274.5" y="-86.3" font-family="Times,serif" font-size="14.00">aws/poc/management/boot/organizations/roots/organization</text>
+<title>aws/poc/management/boot/organizations/root</title>
+<polygon fill="#4447cc" stroke="#5754dd" points="445.5,-108 107.5,-108 103.5,-104 103.5,-72 441.5,-72 445.5,-76 445.5,-108"/>
+<polyline fill="none" stroke="#5754dd" points="441.5,-104 103.5,-104 "/>
+<polyline fill="none" stroke="#5754dd" points="441.5,-104 441.5,-72 "/>
+<polyline fill="none" stroke="#5754dd" points="441.5,-104 445.5,-108 "/>
+<text text-anchor="middle" x="274.5" y="-86.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">aws/poc/management/boot/organizations/root</text>
 </g>
-<!-- aws/poc/management/boot/organizations/roots/organization&#45;&gt;terragrunt.hcl -->
+<!-- aws/poc/management/boot/organizations/root&#45;&gt;terragrunt.hcl -->
 <g id="edge1" class="edge">
-<title>aws/poc/management/boot/organizations/roots/organization&#45;&gt;terragrunt.hcl</title>
-<path fill="none" stroke="#808080" d="M274.5,-71.7C274.5,-63.98 274.5,-54.71 274.5,-46.11"/>
-<polygon fill="#808080" stroke="#808080" points="278,-46.1 274.5,-36.1 271,-46.1 278,-46.1"/>
+<title>aws/poc/management/boot/organizations/root&#45;&gt;terragrunt.hcl</title>
+<path fill="none" stroke="#4ba8f1" d="M274.5,-71.7C274.5,-63.98 274.5,-54.71 274.5,-46.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="278,-46.1 274.5,-36.1 271,-46.1 278,-46.1"/>
 </g>
 <!-- aws/poc/management/boot/organizations/units/workloads -->
 <g id="node3" class="node">
 <title>aws/poc/management/boot/organizations/units/workloads</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="487.5,-180 65.5,-180 61.5,-176 61.5,-144 483.5,-144 487.5,-148 487.5,-180"/>
-<polyline fill="none" stroke="#404040" points="483.5,-176 61.5,-176 "/>
-<polyline fill="none" stroke="#404040" points="483.5,-176 483.5,-144 "/>
-<polyline fill="none" stroke="#404040" points="483.5,-176 487.5,-180 "/>
-<text text-anchor="middle" x="274.5" y="-158.3" font-family="Times,serif" font-size="14.00">aws/poc/management/boot/organizations/units/workloads</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="487.5,-180 65.5,-180 61.5,-176 61.5,-144 483.5,-144 487.5,-148 487.5,-180"/>
+<polyline fill="none" stroke="#5754dd" points="483.5,-176 61.5,-176 "/>
+<polyline fill="none" stroke="#5754dd" points="483.5,-176 483.5,-144 "/>
+<polyline fill="none" stroke="#5754dd" points="483.5,-176 487.5,-180 "/>
+<text text-anchor="middle" x="274.5" y="-158.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">aws/poc/management/boot/organizations/units/workloads</text>
 </g>
-<!-- aws/poc/management/boot/organizations/units/workloads&#45;&gt;aws/poc/management/boot/organizations/roots/organization -->
+<!-- aws/poc/management/boot/organizations/units/workloads&#45;&gt;aws/poc/management/boot/organizations/root -->
 <g id="edge2" class="edge">
-<title>aws/poc/management/boot/organizations/units/workloads&#45;&gt;aws/poc/management/boot/organizations/roots/organization</title>
-<path fill="none" stroke="#808080" d="M274.5,-143.7C274.5,-135.98 274.5,-126.71 274.5,-118.11"/>
-<polygon fill="#808080" stroke="#808080" points="278,-118.1 274.5,-108.1 271,-118.1 278,-118.1"/>
+<title>aws/poc/management/boot/organizations/units/workloads&#45;&gt;aws/poc/management/boot/organizations/root</title>
+<path fill="none" stroke="#4ba8f1" d="M274.5,-143.7C274.5,-135.98 274.5,-126.71 274.5,-118.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="278,-118.1 274.5,-108.1 271,-118.1 278,-118.1"/>
 </g>
 <!-- aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod -->
 <g id="node4" class="node">
 <title>aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="549,-324 4,-324 0,-320 0,-288 545,-288 549,-292 549,-324"/>
-<polyline fill="none" stroke="#404040" points="545,-320 0,-320 "/>
-<polyline fill="none" stroke="#404040" points="545,-320 545,-288 "/>
-<polyline fill="none" stroke="#404040" points="545,-320 549,-324 "/>
-<text text-anchor="middle" x="274.5" y="-302.3" font-family="Times,serif" font-size="14.00">aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="549,-324 4,-324 0,-320 0,-288 545,-288 549,-292 549,-324"/>
+<polyline fill="none" stroke="#5754dd" points="545,-320 0,-320 "/>
+<polyline fill="none" stroke="#5754dd" points="545,-320 545,-288 "/>
+<polyline fill="none" stroke="#5754dd" points="545,-320 549,-324 "/>
+<text text-anchor="middle" x="274.5" y="-302.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod</text>
 </g>
 <!-- aws/poc/management/prod/organizations/units/workloads&#45;prod -->
 <g id="node5" class="node">
 <title>aws/poc/management/prod/organizations/units/workloads&#45;prod</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="507,-252 46,-252 42,-248 42,-216 503,-216 507,-220 507,-252"/>
-<polyline fill="none" stroke="#404040" points="503,-248 42,-248 "/>
-<polyline fill="none" stroke="#404040" points="503,-248 503,-216 "/>
-<polyline fill="none" stroke="#404040" points="503,-248 507,-252 "/>
-<text text-anchor="middle" x="274.5" y="-230.3" font-family="Times,serif" font-size="14.00">aws/poc/management/prod/organizations/units/workloads&#45;prod</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="507,-252 46,-252 42,-248 42,-216 503,-216 507,-220 507,-252"/>
+<polyline fill="none" stroke="#5754dd" points="503,-248 42,-248 "/>
+<polyline fill="none" stroke="#5754dd" points="503,-248 503,-216 "/>
+<polyline fill="none" stroke="#5754dd" points="503,-248 507,-252 "/>
+<text text-anchor="middle" x="274.5" y="-230.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">aws/poc/management/prod/organizations/units/workloads&#45;prod</text>
 </g>
 <!-- aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod&#45;&gt;aws/poc/management/prod/organizations/units/workloads&#45;prod -->
 <g id="edge3" class="edge">
 <title>aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod&#45;&gt;aws/poc/management/prod/organizations/units/workloads&#45;prod</title>
-<path fill="none" stroke="#808080" d="M274.5,-287.7C274.5,-279.98 274.5,-270.71 274.5,-262.11"/>
-<polygon fill="#808080" stroke="#808080" points="278,-262.1 274.5,-252.1 271,-262.1 278,-262.1"/>
+<path fill="none" stroke="#4ba8f1" d="M274.5,-287.7C274.5,-279.98 274.5,-270.71 274.5,-262.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="278,-262.1 274.5,-252.1 271,-262.1 278,-262.1"/>
 </g>
 <!-- aws/poc/management/prod/organizations/units/workloads&#45;prod&#45;&gt;aws/poc/management/boot/organizations/units/workloads -->
 <g id="edge4" class="edge">
 <title>aws/poc/management/prod/organizations/units/workloads&#45;prod&#45;&gt;aws/poc/management/boot/organizations/units/workloads</title>
-<path fill="none" stroke="#808080" d="M274.5,-215.7C274.5,-207.98 274.5,-198.71 274.5,-190.11"/>
-<polygon fill="#808080" stroke="#808080" points="278,-190.1 274.5,-180.1 271,-190.1 278,-190.1"/>
+<path fill="none" stroke="#4ba8f1" d="M274.5,-215.7C274.5,-207.98 274.5,-198.71 274.5,-190.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="278,-190.1 274.5,-180.1 271,-190.1 278,-190.1"/>
 </g>
 <!-- aws/poc/workloads/prod/workload&#45;example&#45;prod/eu&#45;west&#45;3/website -->
 <g id="node6" class="node">
 <title>aws/poc/workloads/prod/workload&#45;example&#45;prod/eu&#45;west&#45;3/website</title>
-<polygon fill="#c0c0c0" stroke="#404040" points="521.5,-396 31.5,-396 27.5,-392 27.5,-360 517.5,-360 521.5,-364 521.5,-396"/>
-<polyline fill="none" stroke="#404040" points="517.5,-392 27.5,-392 "/>
-<polyline fill="none" stroke="#404040" points="517.5,-392 517.5,-360 "/>
-<polyline fill="none" stroke="#404040" points="517.5,-392 521.5,-396 "/>
-<text text-anchor="middle" x="274.5" y="-374.3" font-family="Times,serif" font-size="14.00">aws/poc/workloads/prod/workload&#45;example&#45;prod/eu&#45;west&#45;3/website</text>
+<polygon fill="#4447cc" stroke="#5754dd" points="521.5,-396 31.5,-396 27.5,-392 27.5,-360 517.5,-360 521.5,-364 521.5,-396"/>
+<polyline fill="none" stroke="#5754dd" points="517.5,-392 27.5,-392 "/>
+<polyline fill="none" stroke="#5754dd" points="517.5,-392 517.5,-360 "/>
+<polyline fill="none" stroke="#5754dd" points="517.5,-392 521.5,-396 "/>
+<text text-anchor="middle" x="274.5" y="-374.3" font-family="Times,serif" font-size="14.00" fill="#c9d1d8">aws/poc/workloads/prod/workload&#45;example&#45;prod/eu&#45;west&#45;3/website</text>
 </g>
 <!-- aws/poc/workloads/prod/workload&#45;example&#45;prod/eu&#45;west&#45;3/website&#45;&gt;aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod -->
 <g id="edge5" class="edge">
 <title>aws/poc/workloads/prod/workload&#45;example&#45;prod/eu&#45;west&#45;3/website&#45;&gt;aws/poc/management/prod/organizations/accounts/workload&#45;example&#45;prod</title>
-<path fill="none" stroke="#808080" d="M274.5,-359.7C274.5,-351.98 274.5,-342.71 274.5,-334.11"/>
-<polygon fill="#808080" stroke="#808080" points="278,-334.1 274.5,-324.1 271,-334.1 278,-334.1"/>
+<path fill="none" stroke="#4ba8f1" d="M274.5,-359.7C274.5,-351.98 274.5,-342.71 274.5,-334.11"/>
+<polygon fill="#4ba8f1" stroke="#4ba8f1" points="278,-334.1 274.5,-324.1 271,-334.1 278,-334.1"/>
 </g>
 </g>
 </svg>
