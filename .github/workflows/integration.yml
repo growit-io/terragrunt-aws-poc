@@ -81,9 +81,9 @@ jobs:
         uses: ./.github/actions/terragrunt
         with:
           command: plan
-          config-paths: '*/workloads/dev'
-          aws-access-key-id: ${{ secrets.CI_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.CI_AWS_SECRET_ACCESS_KEY }}
+          config-paths: '*/dev'
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
     outputs:
       changed-paths: ${{ steps.plan.outputs.changed-paths }}
 
@@ -99,7 +99,7 @@ jobs:
         uses: ./.github/actions/terragrunt
         with:
           command: plan
-          config-paths: '*/workloads/test'
+          config-paths: '*/test'
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
     outputs:
@@ -118,7 +118,7 @@ jobs:
         uses: ./.github/actions/terragrunt
         with:
           command: plan
-          config-paths: '*/boot */management/dev */management/test */prod'
+          config-paths: '*/boot */prod'
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
     outputs:
