@@ -9,7 +9,7 @@ dependency "parent" {
 inputs = {
   roles = {
     WebsiteAdministrator = yamldecode(file("roles/website-administrator.yml"))
-    WebsiteDeveloper = yamldecode(file("roles/website-developer.yml"))
+    WebsiteDeveloper     = yamldecode(file("roles/website-developer.yml"))
   }
 
   parent = dependency.parent.outputs
