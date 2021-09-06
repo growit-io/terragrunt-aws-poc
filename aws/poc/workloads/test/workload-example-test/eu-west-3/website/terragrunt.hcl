@@ -9,6 +9,6 @@ dependency "account" {
 
 inputs = merge({
   account = dependency.account.outputs
-}, get_env("CI", "") != "" ? {} : {
+  }, get_env("CI", "") != "" ? {} : {
   role = "WebsiteDeveloper"
 })
