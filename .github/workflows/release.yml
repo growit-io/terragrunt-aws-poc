@@ -86,6 +86,22 @@ jobs:
           aws-access-key-id: ${{ secrets.CI_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CI_AWS_SECRET_ACCESS_KEY }}
 
+  testing:
+    name: 'Testing'
+    needs: release
+    if: '! needs.release.outputs.release_created'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans and execute proposed actions'
+        uses: ./.github/actions/terragrunt
+        with:
+          command: apply
+          config-paths: '*/workloads/test'
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+
   production:
     name: 'Production'
     needs: release
@@ -98,7 +114,7 @@ jobs:
         uses: ./.github/actions/terragrunt
         with:
           command: apply
-          config-paths: '*/boot */management/dev */prod'
+          config-paths: '*/boot */management/dev */management/test */prod'
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
 

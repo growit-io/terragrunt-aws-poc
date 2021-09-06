@@ -87,9 +87,27 @@ jobs:
     outputs:
       changed-paths: ${{ steps.plan.outputs.changed-paths }}
 
+  testing:
+    name: 'Testing'
+    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans'
+        id: plan
+        uses: ./.github/actions/terragrunt
+        with:
+          command: plan
+          config-paths: '*/workloads/test'
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+    outputs:
+      changed-paths: ${{ steps.plan.outputs.changed-paths }}
+
   production:
     name: 'Production'
-    # TODO: add a test stage with sufficient configurations to preview all production changes
+    # TODO: add a test stage with sufficient configurations to preview most production changes
     #if: startsWith(github.head_ref, 'release-v')
     runs-on: ubuntu-latest
     steps:
@@ -100,7 +118,7 @@ jobs:
         uses: ./.github/actions/terragrunt
         with:
           command: plan
-          config-paths: '*/boot */management/dev */prod'
+          config-paths: '*/boot */management/dev */management/test */prod'
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
     outputs:
@@ -108,7 +126,7 @@ jobs:
 
   feedback:
     name: 'Feedback'
-    needs: [development, production]
+    needs: [development, testing, production]
     if: always()
     runs-on: ubuntu-latest
     steps:
