@@ -37,6 +37,7 @@ TerraformAdministrators:
   policies:
     - TerraformAdministratorAccess
     - WorkloadExampleDevWebsiteAdministratorAccess
+    - WorkloadExampleTestWebsiteAdministratorAccess
     - WorkloadExampleProdWebsiteAdministratorAccess
 
 # This group should include human and system users who need to develop Terraform
@@ -48,5 +49,8 @@ TerraformDevelopers:
   policies:
     - ManagementBootTerraformStateReadOnlyAccess
     - ManagementDevTerraformStateReadOnlyAccess
+    - ManagementTestTerraformStateReadOnlyAccess
     - WorkloadsDevTerraformStateReadWriteAccess
     - WorkloadExampleDevWebsiteAdministratorAccess
+    - WorkloadsTestTerraformStateReadOnlyAccess
+    - WorkloadExampleTestWebsiteDeveloperAccess
