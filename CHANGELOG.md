@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.1.2...v0.2.0) (2021-09-06)
+
+
+### Features
+
+* **terragrunt-aws-poc:** add `role` parameter to `aws-workloads-website` module ([d7260c9](https://www.github.com/growit-io/terragrunt-aws-poc/commit/d7260c990f2314a4aa6a75a92af5025ec9236b14))
+* **terragrunt-aws-poc:** add Terraform remote state configurations for `test` stage ([99dea64](https://www.github.com/growit-io/terragrunt-aws-poc/commit/99dea64f23eed22a88c3f09a105788a88a65335e))
+* **terragrunt-aws-poc:** add workload configurations for `workload-example-test` account ([5ccd50d](https://www.github.com/growit-io/terragrunt-aws-poc/commit/5ccd50d6981a20e11264c8a706927f0b1ea0339f))
+* **terragrunt-aws-poc:** add workload-example-test account ([440f402](https://www.github.com/growit-io/terragrunt-aws-poc/commit/440f40244edee44484d2e3c0448c4a3864723dff))
+* **terragrunt-aws-poc:** add Workloads/Test OU to contain accounts used for testing ([9123b47](https://www.github.com/growit-io/terragrunt-aws-poc/commit/9123b47777eab0aa1ee149c42d25329c28e424fd))
+* **terragrunt-aws-poc:** grant developers read-only access to workload-example-test account ([01350ce](https://www.github.com/growit-io/terragrunt-aws-poc/commit/01350ce2895426bdda8b5c232e6dbe45165b40af))
+* **terragrunt:** expect all root modules in the `modules` directory, by default ([c318d27](https://www.github.com/growit-io/terragrunt-aws-poc/commit/c318d276ba31e9d3bdf2e241d05f09355bdd5ebf))
+
+
+### Documentation
+
+* **terragrunt:** expand the documentation in the top-level README.md ([97dfdca](https://www.github.com/growit-io/terragrunt-aws-poc/commit/97dfdcade719e2893b687045e0057e83d8ca8378))
+
+
+### Code Refactoring
+
+* **terragrunt-aws-poc:** rename `default_region` input to `region` ([23c5792](https://www.github.com/growit-io/terragrunt-aws-poc/commit/23c57922372ea6ae1b1ddeec92bc43bd7644d2f3))
+* **terragrunt:** change color scheme of generated dependency graphs ([449eae7](https://www.github.com/growit-io/terragrunt-aws-poc/commit/449eae7337cc35aa1ba229aa82afe4833e9f9007))
+* **terragrunt:** rename top-level configuration layer from `root` to `platform` ([c4e649e](https://www.github.com/growit-io/terragrunt-aws-poc/commit/c4e649efc83334c38b89057cf12ac140765d706e))
+* **terragrunt:** tweak wording of the feedback comment ([b50b75a](https://www.github.com/growit-io/terragrunt-aws-poc/commit/b50b75aa26d8377b7b427fce1dece1bbb91f5cac))
+
+
+### Build System
+
+* **terragrunt-aws-poc:** revert default value for `paths` to `*/workloads/dev` ([4671451](https://www.github.com/growit-io/terragrunt-aws-poc/commit/46714518bb85bfbf8c57478cf34d459f350fe11f))
+
+
+### CI/CD Workflows
+
+* **terragrunt-aws-poc:** add `testing` stage job to CI/CD workloads ([41e02e8](https://www.github.com/growit-io/terragrunt-aws-poc/commit/41e02e8b0f011544f3b01fd1faa2664f028d4af2))
+* **terragrunt-aws-poc:** for now, distinguish CI/CD jobs only by stage, not by tier ([71e7baf](https://www.github.com/growit-io/terragrunt-aws-poc/commit/71e7baf6ab05c61b0e23b3385e2a104177146a27))
+* **terragrunt-aws-poc:** for now, skip `production` job in CI workflow again ([df42daa](https://www.github.com/growit-io/terragrunt-aws-poc/commit/df42daac324130b91f490994034bc3072fd23f0f))
+* **terragrunt-aws:** enable the `aws` plugin for TFLint ([b1b7af8](https://www.github.com/growit-io/terragrunt-aws-poc/commit/b1b7af87566d2d35fbc525bed13d660d97661f17))
+* **terragrunt:** rename commitlint.config.js to .commitlint.config.js ([a0ac571](https://www.github.com/growit-io/terragrunt-aws-poc/commit/a0ac571432ba46bdd355d61147ef782748efb0b8))
+
 ### [0.1.2](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.1.1...v0.1.2) (2021-09-05)
 
 
