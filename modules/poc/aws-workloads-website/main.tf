@@ -13,7 +13,7 @@ provider "aws" {
   region = var.region
 
   assume_role {
-    role_arn = var.account.role_arns.WebsiteAdministrator
+    role_arn = var.account.role_arns[var.role]
   }
 
   default_tags {

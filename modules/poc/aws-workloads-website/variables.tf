@@ -1,18 +1,22 @@
 variable "account" {
   type = object({
-    name = string
-    role_arns = object({
-      WebsiteAdministrator = string
-    })
+    name      = string
+    role_arns = map(string)
   })
 
   description = <<EOT
     An object describing the AWS account in which the S3 website should be deployed. This should normally be the outputs of the [aws-management-organizations-account](../aws-management-organizations-account/README.md) module.
 
-    Specifically, this module expects an output named `role_arns.WebsiteAdministrator`, whose value will be passed to the `role_arn` attribute of the default `aws` provider.
+    Specifically, this module expects an output named `role_arns.$${role}`, whose value will be passed to the `role_arn` attribute of the default `aws` provider.
 
     The `name` attribute of this object is used as the value of the `Acount` tag for all resources created by this module.
   EOT
+}
+
+variable "role" {
+  type        = string
+  default     = "WebsiteAdministrator"
+  description = "The role to assume in the target account."
 }
 
 variable "region" {
