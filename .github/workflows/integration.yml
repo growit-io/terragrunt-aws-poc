@@ -107,8 +107,7 @@ jobs:
 
   production:
     name: 'Production'
-    # TODO: add a test stage with sufficient configurations to preview most production changes
-    #if: startsWith(github.head_ref, 'release-v')
+    if: startsWith(github.head_ref, 'release-v')
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
