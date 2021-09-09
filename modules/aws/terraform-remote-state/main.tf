@@ -1,5 +1,7 @@
 terraform {
-  required_version = ">= 1.0"
+  # The `one` function used in outputs.tf is available only in Terraform v0.15
+  # and later.
+  required_version = ">= 0.15"
 
   required_providers {
     aws = {

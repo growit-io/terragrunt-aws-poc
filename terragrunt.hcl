@@ -1,5 +1,27 @@
 # Parent terragrunt.hcl
 #
+# MIT License
+#
+# Copyright (c) 2021 Uwe Stuehler (growit.io)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
 # This terragrunt.hcl file is not an actual Terragrunt configuration, but meant
 # to be included by (all) other terragrunt.hcl files in this repository via the
 # `include` block.
@@ -224,12 +246,14 @@ locals {
   ## Construct the default inputs for the root module in hte `inputs` variable.
   ##
 
+  # TODO: make Git inputs optional and document the feature flat to enable them
+
   github_branch = trimprefix(trimprefix(trimprefix(get_env("GITHUB_REF", ""), "refs/"), "heads/"), "tags/")
 
-  git_commit        = run_cmd("--terragrunt-quiet", "git", "rev-parse", "--short", "HEAD")
-  git_branch        = try(run_cmd("--terragrunt-quiet", "git", "symbolic-ref", "-q", "--short", "HEAD"), local.github_branch)
-  git_branch_remote = try(run_cmd("--terragrunt-quiet", "git", "config", "--get", "branch.${local.git_branch}.remote"), "origin")
-  git_remote_url    = try(run_cmd("--terragrunt-quiet", "git", "config", "--get", "remote.${local.git_branch_remote}.url"), "")
+  git_commit        = trimspace(run_cmd("--terragrunt-quiet", "git", "rev-parse", "--short", "HEAD"))
+  git_branch        = try(trimspace(run_cmd("--terragrunt-quiet", "git", "symbolic-ref", "-q", "--short", "HEAD")), local.github_branch)
+  git_branch_remote = try(trimspace(run_cmd("--terragrunt-quiet", "git", "config", "--get", "branch.${local.git_branch}.remote")), "origin")
+  git_remote_url    = try(trimspace(run_cmd("--terragrunt-quiet", "git", "config", "--get", "remote.${local.git_branch_remote}.url")), "")
 
   git_inputs = {
     git_commit     = local.git_commit
@@ -305,6 +329,7 @@ locals {
 terraform {
   source = local.terraform_source
 
+  # TODO: make auto-migrate-state arguments optional (`terraform.init.auto_migrate_state`?)
   extra_arguments "auto-migrate-state" {
     commands  = ["init"]
     arguments = ["-backend=true", "-migrate-state"]

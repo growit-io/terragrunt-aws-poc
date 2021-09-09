@@ -1,8 +1,12 @@
 <img src="icon.png" align="right" width="25%" />
 
+[//]: # (TODO: make the documenation in this repository GitHub Pages-friendly)
+
 # AWS Organizations "PoC" Configuration
 [![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
 [![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
+
+[//]: # (TODO: reference "Amazon's whitepaper" instead of "Amazon's recommendations")
 
 This is a proof-of-concept [Terragrunt](https://terragrunt.gruntwork.io/)
 configuration repository for a [hypothetical "poc" organization](aws/poc)
@@ -29,6 +33,8 @@ template.
 - [GitHub workflows](.github/workflows) to validate pull requests, deploy
   configuration changes, create releases, and to automate miscellaneous
   maintenance chores.
+
+[//]: # (TODO: mention the principle of least privilege - https://en.wikipedia.org/wiki/Principle_of_least_privilege)
 
 ## Usage
 

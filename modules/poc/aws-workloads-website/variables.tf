@@ -5,7 +5,7 @@ variable "account" {
   })
 
   description = <<EOT
-    An object describing the AWS account in which the S3 website should be deployed. This should normally be the outputs of the [aws-management-organizations-account](../aws-management-organizations-account/README.md) module.
+    An object describing the AWS account in which the S3 website should be deployed. This should normally be the outputs of the [aws-management-organizations-account](../aws-management-organizations-account) module.
 
     Specifically, this module expects an output named `role_arns.$${role}`, whose value will be passed to the `role_arn` attribute of the default `aws` provider.
 

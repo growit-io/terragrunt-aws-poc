@@ -15,14 +15,17 @@ behaviour of the included parent `terragrunt.hcl` at different directory levels.
 
 - [Hierarchical inputs based on the directory hierarchy](#the-inputs-attribute)
 - [Automatic inputs based on directory names in the hierarchy](#the-layer-attribute)
-- [Terraform-managed Remote state configuration based on the directory hierarchy](#the-remote_state-attribute)
+- [Terraform-managed remote state configuration based on the directory hierarchy](#the-remote_state-attribute)
 - [Automatic Terraform root module source selection based on the directory hierarchy](#the-terraform-attribute)
 
 ## Attributes in `terragrunt.yml` files
 
 ### The `inputs` attribute
 
-**Attribute Type:** `map(any)`
+**Attribute Type:** `any`
+
+[//]: # (TODO: use "Terraform's `function` function" consistently)
+[//]: # (TODO: use "Terragrunt's `example` attribute/block" consistently)
 
 The `inputs` attribute from all `terragrunt.yml` files within the directory
 hierarchy is merged using Terraform's [`merge()` function](https://www.terraform.io/docs/language/functions/merge.html)
@@ -30,6 +33,9 @@ and passed to Terragrunt's [`inputs` attribute](https://terragrunt.gruntwork.io/
 
 For example, given the following `terragrunt.yml` files in the directory
 hierarchy:
+
+[//]: # (TODO: sort example inputs alphabetically)
+[//]: # (TODO: add example input demonstrating the shallow merge effect)
 
 ```yaml
 # prod/terragrunt.yml
@@ -47,6 +53,8 @@ inputs:
 
 Our parent `terragrunt.hcl` would effectively provide the following `inputs`
 attribute to any child `terragrunt.hcl` below the `prod/website` directory:
+
+[//]: # (TODO: use canonical formatting in HCL examples)
 
 ```hcl
 inputs = {
@@ -118,7 +126,7 @@ inputs = {
 
 **Attribute Type:** `object({
   backend = string,
-  config = map(any)
+  config = any
 })`
 
 Our parent `terragrunt.hcl` defines the [`remote_state` block](https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#remote_state)
@@ -132,6 +140,9 @@ have been automatically created by Terragrunt.
 The `remote_state` blocks of all `terragrunt.yml` files is merged using the
 Terragrunt [`merge()` function](https://www.terraform.io/docs/language/functions/merge.html)
 and cam define any backed or configuration supported natively by Terraform.
+
+[//]: # (TODO: add a subsection for the virtual `terragrunt` backend)
+[//]: # (TODO: find a better description than "pseudo-backend")
 
 Additionally, a pseudo-backend named `terragrunt` can be specified in
 `terragrunt.yml` files in order to define the Terragrunt `remote_state` block
@@ -194,10 +205,10 @@ For example, given the following files:
 ```yaml
 # terragrunt.yml
 
-layer: root
+layer: platform
 
 terraform:
-  source: '${root_dir}/modules//${root}-'
+  source: '${root_dir}/modules//${platform}-'
 ```
 
 ```yaml

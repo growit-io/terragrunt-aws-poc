@@ -1,14 +1,16 @@
-# workload-example-prod
+# Workload-Example-Prod Account
 
 This configuration uses the
 [aws-management-organizations-account](../../../../../../../modules/poc/aws-management-organizations-account)
-root module to create the organization member account named
-"workload-example-prod."
+root module to create an organization member account.
 
-This member account is expected to host a static website in an S3 bucket.
+## Roles
+
+The member account will be used to host a static website in an S3 bucket.
 Therefore, this configuration creates an IAM role named
 [WebsiteAdministratorRole](roles/website-administrator.yml)
-which grants only the permission to manage S3 buckets.
+which grants only the permission to manage S3 buckets. Developers should not be
+allowed to assume this role.
 
 ## Dependencies
 
