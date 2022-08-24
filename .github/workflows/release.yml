@@ -78,12 +78,15 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create execution plans'
+      - name: 'Create and apply execution plans'
         id: main
-        uses: ./.github/actions/terragrunt
+        uses: ./.github/actions/make
         with:
-          command: apply
-          config-paths: 'examples'
+          directory: examples
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
     outputs:
       changed-paths: ${{ steps.main.outputs.changed-paths }}
 

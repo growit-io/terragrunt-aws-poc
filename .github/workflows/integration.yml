@@ -53,10 +53,9 @@ jobs:
       - name: 'Download TFLint plugins'
         run: tflint --init
       - name: 'Check for common violations of best practices'
-        uses: ./.github/actions/terragrunt
+        uses: ./.github/actions/make
         with:
-          command: lint
-          init: false
+          goals: lint
 
   examples:
     name: 'Examples'
@@ -67,10 +66,13 @@ jobs:
         uses: actions/checkout@v2
       - name: 'Create execution plans'
         id: main
-        uses: ./.github/actions/terragrunt
+        uses: ./.github/actions/make
         with:
-          command: plan
-          config-paths: 'examples'
+          directory: examples
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
     outputs:
       changed-paths: ${{ steps.main.outputs.changed-paths }}
 

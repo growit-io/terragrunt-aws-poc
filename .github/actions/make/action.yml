@@ -1,21 +1,30 @@
-name: 'Terragrunt Action'
-description: 'Execute Terragrunt commands defined in a Makefile'
+name: 'Make Action'
+description: 'Invoke specified goals defined in a Makefile'
 inputs:
-  command:
-    description: 'Terragrunt command to execute via Makefile target'
-    required: true
-    default: 'validate'
-  config-paths:
-    description: >-
-      List of Terragrunt configuration pathname patterns separated by spaces.
-      The patterns will be passed to find(1) via the "-path" primary, so they
-      may contain shell wildcards. Paths are relative to the repository root.
+  directory:
+    description: ~>
+      Change to the specified directory relative to the job's workspace
+      before executing any `make` commands.
     required: false
-    default: '*'
-  init:
-    description: 'Whether to run "make init" before any other targets'
+    default: '.'
+  goals:
+    description: 'Arguments passed to Make to specify its main goals'
     required: false
-    default: 'true'
+    default: ''
+  pre-goals:
+    description: ~>
+      Goals to invoke separately before the main goals, grouping their output
+      in order to make it easier to spot issues in the output of the main goals
+      without having to scroll more than necessary.
+    required: false
+    default: ''
+  post-goals:
+    description: ~>
+      Goals to invoke separately after the main goals, grouping their output
+      in order to make it easier to verify the output of the main goals without
+      getting distracted by the output of less important post-goals.
+    required: false
+    default: ''
   aws-access-key-id:
     description: 'IAM user access key ID to use pass to the `make` command'
     required: false
@@ -36,8 +45,8 @@ inputs:
 outputs:
   changed-paths:
     description: >-
-      For the `plan` command, returns a list of Terragrunt configuration paths
-      which reported changes to be applied
+      When the any of the goals invoked include the `plan` goal, returns a list
+      of Terragrunt configuration paths which reported changes to be applied.
     value: ${{ steps.main.outputs.changed-paths }}
 runs:
   using: composite
@@ -76,15 +85,26 @@ runs:
       if: ${{ inputs.google-service-account != '' }}
     - id: main
       run: |
-        if ${{ inputs.init }}; then
-          echo "::group::Run make init paths='${{ inputs.config-paths }}'"
-          make init paths='${{ inputs.config-paths }}' 2>&1
+        cd '${{ inputs.directory }}'
+
+        if ${{ inputs.pre-goals != '' }}; then
+          echo "::group::Run make ${{ inputs.pre-goals }}"
+          make ${{ inputs.pre-goals }} 2>&1
           echo ::endgroup::
         fi
 
-        # When GITHUB_ACTIONS=true, this command will also write the required
-        # statements to set the outputs of this GitHub action.
-        make '${{ inputs.command }}' paths='${{ inputs.config-paths }}'
+        # When GITHUB_ACTIONS=true, this command will also echo the required
+        # statements to set the outputs of this GitHub action in case one of
+        # the goals is the `plan` goal. See makefile fragments for details.
+        echo "::group::Run make ${{ inputs.goals }}"
+        make ${{ inputs.goals }} 2>&1
+        echo ::endgroup::
+
+        if ${{ inputs.post-goals != '' }}; then
+          echo "::group::Run make ${{ inputs.post-goals }}"
+          make ${{ inputs.post-goals }} 2>&1
+          echo ::endgroup::
+        fi
       shell: bash
       env:
         AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
