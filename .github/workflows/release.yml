@@ -87,8 +87,6 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
-    outputs:
-      changed-paths: ${{ steps.main.outputs.changed-paths }}
 
   generate:
     name: 'Generate'

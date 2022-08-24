@@ -73,7 +73,6 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
       - name: 'Create execution plans'
-        id: main
         uses: ./.github/actions/make
         with:
           directory: examples
@@ -81,8 +80,12 @@ jobs:
           goals: plan
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Check for changed paths'
+        id: plan-feedback
+        run: .terragrunt/bin/plan-feedback tfplan
     outputs:
-      changed-paths: ${{ steps.main.outputs.changed-paths }}
+      changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
 
   feedback:
     name: 'Feedback'
