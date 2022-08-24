@@ -84,9 +84,9 @@ destroy:
 	$(TERRAGRUNT) destroy $(TERRAGRUNT_DESTROY_FLAGS)
 
 # Remove temporary files created by Terragrunt
-clean::
+clean:
 	rm -Rf $(TERRAGRUNT_OUTPUTS)
 
 .PHONY: all lint fmt-check fix fmt test init validate plan apply destroy clean
 
-include $(MAKEFILE_DIR)/help.mk
+include $(MAKEFILE_DIR)/subdir.mk

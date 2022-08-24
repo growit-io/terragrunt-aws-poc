@@ -1,6 +1,6 @@
 # terragrunt.mk
 
-The `terragrunt.mk` fragment extends [`help.mk`](help.md) and invokes
+The `terragrunt.mk` fragment extends [`subdir.mk`](subdir.md) and invokes
 Terragrunt, normally to process a single configuration directory.
 
 The [`terragrunt.run-all.mk`](terragrunt.run-all.md)
@@ -69,7 +69,7 @@ The default goal and alias for the **test** goal.
 
 ### lint
 
-An alias for the **fmt-check** goal.
+This goal invokes the **lint** goal recursively.
 
 ### fmt-check
 
@@ -85,7 +85,7 @@ less helpful.
 
 ### fix
 
-This goal is currently an alias for the **fmt** goal.
+This goal invokes the **fmt** goal recursively.
 
 ### fmt
 
@@ -97,7 +97,8 @@ this goal for the same reason as stated under the **fmt-check** goal.
 
 ### test
 
-Shorthand for specifying the **lint** and **validate** goals.
+Shorthand for specifying the **lint** and **validate** goals. This goal is
+processed recursively.
 
 ### init
 
@@ -121,4 +122,5 @@ Executes the `destroy` command of Terragrunt.
 
 ### clean
 
-Removes any files and directories created by Terragrunt from the working tree.
+Removes any files and directories created by Terragrunt from the working tree,
+and also processes subdirectories recursively.

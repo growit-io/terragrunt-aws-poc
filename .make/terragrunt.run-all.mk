@@ -19,6 +19,3 @@ TERRAGRUNT_DESTROY_FLAGS += $(patsubst %,--terragrunt-exclude-dir %,$(TERRAGRUNT
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
 include $(MAKEFILE_DIR)/terragrunt.mk
-
-clean::
-	for config_path in $$(find * ! \( -name '.*' -prune \) -type f -name terragrunt.hcl -exec dirname {} \; 2>/dev/null); do (cd "./$$config_path" && rm -Rf $(TERRAGRUNT_OUTPUTS)); done
