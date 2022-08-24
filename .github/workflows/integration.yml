@@ -37,6 +37,7 @@ jobs:
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
   lint:
+    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Setup Graphviz'
@@ -65,8 +66,52 @@ jobs:
         with:
           goals: lint
 
-  examples:
-    name: 'Examples'
+  fix:
+    if: ${{ startsWith(github.head_ref, 'release-v') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Setup Graphviz'
+        uses: ts-graphviz/setup-graphviz@v1
+      - name: 'Setup Go'
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+      - name: 'Setup Terraform-Docs'
+        run: go install github.com/terraform-docs/terraform-docs@v0.16.0
+      - name: 'Setup TFLint'
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.31.0
+      - name: 'Setup TFLint plugin cache'
+        uses: actions/cache@v2
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Download TFLint plugins'
+        run: tflint --init
+      - name: 'Fix common violations of best practices'
+        uses: ./.github/actions/make
+        with:
+          goals: fix
+      - name: 'Update dependency graphs'
+        uses: ./.github/actions/make
+        with:
+          goals: graph
+      - name: 'Generate commit message'
+        id: commit
+        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): fix common violations"'
+      - name: 'Create pull request'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          commit-message: ${{ steps.commit.outputs.summary }}
+          branch: chore/make-fix-and-graph
+          delete-branch: true
+          title: ${{ steps.commit.outputs.summary }}
+
+  plan:
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
     runs-on: ubuntu-latest
     steps:
@@ -88,8 +133,7 @@ jobs:
       changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
 
   feedback:
-    name: 'Feedback'
-    needs: [examples]
+    needs: [commitlint, lint, fix, plan]
     if: always()
     runs-on: ubuntu-latest
     steps:
