@@ -67,9 +67,37 @@ Default: `.terragrunt-cache`
 
 The default goal and alias for the **test** goal.
 
+### lint
+
+An alias for the **fmt-check** goal.
+
+### fmt-check
+
+Runs `terraform fmt -check -diff` (with a workaround to treat `.hcl` and `.tf`
+file extensions as the same) in order to detect violations of the
+[Terraform Configuration Language Style Conventions][canonical-style].
+
+[canonical-style]: https://www.terraform.io/docs/language/syntax/style.html
+
+**Note**: We intentionally avoid the `terragrunt hclfmt` command in the
+implementation of this goal because its current output feels more noisy and
+less helpful.
+
+### fix
+
+This goal is currently an alias for the **fmt** goal.
+
+### fmt
+
+Runs `terraform fmt` to reformat `.hcl` and `.tf` files according to
+the [Terraform Configuration Language Style Conventions][canonical-style].
+
+**Note**: We avoid the `terragrunt hclfmt` command in the implementation of
+this goal for the same reason as stated under the **fmt-check** goal.
+
 ### test
 
-Alias for the **validate** goal.
+Shorthand for specifying the **lint** and **validate** goals.
 
 ### init
 

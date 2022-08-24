@@ -1,6 +1,9 @@
 # Makefile fragment for "leaf" Terragrunt configuration directories
 
 TERRAFORM ?= terraform
+TERRAFORM_FMT := $(TERRAFORM) fmt
+TERRAFORM_FMT_CHECK := $(TERRAFORM_FMT) -check -diff
+
 TERRAGRUNT ?= terragrunt
 TERRAGRUNT_TFPATH := $(TERRAFORM)
 
@@ -21,12 +24,44 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 # Alias for `test`
 all: test
 
-lint: # Nothing to be done
+# Check for common violations of best practices
+lint: fmt-check
 
-fix: # Nothing to be done
+# Check for canonical Terraform source formatting
+fmt-check:
+	@set -e; \
+	status=0; \
+  	find . -maxdepth 1 -type f -name '*.hcl' -exec cp {} {}.tf \;; \
+	$(TERRAFORM_FMT_CHECK) >.terraform-fmt.out || status=$$?; \
+	sed -E \
+	  -e '/^[^-+@ ]/d' \
+	  -e 's/^([-+].*\.hcl)\.tf$$/\1/' \
+	  .terraform-fmt.out; \
+  	rm -f .terraform-fmt.out; \
+  	find . -maxdepth 1 -type f -name '*.hcl.tf' -delete; \
+  	if [ $$status -ne 0 ]; then \
+  	  echo 'Run "$(MAKE) -C $(CURDIR) fmt" to rewrite all Terragrunt configuration files to the canonical format.'; \
+	fi; \
+  	exit $$status
 
-# Alias for `validate`
-test: validate
+# Fix some common violations of best practices
+fix: fmt
+
+# Fix canonical Terraform source formatting
+fmt:
+	@set -e; \
+	status=0; \
+  	find . -maxdepth 1 -type f -name 'terragrunt.hcl' -exec cp {} {}.tf \;; \
+	$(TERRAFORM) fmt -write=true >.terraform-fmt.out || status=$$?; \
+	sed -E -e 's/^(.*\.hcl)\.tf$$/\1/' .terraform-fmt.out; \
+  	rm -f .terraform-fmt.out; \
+  	find . -maxdepth 1 -type f -name '*.hcl.tf' | while read file; do \
+  	  mv "$$file" "$$(dirname $$file)/$$(basename $$file .tf)"; \
+  	done; \
+  	exit $$status
+
+# Alias for `lint validate`
+test: lint validate
 
 # Initialize Terraform working directory
 init:
@@ -52,6 +87,6 @@ destroy:
 clean::
 	rm -Rf $(TERRAGRUNT_OUTPUTS)
 
-.PHONY: all test init validate plan apply destroy clean
+.PHONY: all lint fmt-check fix fmt test init validate plan apply destroy clean
 
 include $(MAKEFILE_DIR)/help.mk
