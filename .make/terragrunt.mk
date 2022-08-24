@@ -15,9 +15,16 @@ TERRAGRUNT_FLAGS += \
   --terragrunt-tfpath '$(TERRAGRUNT_TFPATH)'
 
 TERRAGRUNT_INIT_FLAGS += $(TERRAGRUNT_FLAGS) -upgrade
+TERRAGRUNT_PLAN_FLAGS += $(TERRAGRUNT_FLAGS)
 TERRAGRUNT_DESTROY_FLAGS += $(TERRAGRUNT_FLAGS)
 
 TERRAGRUNT_OUTPUTS += .terragrunt-cache .terraform.lock.hcl
+
+TERRAGRUNT_PLAN_OUT ?=
+ifneq (,$(TERRAGRUNT_PLAN_OUT))
+TERRAGRUNT_PLAN_FLAGS += -out=$(TERRAGRUNT_PLAN_OUT)
+TERRAGRUNT_OUTPUTS += $(TERRAGRUNT_PLAN_OUT)
+endif
 
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
@@ -73,7 +80,7 @@ validate:
 
 # Generate a speculative execution plan
 plan:
-	$(TERRAGRUNT) plan $(TERRAGRUNT_FLAGS)
+	$(TERRAGRUNT) plan $(TERRAGRUNT_PLAN_FLAGS)
 
 # Apply infrastructure configuration changes
 apply:

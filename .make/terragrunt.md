@@ -47,6 +47,22 @@ Terragrunt. The default value shown here will always be appended.
 
 Default: `$(TERRAGRUNT_FLAGS) -upgrade`
 
+### TERRAGRUNT_PLAN_FLAGS
+
+Additional options and arguments to pass only to the `plan` command of
+Terragrunt. The default value shown here will always be appended.
+
+Default: `$(TERRAGRUNT_FLAGS)`
+
+### TERRAGRUNT_PLAN_OUT
+
+If set, the argument `-out=$(TERRAGRUNT_PLAN_OUT)` will be automatically
+appended to `TERRAGRUNT_PLAN_FLAGS` and the generated plan output file will
+also be added to `TERRAGRUNT_OUTPUTS` so that the **clean** goal will also
+remove it again.
+
+Default: None
+
 ### TERRAGRUNT_DESTROY_FLAGS
 
 Additional options and arguments to pass only to the `destroy` command of
