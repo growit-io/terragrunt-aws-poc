@@ -98,31 +98,41 @@ jobs:
     steps:
       - name: 'Setup Graphviz'
         uses: ts-graphviz/setup-graphviz@v1
+      - name: 'Setup Go'
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+      - name: 'Setup Terraform-Docs'
+        run: go install github.com/terraform-docs/terraform-docs@v0.16.0
+      - name: 'Setup TFLint'
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.31.0
+      - name: 'Setup TFLint plugin cache'
+        uses: actions/cache@v2
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Generate Terraform module documentation'
-        id: terraform-docs
-        uses: terraform-docs/gh-actions@v0.6.0
+      - name: 'Download TFLint plugins'
+        run: tflint --init
+      - name: 'Fix common violations of best practices'
+        uses: ./.github/actions/make
         with:
-          find-dir: .
-          output-file: README.md
-          output-method: inject
-      - name: 'Fix permissions in work tree'
-        if: steps.terraform-docs.outputs.num_changed > 0
-        run: sudo chown -R $(id -u):$(id -g) .
-      - name: 'Generate dependency graphs'
-        uses: ./.github/actions/terragrunt
+          goals: fix
+      - name: 'Update dependency graphs'
+        uses: ./.github/actions/make
         with:
-          command: graph
-          config-paths: '*'
+          goals: graph
       - name: 'Generate commit message'
         id: commit
-        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): update generated documentation"'
+        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): fix common violations"'
       - name: 'Create pull request'
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           commit-message: ${{ steps.commit.outputs.summary }}
-          branch: chore/update-dependency-graphs
+          branch: chore/make-fix-and-graph
           delete-branch: true
           title: ${{ steps.commit.outputs.summary }}
