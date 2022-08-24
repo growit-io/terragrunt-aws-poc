@@ -88,28 +88,38 @@ jobs:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.tflint.hcl') }}
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+      - name: 'Configure Git'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
       - name: 'Download TFLint plugins'
         run: tflint --init
       - name: 'Fix common violations of best practices'
         uses: ./.github/actions/make
         with:
           goals: fix
+      - name: 'Commit changes after `make fix`'
+        run: |
+          git add -A
+          git commit -m "chore($(basename $GITHUB_REPOSITORY)): fix common violations" || true
       - name: 'Update dependency graphs'
         uses: ./.github/actions/make
         with:
           goals: graph
-      - name: 'Generate commit message'
-        id: commit
-        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): fix common violations"'
-      - name: 'Create pull request'
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          commit-message: ${{ steps.commit.outputs.summary }}
-          branch: chore/make-fix-and-graph
-          delete-branch: true
-          title: ${{ steps.commit.outputs.summary }}
+      - name: 'Commit changes after `make graph`'
+        run: |
+          git add -A
+          git commit -m "chore($(basename $GITHUB_REPOSITORY)): update dependency graphs" || true
+      - name: 'Push changes, if any'
+        # Since we used a non-default token when checking out the repository,
+        # this step may re-trigger another run of this workflow. In the worst
+        # case, this could lead to an infinite loop. However, as the `fix` and
+        # `graph` goals are idempotent this is unlikely an issue in practice.
+        run: git push
 
   plan:
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
