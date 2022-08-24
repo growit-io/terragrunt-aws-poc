@@ -67,11 +67,13 @@ runs:
           echo ::endgroup::
         fi
       shell: bash
-    - uses: google-github-actions/setup-gcloud@master
+    - uses: google-github-actions/auth@v0
+      if: ${{ inputs.google-service-account != '' }}
       with:
-        service_account_key: ${{ inputs.google-service-account }}
-        export_default_credentials: true
-        credentials_file_path: /tmp/google-service-account-${{ github.job }}-${{ github.run_ir }}.json
+        credentials_json: ${{ inputs.google-service-account }}
+        create_credentials_file: true
+    - uses: google-github-actions/setup-gcloud@v0
+      if: ${{ inputs.google-service-account != '' }}
     - id: main
       run: |
         if ${{ inputs.init }}; then
