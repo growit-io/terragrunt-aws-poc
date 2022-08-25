@@ -66,9 +66,20 @@ jobs:
           fetch-depth: 0
       - name: 'Download TFLint plugins'
         run: tflint --init
-      - name: 'Run tests for changed subdirectories'
+      - name: 'Validate changed Terraform modules'
         uses: ./.github/actions/make
         with:
+          directory: modules
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          goals: test SKIP_UNCHANGED=true
+      - name: 'Validate changed Terragrunt configurations'
+        uses: ./.github/actions/make
+        with:
+          directory: aws
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          pre-goals: init SKIP_UNCHANGED=true SUBDIR_GOALS=init
           goals: test SKIP_UNCHANGED=true
 
   development:
