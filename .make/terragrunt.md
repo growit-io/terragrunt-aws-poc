@@ -34,11 +34,11 @@ The logging level for Terragrunt specified via `--terragrunt-log-level`.
 
 **Note:** The actual default log level for Terragrunt (`warn`) is still a bit
 too verbose for frequent interactive use, so this Makefile fragment sets it
-to `fatal`. However, at this level Terragrunt may hide some information that
+to `error`. However, at this level Terragrunt may hide some information that
 interactive prompts may refer to. For example, when asking the user for
 confirmation before executing the `destroy` command.
 
-Default: `fatal`
+Default: `error`
 
 ### TERRAGRUNT_FLAGS
 
