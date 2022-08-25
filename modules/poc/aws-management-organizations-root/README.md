@@ -9,7 +9,7 @@ The `aws` provider is will use the currently configured AWS credentials, which
 are expected to provide administrative access to the organization management
 account.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -59,4 +59,4 @@ No Modules.
 | management\_account\_id | The AWS account ID of the organization's management account. |
 | organizational\_unit | An object describing the root organizational unit of the organization. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

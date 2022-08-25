@@ -8,7 +8,7 @@ The `aws` provider will be configured to use the current AWS credentials which
 are expected to provide administrative access to the organization management
 account.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -66,4 +66,4 @@ No Modules.
 | policy\_arns | A mapping between policy name and ARN for each IAM policy managed by this module. |
 | role\_arns | A mapping between role name and ARN for each IAM role managed by this module. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

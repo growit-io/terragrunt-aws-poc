@@ -8,7 +8,7 @@ The `aws` provider will be configured to use the current AWS credentials which
 are expected to provide administrative access to the organization management
 account.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -57,4 +57,4 @@ No Modules.
 | plaintext\_access\_keys | A mapping between IAM user name and access key, where the secret access key is stored unencrypted in the Terraform state.<br><br>These access keys are directly suitable for consumption by other Terraform root modules, but will be stored in plain text in the Terraform state, which means the current Terraform state must be treated as sensitive as well and be readable only by authorized users. |
 | users | The set of names of all IAM users managed by this module. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

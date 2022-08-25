@@ -9,7 +9,7 @@ resources.
 The `backend` and `config` outputs of this module can be used to generate a
 Terraform S3 backend configuration.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -65,4 +65,4 @@ Terraform S3 backend configuration.
 | read\_only\_access\_policy\_name | The name of the managed IAM policy which grants read-only access to the S3 bucket. If the `create_access_policies` variable is `false`, then this value will be an empty string. |
 | read\_write\_access\_policy\_name | The name of the managed IAM policy which grants read-write access to the S3 bucket and DynamoDB table. If the `create_access_policies` variable is `false`, then this value will be an empty string. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

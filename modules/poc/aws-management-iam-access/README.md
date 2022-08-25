@@ -8,7 +8,7 @@ The `aws` provider will be configured to use the current AWS credentials which
 are expected to provide administrative access to the organization management
 account.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -55,4 +55,4 @@ No Modules.
 |------|-------------|
 | groups | The names of IAM groups managed by this module. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

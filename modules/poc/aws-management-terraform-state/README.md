@@ -13,7 +13,7 @@ The `aws` provider will be configured to use the current AWS credentials which
 are expected to provide administrative access to the organization management
 account.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -54,4 +54,4 @@ No resources.
 | access\_policy\_arns | A mapping between the keys used in the `terraform_remote_states` input variable and objects describing the corresponding managed IAM policies. |
 | terraform\_remote\_states | A mapping between the keys used in the `terraform_remote_states` input variable and objects describing the corresponding Terraform remote state backend. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

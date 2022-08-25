@@ -5,7 +5,7 @@ This Terraform module creates a static example website hosted in an S3 bucket.
 The `aws` provider will be configured to use the current AWS credentials to
 assume the `WebsiteAdministrator` role in the specified target account.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -46,4 +46,4 @@ No resources.
 |------|-------------|
 | url | The HTTP URL of the S3 website. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

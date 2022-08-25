@@ -3,7 +3,7 @@
 This Terraform module deploys a simple, static example website hosted in an S3
 bucket. The website will only have a static index, and an error page.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -44,4 +44,4 @@ No Modules.
 |------|-------------|
 | s3\_website\_url | The HTTP URL of the example S3 website created. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->
