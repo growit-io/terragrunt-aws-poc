@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/growit-io/terragrunt/compare/v1.0.0...v1.0.1) (2022-08-25)
+
+
+### Build System
+
+* **make:** skip subdir goals handled by `terragrunt run-all` ([8458583](https://www.github.com/growit-io/terragrunt/commit/84585836c0f958da50fecc4496cdce6a874d9500))
+
 ## [1.0.0](https://www.github.com/growit-io/terragrunt/compare/v0.2.0...v1.0.0) (2022-08-25)
 
 
