@@ -1,3 +1,4 @@
+# Decrypt a managed secret access key
 decrypt-access-key:
 ifeq ($(strip $(key)),)
 	@echo 'Usage: $@ key=<name>' >&2
@@ -10,3 +11,5 @@ else
 	printf 'id: %s\nsecret: ' "$$(jq -r '.["id"]' <<<"$$access_key")"; \
 	cat <<<"$$secret"
 endif
+
+include ../../../../../../.make/terragrunt.mk

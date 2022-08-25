@@ -5,7 +5,7 @@ read-write access to a given set of
 [Terraform S3 backend](https://www.terraform.io/docs/language/settings/backends/s3.html)
 resources.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -51,4 +51,4 @@ No Modules.
 | read\_only\_policy\_name | The name of the managed IAM policy which grants read-only access to the S3 bucket. |
 | read\_write\_policy\_name | The name of the managed IAM policy which grants read-write access to the S3 bucket and DynamoDB table. |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

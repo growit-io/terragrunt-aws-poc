@@ -1,0 +1,113 @@
+name: 'Make Action'
+description: 'Invoke specified goals defined in a Makefile'
+inputs:
+  directory:
+    description: ~>
+      Change to the specified directory relative to the job's workspace
+      before executing any `make` commands.
+    required: false
+    default: '.'
+  goals:
+    description: 'Arguments passed to Make to specify its main goals'
+    required: false
+    default: ''
+  pre-goals:
+    description: ~>
+      Goals to invoke separately before the main goals, grouping their output
+      in order to make it easier to spot issues in the output of the main goals
+      without having to scroll more than necessary.
+    required: false
+    default: ''
+  post-goals:
+    description: ~>
+      Goals to invoke separately after the main goals, grouping their output
+      in order to make it easier to verify the output of the main goals without
+      getting distracted by the output of less important post-goals.
+    required: false
+    default: ''
+  aws-access-key-id:
+    description: 'IAM user access key ID to use pass to the `make` command'
+    required: false
+  aws-secret-access-key:
+    description: 'IAM user secret access key to pass to the `make` command'
+    required: false
+  google-service-account:
+    description: 'Google service account JSON data'
+    required: false
+  tfenv-version:
+    description: 'Branch, tag or commit hash for tfenv'
+    required: true
+    default: 459d15b63f55c2f507bfa6a18e9dec5937e45daf
+  tgenv-version:
+    description: 'Branch, tag or commit hash for tgenv'
+    required: true
+    default: b71a32439f23fa7745330e48c3495c4c8a23ddf3 # v0.0.3
+outputs:
+  changed-paths:
+    description: >-
+      When the any of the goals invoked include the `plan` goal, returns a list
+      of Terragrunt configuration paths which reported changes to be applied.
+    value: ${{ steps.main.outputs.changed-paths }}
+runs:
+  using: composite
+  steps:
+    - run: |
+        if [ ! -d ~/.tfenv ]; then
+          echo ::group::Clone tfenv
+          git clone -q https://github.com/tfutils/tfenv.git ~/.tfenv
+          git -C ~/.tfenv checkout -q ${{ inputs.tfenv-version }}
+          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+          echo ::endgroup::
+
+          echo ::group::Run tfenv install
+          PATH="$HOME/.tfenv/bin:$PATH" tfenv install
+          echo ::endgroup::
+        fi
+
+        if [ ! -d ~/.tgenv ]; then
+          echo ::group::Clone tgenv
+          git clone -q https://github.com/cunymatthieu/tgenv.git ~/.tgenv
+          git -C ~/.tgenv checkout -q ${{ inputs.tgenv-version }}
+          echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
+          echo ::endgroup::
+
+          echo ::group::Run tgenv install
+          PATH="$HOME/.tgenv/bin:$PATH" tgenv install
+          echo ::endgroup::
+        fi
+      shell: bash
+    - uses: google-github-actions/auth@v0
+      if: ${{ inputs.google-service-account != '' }}
+      with:
+        credentials_json: ${{ inputs.google-service-account }}
+        create_credentials_file: true
+    - uses: google-github-actions/setup-gcloud@v0
+      if: ${{ inputs.google-service-account != '' }}
+    - id: main
+      run: |
+        cd '${{ inputs.directory }}'
+
+        if ${{ inputs.pre-goals != '' }}; then
+          echo "::group::Run make ${{ inputs.pre-goals }}"
+          make ${{ inputs.pre-goals }} 2>&1
+          echo ::endgroup::
+        fi
+
+        # When GITHUB_ACTIONS=true, this command will also echo the required
+        # statements to set the outputs of this GitHub action in case one of
+        # the goals is the `plan` goal. See makefile fragments for details.
+        echo "::group::Run make ${{ inputs.goals }}"
+        make ${{ inputs.goals }} 2>&1
+        echo ::endgroup::
+
+        if ${{ inputs.post-goals != '' }}; then
+          echo "::group::Run make ${{ inputs.post-goals }}"
+          make ${{ inputs.post-goals }} 2>&1
+          echo ::endgroup::
+        fi
+      shell: bash
+      env:
+        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+        GOOGLE_SERVICE_ACCOUNT: ${{ inputs.google-service-account }}
+        TF_IN_AUTOMATION: 'true'

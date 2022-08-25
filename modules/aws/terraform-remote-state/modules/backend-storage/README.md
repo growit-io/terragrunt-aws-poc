@@ -4,7 +4,7 @@ This Terraform module creates the required resources for a given
 [Terraform S3 backend](https://www.terraform.io/docs/language/settings/backends/s3.html)
 configuration.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -43,4 +43,4 @@ No Modules.
 
 No output.
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->

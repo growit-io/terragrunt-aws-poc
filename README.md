@@ -20,15 +20,22 @@ template.
   `terragrunt.yml` files to overcome the
   [single-include limitation](https://terragrunt.gruntwork.io/docs/rfc/imports/)
   and keep Terragrunt configurations as "DRY" as possible.
-- [TFLint configuration](.tflint.hcl) to ensure that all Terraform modules in
+- [TFLint integration](.tflint.hcl) to ensure that all Terraform modules in
   this repository meet basic quality standards.
+- Automatically generated Terraform module documentation
+  via [Terraform-Docs](https://github.com/terraform-docs/terraform-docs#readme).
+- [Automated tests](.make/test.md) for Terraform modules
+  via [Terratest](https://terratest.gruntwork.io/)
+  and [executable examples](.make/example.terraform.md).
+- Automatically updated [dependency graphs](Makefile) for Terragrunt
+  configurations.
+- [GitHub workflows](.github/workflows) to validate pull requests, deploy
+  configuration changes, create releases, and to automate miscellaneous
+  maintenance chores.
 - [commitlint configuration](.commitlint.config.js) to ensure that all commits
   follow the [Conventional Commits](https://www.conventionalcommits.org/)
   specification, so that semantically versioned releases can be created
   automatically.
-- [GitHub workflows](.github/workflows) to validate pull requests, deploy
-  configuration changes, create releases, and to automate miscellaneous
-  maintenance chores.
 
 ## Usage
 
