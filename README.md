@@ -1,17 +1,17 @@
 <img src="icon.png" align="right" width="25%" />
 
-# Terragrunt Template
-[![Upstream](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/upstream.yml)
-[![Release](https://github.com/growit-io/terragrunt/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/release.yml)
-[![Downstream](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt/actions/workflows/downstream.yml)
+# Terragrunt Template for Amazon Web Services
+[![Upstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml)
+[![Release](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml)
+[![Downstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml)
 
 This is a template for [Terragrunt](https://terragrunt.gruntwork.io/)
 configuration repositories with a single parent `terragrunt.hcl` file that
 supports simple configurations as well as complex, highly interdependent and
 deeply nested scenarios.
 
-This repository was generated from an
-[abstract template](https://github.com/growit-io/template) and is
+This repository was generated from the
+[terragrunt](https://github.com/growit-io/terragrunt) template and is
 [automatically kept synchronized](.github/workflows) with new releases of the
 template.
 

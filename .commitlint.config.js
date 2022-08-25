@@ -17,6 +17,11 @@ const Configuration = {
        */
       'terragrunt',
       /*
+       * This scope identifies Amazon Web Services-specific adjustments in
+       * the "terragrunt-aws" template repository.
+       */
+      'terragrunt-aws',
+      /*
        * Changes affecting the CI/CD actions and workflows defined in the
        * .github/ directory within this repository. Often, but not always,
        * the commit type associated with these changes would be "ci".
