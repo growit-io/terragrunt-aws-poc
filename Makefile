@@ -2,6 +2,9 @@
 # used in this repository should be located in the .make/ subdirectory, along
 # with a corresponding documentation of their purpose, goals, and variables.
 
+# Skip the `examples/` subdirectory since this repository shouldn't touch it.
+EXCLUDE_SUBDIRS += examples
+
 TERRAGRUNT = terragrunt
 
 # paths is a list of patterns interpreted by the `-path` primary of the find(1)
