@@ -87,6 +87,7 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create and apply execution plans for aws/poc/workloads/dev'
         uses: ./.github/actions/make
         with:
@@ -97,6 +98,7 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_LOG_LEVEL: error
 
   integration:
     name: 'Integration Environment'
@@ -116,6 +118,7 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create and apply execution plans for aws/poc/workloads/test'
         uses: ./.github/actions/make
         with:
@@ -126,6 +129,7 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_LOG_LEVEL: error
 
   production:
     name: 'Production Environment'
@@ -145,6 +149,7 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create and apply execution plans for aws/poc/management/prod'
         uses: ./.github/actions/make
         with:
@@ -155,6 +160,7 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create and apply execution plans for aws/poc/workloads/prod'
         uses: ./.github/actions/make
         with:
@@ -165,3 +171,4 @@ jobs:
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_LOG_LEVEL: error

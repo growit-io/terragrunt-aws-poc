@@ -175,6 +175,7 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create execution plans for aws/poc/workloads/dev'
         uses: ./.github/actions/make
         with:
@@ -186,6 +187,7 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Check for changed paths'
         id: plan-feedback
         run: .terragrunt/bin/plan-feedback tfplan
@@ -213,6 +215,7 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create execution plans for aws/poc/workloads/test'
         uses: ./.github/actions/make
         with:
@@ -224,6 +227,7 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Check for changed paths'
         id: plan-feedback
         run: .terragrunt/bin/plan-feedback tfplan
@@ -251,6 +255,7 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create execution plans for aws/poc/management/prod'
         uses: ./.github/actions/make
         with:
@@ -262,6 +267,7 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Create execution plans for aws/poc/workloads/prod'
         uses: ./.github/actions/make
         with:
@@ -273,6 +279,7 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Check for changed paths'
         id: plan-feedback
         run: .terragrunt/bin/plan-feedback tfplan
