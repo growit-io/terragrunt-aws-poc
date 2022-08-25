@@ -1,0 +1,7 @@
+layer: account
+
+remote_state:
+  backend: terragrunt
+  config:
+    path: ../../management/boot/terraform-state
+    key: workloads_dev

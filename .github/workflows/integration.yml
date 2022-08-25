@@ -1,6 +1,9 @@
 name: 'Integration'
 
-on: [pull_request]
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   commitlint:
@@ -36,8 +39,159 @@ jobs:
           failOnWarnings: true
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
+  test:
+    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Setup Go'
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+      - name: 'Setup Terraform-Docs'
+        run: go install github.com/terraform-docs/terraform-docs@v0.16.0
+      - name: 'Setup TFLint'
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.31.0
+      - name: 'Setup TFLint plugin cache'
+        uses: actions/cache@v2
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+        with:
+          # We must fetch all history in order to compare the checked out ref
+          # against the main branch for SKIP_UNCHANGED to work as expected.
+          fetch-depth: 0
+      - name: 'Download TFLint plugins'
+        run: tflint --init
+      - name: 'Run tests for changed subdirectories'
+        uses: ./.github/actions/make
+        with:
+          goals: test SKIP_UNCHANGED=true
+
+  development:
+    name: 'Development'
+    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans for aws/poc/management/dev'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/dev
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Create execution plans for aws/poc/workloads/dev'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/workloads/dev
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Check for changed paths'
+        id: plan-feedback
+        run: .terragrunt/bin/plan-feedback tfplan
+    outputs:
+      changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
+
+  testing:
+    name: 'Testing'
+    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    needs: development
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans for aws/poc/management/test'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/test
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Create execution plans for aws/poc/workloads/test'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/workloads/test
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Check for changed paths'
+        id: plan-feedback
+        run: .terragrunt/bin/plan-feedback tfplan
+    outputs:
+      changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
+
+  production:
+    name: 'Production'
+    if: startsWith(github.head_ref, 'release-v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans for aws/poc/management/boot'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/boot
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Create execution plans for aws/poc/management/prod'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/prod
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Create execution plans for aws/poc/workloads/prod'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/workloads/prod
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+      - name: 'Check for changed paths'
+        id: plan-feedback
+        run: .terragrunt/bin/plan-feedback tfplan
+    outputs:
+      changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
+
   fix:
     if: ${{ startsWith(github.head_ref, 'release-v') }}
+    needs: production
     runs-on: ubuntu-latest
     steps:
       - name: 'Setup Graphviz'
@@ -79,6 +233,8 @@ jobs:
       - name: 'Update dependency graphs'
         uses: ./.github/actions/make
         with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
           goals: graph
       - name: 'Commit changes after `make graph`'
         run: |
@@ -91,61 +247,8 @@ jobs:
         # `graph` goals are idempotent this is unlikely an issue in practice.
         run: git push
 
-  test:
-    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Setup Go'
-        uses: actions/setup-go@v3
-        with:
-          go-version: '1.18'
-      - name: 'Setup Terraform-Docs'
-        run: go install github.com/terraform-docs/terraform-docs@v0.16.0
-      - name: 'Setup TFLint'
-        uses: terraform-linters/setup-tflint@v1
-        with:
-          tflint_version: v0.31.0
-      - name: 'Setup TFLint plugin cache'
-        uses: actions/cache@v2
-        with:
-          path: ~/.tflint.d/plugins
-          key: tflint-${{ hashFiles('.tflint.hcl') }}
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-        with:
-          # We must fetch all history in order to compare the checked out ref
-          # against the main branch for SKIP_UNCHANGED to work as expected.
-          fetch-depth: 0
-      - name: 'Download TFLint plugins'
-        run: tflint --init
-      - name: 'Run tests for changed subdirectories'
-        uses: ./.github/actions/make
-        with:
-          goals: test SKIP_UNCHANGED=true
-
-  plan:
-    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-      - name: 'Create execution plans'
-        uses: ./.github/actions/make
-        with:
-          directory: examples
-          pre-goals: init
-          goals: plan
-        env:
-          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
-          TERRAGRUNT_PLAN_OUT: tfplan
-      - name: 'Check for changed paths'
-        id: plan-feedback
-        run: .terragrunt/bin/plan-feedback tfplan
-    outputs:
-      changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
-
   feedback:
-    needs: [commitlint, fix, test, plan]
+    needs: [commitlint, fix, test, development, testing, production]
     if: always()
     runs-on: ubuntu-latest
     steps:

@@ -69,18 +69,105 @@ jobs:
     outputs:
       release_created: ${{ steps.main.outputs.release_created }}
 
-  apply:
+  development:
+    name: 'Development'
+    needs: release
+    if: '! needs.release.outputs.release_created'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create and apply execution plans for aws/management/dev'
+        id: main
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/management/dev
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+      - name: 'Create and apply execution plans for aws/workloads/dev'
+        id: main
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/workloads/dev
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+
+  testing:
+    name: 'Testing'
+    needs: release
+    if: '! needs.release.outputs.release_created'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create and apply execution plans for aws/management/test'
+        id: main
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/management/test
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+      - name: 'Create and apply execution plans for aws/workloads/test'
+        id: main
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/workloads/test
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+
+  production:
+    name: 'Production'
     needs: release
     if: needs.release.outputs.release_created
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create and apply execution plans'
+      - name: 'Create and apply execution plans for aws/management/boot'
         id: main
         uses: ./.github/actions/make
         with:
-          directory: examples
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/management/boot
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+      - name: 'Create and apply execution plans for aws/management/prod'
+        id: main
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/management/prod
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+      - name: 'Create and apply execution plans for aws/workloads/prod'
+        id: main
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/workloads/prod
           pre-goals: init
           goals: apply
         env:

@@ -1,0 +1,56 @@
+# IAM groups
+
+# This group should normally be empty. Only if an incident or other exceptional
+# situation happens may human users be added to this group by the root user. As
+# soon as the situation is resolved, this group should be emptied again.
+OrganizationAdministrators:
+  path: /
+  policies:
+    - arn:aws:iam::aws:policy/AdministratorAccess
+
+# This group should include human and system users who need to possess permanent
+# privileges to administer any member account in the organization, and to create
+# new member accounts. Without further restrictions in place, this will include
+# the ability to assume any IAM role in any member account, including production
+# accounts.
+AccountAdministrators:
+  path: /
+  policies:
+    - AccountAdministratorAccess
+
+# This group should include all human and system users who need to manage access
+# policies and user identities in the management account of the organization.
+SecurityAdministrators:
+  path: /
+  policies:
+    - SecurityAdministratorAccess
+
+# This group should include human and system users who need to possess permanent
+# privileges to administer any member account in the organization, and to create
+# new member accounts. Consequently, it also grants the required permissions to
+# create and destroy buckets used as S3 Terraform remote state backend storage
+# in the management account. Human users should normally not be a member of this
+# group, but may be added temporarily to fix issues which can't be resolved with
+# the existing Terraform automation, or when the Terraform automation is broken.
+TerraformAdministrators:
+  path: /
+  policies:
+    - TerraformAdministratorAccess
+    - WorkloadExampleDevWebsiteAdministratorAccess
+    - WorkloadExampleTestWebsiteAdministratorAccess
+    - WorkloadExampleProdWebsiteAdministratorAccess
+
+# This group should include human and system users who need to develop Terraform
+# configuration changes. They possess permanent administrative access privileges
+# for all development resources, but lack the privilege to access any production
+# resource, at all.
+TerraformDevelopers:
+  path: /
+  policies:
+    - ManagementBootTerraformStateReadOnlyAccess
+    - ManagementDevTerraformStateReadOnlyAccess
+    - ManagementTestTerraformStateReadOnlyAccess
+    - WorkloadsDevTerraformStateReadWriteAccess
+    - WorkloadExampleDevWebsiteAdministratorAccess
+    - WorkloadsTestTerraformStateReadOnlyAccess
+    - WorkloadExampleTestWebsiteDeveloperAccess

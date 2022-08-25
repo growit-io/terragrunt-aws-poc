@@ -6,21 +6,17 @@ example, to override only the `remote_state` block at different levels of the
 directory hierarchy.
 
 To overcome this limitation and to implement other features that Terragrunt
-currently does not provide directly, we use a single parent `terragrunt.hcl`
+currently does not provide directly, we use a single [parent `terragrunt.hcl` file](../../terragrunt.hcl)
 which loads all `terragrunt.yml` files in the directory hierarchy between the
 child `terragrunt.hcl` and the parent `terragrunt.hcl` in order to adjust the
 behaviour of the included parent `terragrunt.hcl` at different directory levels.
 
 ## Parent `terragrunt.hcl` features
 
-- [Hierarchical variables via the `inputs` attribute in `terragrunt.yml` files](#the-inputs-attribute)
-- [Automatic variables based on subdirectories within the directory hierarchy
-  via the `layer` attribute in `terragrunt.yml` files](#the-layer-attribute)
-- [Remote state configuration based on the directory hierarchy and optionally
-  the outputs of Terragrunt configurations via the `remote_state` attribute in
-  `terragrunt.yml` files](#the-remote_state-attribute)
-- [Implicit root module source selection based on the layers defined in
-  `terragrunt.yml` files](#the-terraform-attribute)
+- [Hierarchical inputs based on the directory hierarchy](#the-inputs-attribute)
+- [Automatic inputs based on directory names in the hierarchy](#the-layer-attribute)
+- [Terraform-managed Remote state configuration based on the directory hierarchy](#the-remote_state-attribute)
+- [Automatic Terraform root module source selection based on the directory hierarchy](#the-terraform-attribute)
 
 ## Attributes in `terragrunt.yml` files
 

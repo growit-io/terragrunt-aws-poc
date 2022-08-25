@@ -1,0 +1,8 @@
+layer: tier
+
+terraform:
+  source:
+    append: '${organization}/${platform}-${tier}-'
+
+inputs:
+  region: eu-central-1

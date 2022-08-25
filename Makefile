@@ -10,7 +10,7 @@ TERRAGRUNT = terragrunt
 # at least one terragrunt.hcl file. Any hidden directories, and any directories
 # named "modules" are excluded.
 ifeq ($(strip $(paths)),)
-override paths = *
+override paths = */workloads/dev
 endif
 
 # GRAPH_SUBDIRS is the actual list of directories in which Terragrunt will be
