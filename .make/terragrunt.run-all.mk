@@ -18,4 +18,8 @@ TERRAGRUNT_DESTROY_FLAGS += $(patsubst %,--terragrunt-exclude-dir %,$(TERRAGRUNT
 
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
+# Exclude all, lint, and test goals since those are already handled in a
+# recursive fashion by `terragrunt run-all`.
+override SUBDIR_GOALS := fix clean
+
 include $(MAKEFILE_DIR)/terragrunt.mk
