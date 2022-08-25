@@ -4,6 +4,8 @@ TERRAFORM ?= terraform
 TERRAFORM_FMT := $(TERRAFORM) fmt
 TERRAFORM_FMT_CHECK := $(TERRAFORM_FMT) -check -diff
 
+TERRAFORM_LOCK_TIMEOUT ?= 5m
+
 TERRAGRUNT ?= terragrunt
 TERRAGRUNT_TFPATH := $(TERRAFORM)
 
@@ -15,8 +17,9 @@ TERRAGRUNT_FLAGS += \
   --terragrunt-tfpath '$(TERRAGRUNT_TFPATH)'
 
 TERRAGRUNT_INIT_FLAGS += $(TERRAGRUNT_FLAGS) -upgrade
-TERRAGRUNT_PLAN_FLAGS += $(TERRAGRUNT_FLAGS)
-TERRAGRUNT_DESTROY_FLAGS += $(TERRAGRUNT_FLAGS)
+TERRAGRUNT_PLAN_FLAGS += $(TERRAGRUNT_FLAGS) -lock-timeout=$(TERRAFORM_LOCK_TIMEOUT)
+TERRAGRUNT_APPLY_FLAGS += $(TERRAGRUNT_FLAGS) -lock-timeout=$(TERRAFORM_LOCK_TIMEOUT)
+TERRAGRUNT_DESTROY_FLAGS += $(TERRAGRUNT_FLAGS) -lock-timeout=$(TERRAFORM_LOCK_TIMEOUT)
 
 TERRAGRUNT_OUTPUTS += .terragrunt-cache .terraform.lock.hcl
 
@@ -84,7 +87,7 @@ plan:
 
 # Apply infrastructure configuration changes
 apply:
-	$(TERRAGRUNT) apply $(TERRAGRUNT_FLAGS)
+	$(TERRAGRUNT) apply $(TERRAGRUNT_APPLY_FLAGS)
 
 # Permanently destroy the existing infrastructure
 destroy:
