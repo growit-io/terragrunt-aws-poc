@@ -7,7 +7,6 @@ on:
 
 jobs:
   release:
-    name: 'Release'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -70,56 +69,19 @@ jobs:
     outputs:
       release_created: ${{ steps.main.outputs.release_created }}
 
-  examples:
-    name: 'Examples'
+  apply:
     needs: release
     if: needs.release.outputs.release_created
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create execution plans'
+      - name: 'Create and apply execution plans'
         id: main
-        uses: ./.github/actions/terragrunt
+        uses: ./.github/actions/make
         with:
-          command: apply
-          config-paths: 'examples'
-    outputs:
-      changed-paths: ${{ steps.main.outputs.changed-paths }}
-
-  generate:
-    name: 'Generate'
-    needs: release
-    if: '! needs.release.outputs.release_created'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Setup Graphviz'
-        uses: ts-graphviz/setup-graphviz@v1
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-      - name: 'Generate Terraform module documentation'
-        id: terraform-docs
-        uses: terraform-docs/gh-actions@v0.6.0
-        with:
-          find-dir: .
-          output-file: README.md
-          output-method: inject
-      - name: 'Fix permissions in work tree'
-        if: steps.terraform-docs.outputs.num_changed > 0
-        run: sudo chown -R $(id -u):$(id -g) .
-      - name: 'Generate dependency graphs'
-        uses: ./.github/actions/terragrunt
-        with:
-          command: graph
-          config-paths: '*'
-      - name: 'Generate commit message'
-        id: commit
-        run: 'echo "::set-output name=summary::chore($(basename $GITHUB_REPOSITORY)): update generated documentation"'
-      - name: 'Create pull request'
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          commit-message: ${{ steps.commit.outputs.summary }}
-          branch: chore/update-dependency-graphs
-          delete-branch: true
-          title: ${{ steps.commit.outputs.summary }}
+          directory: examples
+          pre-goals: init
+          goals: apply
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive

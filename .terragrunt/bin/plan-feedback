@@ -25,7 +25,7 @@ def cwd(path):
 
 
 def terraform_show_json(path):
-    with cwd(os.path.dirname(path)):
+    with cwd(os.path.dirname(path) or '.'):
         return check_output([terraform, 'show', '-json', os.path.basename(path)])
 
 
@@ -33,10 +33,14 @@ def main(plan_filename):
     global changed
     global changed_paths
 
-    plan_file_pattern = '**/.terragrunt-cache/**/%s' % plan_filename
+    plan_file_pattern = '**/%s' % plan_filename
 
     for plan_file in glob.glob(plan_file_pattern, recursive=True):
-        config_path = plan_file[0:plan_file.index('/.terragrunt-cache/')]
+        if '/.terragrunt-cache/' in plan_file:
+            config_path = plan_file[0:plan_file.index('/.terragrunt-cache/')]
+        else:
+            config_path = os.path.dirname(plan_file) or '.'
+
         plan = json.loads(terraform_show_json(plan_file))
 
         num_resource_changes = 0
