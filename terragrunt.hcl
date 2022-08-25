@@ -241,8 +241,8 @@ locals {
   # for substitutions in the `terraform_source_format` variable.
   inputs = merge(
     local.directory_inputs,
-    local.layer_inputs,
     local.config_inputs,
+    local.layer_inputs,
     local.git_inputs
   )
 
