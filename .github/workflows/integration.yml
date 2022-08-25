@@ -40,6 +40,7 @@ jobs:
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
   test:
+    name: 'make test'
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
     runs-on: ubuntu-latest
     steps:
@@ -83,7 +84,7 @@ jobs:
           goals: test SKIP_UNCHANGED=true
 
   development:
-    name: 'Development'
+    name: 'Development Environment'
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
     needs: test
     runs-on: ubuntu-latest
@@ -118,8 +119,8 @@ jobs:
     outputs:
       changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
 
-  testing:
-    name: 'Testing'
+  integration:
+    name: 'Integration Environment'
     if: ${{ ! startsWith(github.head_ref, 'release-v') }}
     needs: development
     runs-on: ubuntu-latest
@@ -155,7 +156,7 @@ jobs:
       changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
 
   production:
-    name: 'Production'
+    name: 'Production Environment'
     if: startsWith(github.head_ref, 'release-v')
     runs-on: ubuntu-latest
     steps:
@@ -201,6 +202,7 @@ jobs:
       changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
 
   fix:
+    name: 'make fix'
     if: ${{ startsWith(github.head_ref, 'release-v') }}
     needs: production
     runs-on: ubuntu-latest
@@ -259,7 +261,7 @@ jobs:
         run: git push
 
   feedback:
-    needs: [commitlint, fix, test, development, testing, production]
+    needs: [commitlint, fix, test, development, integration, production]
     if: always()
     runs-on: ubuntu-latest
     steps:
