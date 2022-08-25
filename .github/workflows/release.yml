@@ -77,22 +77,22 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create and apply execution plans for aws/management/dev'
+      - name: 'Create and apply execution plans for aws/poc/management/dev'
         uses: ./.github/actions/make
         with:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
-          directory: aws/management/dev
+          directory: aws/poc/management/dev
           pre-goals: init
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
-      - name: 'Create and apply execution plans for aws/workloads/dev'
+      - name: 'Create and apply execution plans for aws/poc/workloads/dev'
         uses: ./.github/actions/make
         with:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
-          directory: aws/workloads/dev
+          directory: aws/poc/workloads/dev
           pre-goals: init
           goals: apply
         env:
@@ -106,22 +106,22 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create and apply execution plans for aws/management/test'
+      - name: 'Create and apply execution plans for aws/poc/management/test'
         uses: ./.github/actions/make
         with:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
-          directory: aws/management/test
+          directory: aws/poc/management/test
           pre-goals: init
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
-      - name: 'Create and apply execution plans for aws/workloads/test'
+      - name: 'Create and apply execution plans for aws/poc/workloads/test'
         uses: ./.github/actions/make
         with:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
-          directory: aws/workloads/test
+          directory: aws/poc/workloads/test
           pre-goals: init
           goals: apply
         env:
@@ -135,32 +135,32 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create and apply execution plans for aws/management/boot'
+      - name: 'Create and apply execution plans for aws/poc/management/boot'
         uses: ./.github/actions/make
         with:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
-          directory: aws/management/boot
+          directory: aws/poc/management/boot
           pre-goals: init
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
-      - name: 'Create and apply execution plans for aws/management/prod'
+      - name: 'Create and apply execution plans for aws/poc/management/prod'
         uses: ./.github/actions/make
         with:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
-          directory: aws/management/prod
+          directory: aws/poc/management/prod
           pre-goals: init
           goals: apply
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
-      - name: 'Create and apply execution plans for aws/workloads/prod'
+      - name: 'Create and apply execution plans for aws/poc/workloads/prod'
         uses: ./.github/actions/make
         with:
           aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
-          directory: aws/workloads/prod
+          directory: aws/poc/workloads/prod
           pre-goals: init
           goals: apply
         env:
