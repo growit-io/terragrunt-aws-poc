@@ -4,9 +4,17 @@ on:
   pull_request:
     branches:
       - main
+    types:
+      - synchronize
+      - opened
+      - reopened
+      # Add ready_for_review to the default set in order start skipped jobs for
+      # draft PRs as soon as the PR moves out of draft state.
+      - ready_for_review
 
 jobs:
   commitlint:
+    if: ${{ ! github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +49,9 @@ jobs:
 
   fix:
     name: 'make fix'
-    if: ${{ startsWith(github.head_ref, 'release-v') }}
+    if: |
+      startsWith(github.head_ref, 'release-v') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Setup Graphviz'
@@ -99,7 +109,10 @@ jobs:
 
   test:
     name: 'make test'
-    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    if: |
+      ! startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Setup Go'
@@ -143,7 +156,10 @@ jobs:
 
   development:
     name: 'Development Environment'
-    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    if: |
+      ! startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -178,7 +194,10 @@ jobs:
 
   integration:
     name: 'Integration Environment'
-    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    if: |
+      ! startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -213,7 +232,10 @@ jobs:
 
   production:
     name: 'Production Environment'
-    if: startsWith(github.head_ref, 'release-v')
+    if: |
+      startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
