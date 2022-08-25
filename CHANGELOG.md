@@ -1,5 +1,64 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.2.0...v1.0.0) (2022-08-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **make:** add workflow framework based on GNU Make
+
+### Features
+
+* **make:** add workflow framework based on GNU Make ([ea8f7d0](https://www.github.com/growit-io/terragrunt-aws-poc/commit/ea8f7d0224706157ac05d2af3348b405d38a6685))
+
+
+### Bug Fixes
+
+* **terragrunt-aws:** raise precedence of layer variables ([d7f4f07](https://www.github.com/growit-io/terragrunt-aws-poc/commit/d7f4f07b113d541c84c6be6a06d9daa0aafc9fa6))
+
+
+### Documentation
+
+* **terraform-aws:** ƒix auto-generated documentation markers ([c8dc559](https://www.github.com/growit-io/terragrunt-aws-poc/commit/c8dc5594e78ac0b2f123590e42f18997118e52e9))
+* **terraform-aws:** re-generate auto-generated documentation ([2a2b177](https://www.github.com/growit-io/terragrunt-aws-poc/commit/2a2b177ff3769f8f44b935e65c9151af6117e783))
+* **terragrunt:** update features in top-level README.md ([d006dce](https://www.github.com/growit-io/terragrunt-aws-poc/commit/d006dce77c08e6e21396a33f20e44a104f61d77e))
+
+
+### CI/CD Workflows
+
+* **github:** combine `tflint` and `fmt-check` jobs ([fe8c000](https://www.github.com/growit-io/terragrunt-aws-poc/commit/fe8c000a3a4c26a8a759763cd720521617a329a5))
+* **github:** cosmetic changes to job display names ([81bf868](https://www.github.com/growit-io/terragrunt-aws-poc/commit/81bf868c8f4db5beba18b3f00a9b07a37d5a2ac5))
+* **github:** demonstrate plan feedback via examples ([0157abd](https://www.github.com/growit-io/terragrunt-aws-poc/commit/0157abd0678bdda310d314ae790ed583a83f8d96))
+* **github:** fix config directory names in release.yml ([8773b46](https://www.github.com/growit-io/terragrunt-aws-poc/commit/8773b4611fa0eae435b85d37d2dc7422e78c416d))
+* **github:** fix duplicate identifiers in release workflow ([ac37647](https://www.github.com/growit-io/terragrunt-aws-poc/commit/ac37647404992357a850e5068bfa27dd01e0123c))
+* **github:** fix missing `uses` key in release workflow ([38c189a](https://www.github.com/growit-io/terragrunt-aws-poc/commit/38c189ac0f3126ff947b3ab620d8c31bf3459ddc))
+* **github:** parallelize integration workflow jobs again ([3cb5315](https://www.github.com/growit-io/terragrunt-aws-poc/commit/3cb5315a05ac7e40484218bff08f9d3b573f5c96))
+* **github:** raise Terragrunt log level to `error` ([42f4bfd](https://www.github.com/growit-io/terragrunt-aws-poc/commit/42f4bfd55153f95884934e1eee16747c36c5050d))
+* **github:** re-trigger workflow on push to release branch ([f3bf2a7](https://www.github.com/growit-io/terragrunt-aws-poc/commit/f3bf2a7083142b46f5a216959468a5b734ebf593))
+* **github:** rename local `terraform` action to `make` ([227b4b5](https://www.github.com/growit-io/terragrunt-aws-poc/commit/227b4b5b0557aeded3179f869a654842381c1cad))
+* **github:** restore `make fix graph` functionality ([51eb8f7](https://www.github.com/growit-io/terragrunt-aws-poc/commit/51eb8f7185437a337f67dd1ceeb4957cbdb11fcb))
+* **github:** run `make fix` on release PRs, and more ([1a04982](https://www.github.com/growit-io/terragrunt-aws-poc/commit/1a0498236389b161f598b71971a869b7ba5257cf))
+* **github:** run `make test`, but only in changed directories ([6bf79de](https://www.github.com/growit-io/terragrunt-aws-poc/commit/6bf79dee2b380f9bad145096a87511ac090cd8c4))
+* **github:** sequential rollout to non-prod in release.yml ([6077f38](https://www.github.com/growit-io/terragrunt-aws-poc/commit/6077f387948cac6bcecfe735b275d1887a38c3f8))
+* **github:** skip CI for draft PRs and label `ci: skip` ([bd6e5ff](https://www.github.com/growit-io/terragrunt-aws-poc/commit/bd6e5ffa941df90c1e732c2508b480456922ee77))
+* **github:** split Terragrunt and Terraform validation ([fa816f0](https://www.github.com/growit-io/terragrunt-aws-poc/commit/fa816f06436a6118f0d46584c76d1a6e793e7da2))
+* **github:** use google-github-actions/setup-gcloud@v0 ([667518c](https://www.github.com/growit-io/terragrunt-aws-poc/commit/667518c64ac2e5c3fadcca665d0c94a1b587026d))
+
+
+### Build System
+
+* **make:** add `TERRAGRUNT_PLAN_OUT` variable ([6817858](https://www.github.com/growit-io/terragrunt-aws-poc/commit/6817858fa601b5ff5b6ad7ed0467b164b3baa906))
+* **make:** add makefiles for Terraform modules ([a54a4a3](https://www.github.com/growit-io/terragrunt-aws-poc/commit/a54a4a3303a92702fa02cb92ed7487abaa25c32e))
+* **make:** add makefiles for Terragrunt configurations ([8369039](https://www.github.com/growit-io/terragrunt-aws-poc/commit/83690394f2f5c2c7f6d962206d0cfe7a9e2b0d77))
+* **make:** enable recursion in terragrunt.mk ([02550c7](https://www.github.com/growit-io/terragrunt-aws-poc/commit/02550c73fc2d2932e1158facb22bfcb84ddcca62))
+* **make:** exclude `examples/` subdirectory ([91297cc](https://www.github.com/growit-io/terragrunt-aws-poc/commit/91297cc4db058111cc5f31bfef15c2aca00c7253))
+* **make:** implement `fmt-check` and `fmt` in terragrunt.mk ([4c572fe](https://www.github.com/growit-io/terragrunt-aws-poc/commit/4c572fe66ee381e825ba9de838baa6d1d02c8ab7))
+* **make:** restore top-level `graph` goal ([4a69a5a](https://www.github.com/growit-io/terragrunt-aws-poc/commit/4a69a5a841ce9e61d3ffe34fd9aa141f314750ff))
+* **make:** skip subdir goals handled by `terragrunt run-all` ([8458583](https://www.github.com/growit-io/terragrunt-aws-poc/commit/84585836c0f958da50fecc4496cdce6a874d9500))
+* **make:** use Makefile fragments from `.make` ([09f9cfd](https://www.github.com/growit-io/terragrunt-aws-poc/commit/09f9cfddea22273becd1b3c794018d19241f9c5b))
+* **make:** wait 5m for state locks, by default ([901a054](https://www.github.com/growit-io/terragrunt-aws-poc/commit/901a054437d020cfe66de1d075493e0216f0ec3e))
+* **terragrunt-aws:** rais default log level to `error` ([2e3c187](https://www.github.com/growit-io/terragrunt-aws-poc/commit/2e3c187d5ebff9f11988ee08a19ddbb4dd5c2859))
+
 ## [0.2.0](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.1.2...v0.2.0) (2021-09-06)
 
 
