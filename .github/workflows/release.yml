@@ -70,7 +70,7 @@ jobs:
       release_created: ${{ steps.main.outputs.release_created }}
 
   development:
-    name: 'Development'
+    name: 'Development Environment'
     needs: release
     if: '! needs.release.outputs.release_created'
     runs-on: ubuntu-latest
@@ -98,9 +98,9 @@ jobs:
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
 
-  testing:
-    name: 'Testing'
-    needs: release
+  integration:
+    name: 'Integration Environment'
+    needs: [release, development]
     if: '! needs.release.outputs.release_created'
     runs-on: ubuntu-latest
     steps:
@@ -128,7 +128,7 @@ jobs:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
 
   production:
-    name: 'Production'
+    name: 'Production Environment'
     needs: release
     if: needs.release.outputs.release_created
     runs-on: ubuntu-latest
