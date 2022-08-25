@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/growit-io/terragrunt/compare/v0.2.0...v1.0.0) (2022-08-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **make:** add workflow framework based on GNU Make
+
+### Features
+
+* **make:** add workflow framework based on GNU Make ([ea8f7d0](https://www.github.com/growit-io/terragrunt/commit/ea8f7d0224706157ac05d2af3348b405d38a6685))
+
+
+### Build System
+
+* **make:** add `TERRAGRUNT_PLAN_OUT` variable ([6817858](https://www.github.com/growit-io/terragrunt/commit/6817858fa601b5ff5b6ad7ed0467b164b3baa906))
+* **make:** enable recursion in terragrunt.mk ([02550c7](https://www.github.com/growit-io/terragrunt/commit/02550c73fc2d2932e1158facb22bfcb84ddcca62))
+* **make:** implement `fmt-check` and `fmt` in terragrunt.mk ([4c572fe](https://www.github.com/growit-io/terragrunt/commit/4c572fe66ee381e825ba9de838baa6d1d02c8ab7))
+* **make:** restore top-level `graph` goal ([4a69a5a](https://www.github.com/growit-io/terragrunt/commit/4a69a5a841ce9e61d3ffe34fd9aa141f314750ff))
+* **make:** use Makefile fragments from `.make` ([09f9cfd](https://www.github.com/growit-io/terragrunt/commit/09f9cfddea22273becd1b3c794018d19241f9c5b))
+
+
+### CI/CD Workflows
+
+* **github:** combine `tflint` and `fmt-check` jobs ([fe8c000](https://www.github.com/growit-io/terragrunt/commit/fe8c000a3a4c26a8a759763cd720521617a329a5))
+* **github:** demonstrate plan feedback via examples ([0157abd](https://www.github.com/growit-io/terragrunt/commit/0157abd0678bdda310d314ae790ed583a83f8d96))
+* **github:** re-trigger workflow on push to release branch ([f3bf2a7](https://www.github.com/growit-io/terragrunt/commit/f3bf2a7083142b46f5a216959468a5b734ebf593))
+* **github:** rename local `terraform` action to `make` ([227b4b5](https://www.github.com/growit-io/terragrunt/commit/227b4b5b0557aeded3179f869a654842381c1cad))
+* **github:** restore `make fix graph` functionality ([51eb8f7](https://www.github.com/growit-io/terragrunt/commit/51eb8f7185437a337f67dd1ceeb4957cbdb11fcb))
+* **github:** run `make fix` on release PRs, and more ([1a04982](https://www.github.com/growit-io/terragrunt/commit/1a0498236389b161f598b71971a869b7ba5257cf))
+* **github:** run `make test`, but only in changed directories ([6bf79de](https://www.github.com/growit-io/terragrunt/commit/6bf79dee2b380f9bad145096a87511ac090cd8c4))
+* **github:** use google-github-actions/setup-gcloud@v0 ([667518c](https://www.github.com/growit-io/terragrunt/commit/667518c64ac2e5c3fadcca665d0c94a1b587026d))
+
+
+### Documentation
+
+* **terragrunt:** update features in top-level README.md ([d006dce](https://www.github.com/growit-io/terragrunt/commit/d006dce77c08e6e21396a33f20e44a104f61d77e))
+
 ## [0.2.0](https://www.github.com/growit-io/terragrunt/compare/v0.1.1...v0.2.0) (2021-09-05)
 
 
