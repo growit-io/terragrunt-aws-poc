@@ -10,7 +10,7 @@ TERRAGRUNT ?= terragrunt
 TERRAGRUNT_TFPATH := $(TERRAFORM)
 
 # The default log level is "warn" and it is too verbose in Terragrunt 0.31
-TERRAGRUNT_LOG_LEVEL ?= fatal
+TERRAGRUNT_LOG_LEVEL ?= error
 
 TERRAGRUNT_FLAGS += \
   --terragrunt-log-level '$(TERRAGRUNT_LOG_LEVEL)' \
