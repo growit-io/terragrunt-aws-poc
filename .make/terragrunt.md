@@ -15,6 +15,13 @@ The command to execute in order to invoke Terraform.
 
 Default: `terraform`
 
+### TERRAFORM_LOCK_TIMEOUT
+
+The maximum duration that Terraform will wait to acquire a state lock before
+giving up. The value `0s` can be used to give up immediately.
+
+Default: `5m`
+
 ### TERRAGRUNT
 
 The command to execute in order to invoke Terragrunt.
@@ -27,11 +34,11 @@ The logging level for Terragrunt specified via `--terragrunt-log-level`.
 
 **Note:** The actual default log level for Terragrunt (`warn`) is still a bit
 too verbose for frequent interactive use, so this Makefile fragment sets it
-to `fatal`. However, at this level Terragrunt may hide some information that
+to `error`. However, at this level Terragrunt may hide some information that
 interactive prompts may refer to. For example, when asking the user for
 confirmation before executing the `destroy` command.
 
-Default: `fatal`
+Default: `error`
 
 ### TERRAGRUNT_FLAGS
 
@@ -52,7 +59,7 @@ Default: `$(TERRAGRUNT_FLAGS) -upgrade`
 Additional options and arguments to pass only to the `plan` command of
 Terragrunt. The default value shown here will always be appended.
 
-Default: `$(TERRAGRUNT_FLAGS)`
+Default: `$(TERRAGRUNT_FLAGS) -lock-timeout=$(TERRAFORM_LOCK_TIMEOUT)`
 
 ### TERRAGRUNT_PLAN_OUT
 
@@ -63,12 +70,19 @@ remove it again.
 
 Default: None
 
+### TERRAGRUNT_APPLY_FLAGS
+
+Additional options and arguments to pass only to the `apply` command of
+Terragrunt. The default value shown here will always be appended.
+
+Default: `$(TERRAGRUNT_FLAGS) -lock-timeout=$(TERRAFORM_LOCK_TIMEOUT)`
+
 ### TERRAGRUNT_DESTROY_FLAGS
 
 Additional options and arguments to pass only to the `destroy` command of
 Terragrunt. The default value shown here will always be appended.
 
-Default: `$(TERRAGRUNT_FLAGS)`
+Default: `$(TERRAGRUNT_FLAGS) -lock-timeout=$(TERRAFORM_LOCK_TIMEOUT)`
 
 ### TERRAGRUNT_OUTPUTS
 
