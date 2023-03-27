@@ -1,5 +1,25 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/growit-io/terragrunt-aws/compare/v1.0.0...v1.0.1) (2023-03-27)
+
+
+### Bug Fixes
+
+* **terragrunt:** raise precedence of layer variables ([9651792](https://www.github.com/growit-io/terragrunt-aws/commit/9651792f7fb33e1655b25db75f442df5d2260b4b))
+
+
+### CI/CD Workflows
+
+* **github:** skip CI for draft PRs and label `ci: skip` ([766705b](https://www.github.com/growit-io/terragrunt-aws/commit/766705b17a33f795fa036dbff12c86a996bd8925))
+
+
+### Build System
+
+* **make:** raise Terragrunt's log level to `error` ([2f13c76](https://www.github.com/growit-io/terragrunt-aws/commit/2f13c7661d5f60b5fa98dd0ac0bb2cf22b2ee900))
+* **make:** wait 5m for state locks, by default ([dd1af44](https://www.github.com/growit-io/terragrunt-aws/commit/dd1af447b1430ad6816fb4c0d56e79c1987bf27d))
+* **terragrunt:** update Terraform version to 1.4.2 ([750f629](https://www.github.com/growit-io/terragrunt-aws/commit/750f629649916ca792494dfee49d1322fd317fa7))
+* **terragrunt:** update Terragrunt version to 0.45.0 ([1fa01e5](https://www.github.com/growit-io/terragrunt-aws/commit/1fa01e595dbdb43ec220766d693a6e587f8e1690))
+
 ## [1.0.0](https://www.github.com/growit-io/terragrunt-aws/compare/v0.2.1...v1.0.0) (2022-08-25)
 
 
