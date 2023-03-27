@@ -4,6 +4,7 @@ on: [pull_request]
 
 jobs:
   commitlint:
+    if: ${{ ! github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +38,9 @@ jobs:
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
   fix:
-    if: ${{ startsWith(github.head_ref, 'release-v') }}
+    if: |
+      startsWith(github.head_ref, 'release-v') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Setup Graphviz'
@@ -92,7 +95,10 @@ jobs:
         run: git push
 
   test:
-    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    if: |
+      ! startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Setup Go'
@@ -124,7 +130,10 @@ jobs:
           goals: test SKIP_UNCHANGED=true
 
   plan:
-    if: ${{ ! startsWith(github.head_ref, 'release-v') }}
+    if: |
+      ! startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
