@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.0.0](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v1.0.0...v2.0.0) (2023-04-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **terragrunt:** update `include` handling for Terragrunt 0.32.0
+
+### Bug Fixes
+
+* **terragrunt-aws-poc:** specify server-side encryption in s3-website-example ([dc57400](https://www.github.com/growit-io/terragrunt-aws-poc/commit/dc57400ff5c6df36c359fc5189402273004b8a9a))
+* **terragrunt:** raise precedence of layer variables ([9651792](https://www.github.com/growit-io/terragrunt-aws-poc/commit/9651792f7fb33e1655b25db75f442df5d2260b4b))
+
+
+### CI/CD Workflows
+
+* **github:** skip CI for draft PRs and label `ci: skip` ([766705b](https://www.github.com/growit-io/terragrunt-aws-poc/commit/766705b17a33f795fa036dbff12c86a996bd8925))
+
+
+### Build System
+
+* **make:** raise Terragrunt's log level to `error` ([2f13c76](https://www.github.com/growit-io/terragrunt-aws-poc/commit/2f13c7661d5f60b5fa98dd0ac0bb2cf22b2ee900))
+* **make:** wait 5m for state locks, by default ([dd1af44](https://www.github.com/growit-io/terragrunt-aws-poc/commit/dd1af447b1430ad6816fb4c0d56e79c1987bf27d))
+* **terragrunt:** update `include` handling for Terragrunt 0.32.0 ([a12c57c](https://www.github.com/growit-io/terragrunt-aws-poc/commit/a12c57c36c91f6e88033c78ade037d39d14d48dd))
+* **terragrunt:** update Terraform version to 1.4.2 ([750f629](https://www.github.com/growit-io/terragrunt-aws-poc/commit/750f629649916ca792494dfee49d1322fd317fa7))
+* **terragrunt:** update Terragrunt version to 0.45.0 ([1fa01e5](https://www.github.com/growit-io/terragrunt-aws-poc/commit/1fa01e595dbdb43ec220766d693a6e587f8e1690))
+
 ## [1.0.0](https://www.github.com/growit-io/terragrunt-aws-poc/compare/v0.2.0...v1.0.0) (2022-08-25)
 
 
