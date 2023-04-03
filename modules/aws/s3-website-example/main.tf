@@ -31,6 +31,16 @@ resource "aws_s3_bucket" "this" {
     error_document = "error.html"
   }
 
+  server_side_encryption_configuration {
+    rule {
+      bucket_key_enabled = false
+
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
   force_destroy = true
 }
 
