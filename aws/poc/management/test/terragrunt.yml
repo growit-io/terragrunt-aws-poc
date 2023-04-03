@@ -1,0 +1,11 @@
+layer: layer
+
+remote_state:
+  backend: terragrunt
+  config:
+    path: ../boot/terraform-state
+    key: management_test
+
+terraform:
+  source:
+    append: '${layer}-'

@@ -1,0 +1,13 @@
+description: >-
+  Grants permission to manage all S3 buckets and DynamoDB tables in the
+  management account. In our organization, these resources are currently only
+  used as the `s3` Terraform remote state backend.
+
+policy:
+  Version: '2012-10-17'
+  Statement:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+        - s3:*
+      Resource: '*'

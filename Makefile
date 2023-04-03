@@ -2,6 +2,9 @@
 # used in this repository should be located in the .make/ subdirectory, along
 # with a corresponding documentation of their purpose, goals, and variables.
 
+# Skip the `examples/` subdirectory since this repository shouldn't touch it.
+EXCLUDE_SUBDIRS += examples
+
 TERRAGRUNT = terragrunt
 
 # paths is a list of patterns interpreted by the `-path` primary of the find(1)
@@ -10,7 +13,7 @@ TERRAGRUNT = terragrunt
 # at least one terragrunt.hcl file. Any hidden directories, and any directories
 # named "modules" are excluded.
 ifeq ($(strip $(paths)),)
-override paths = *
+override paths = */workloads/dev
 endif
 
 # GRAPH_SUBDIRS is the actual list of directories in which Terragrunt will be

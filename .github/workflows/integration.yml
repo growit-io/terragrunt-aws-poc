@@ -1,6 +1,16 @@
 name: 'Integration'
 
-on: [pull_request]
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - synchronize
+      - opened
+      - reopened
+      # Add ready_for_review to the default set in order start skipped jobs for
+      # draft PRs as soon as the PR moves out of draft state.
+      - ready_for_review
 
 jobs:
   commitlint:
@@ -38,6 +48,7 @@ jobs:
           helpURL: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
 
   fix:
+    name: 'make fix'
     if: |
       startsWith(github.head_ref, 'release-v') &&
       ! github.event.pull_request.draft
@@ -82,6 +93,8 @@ jobs:
       - name: 'Update dependency graphs'
         uses: ./.github/actions/make
         with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
           goals: graph
       - name: 'Commit changes after `make graph`'
         run: |
@@ -95,6 +108,7 @@ jobs:
         run: git push
 
   test:
+    name: 'make test'
     if: |
       ! startsWith(github.head_ref, 'release-v') &&
       ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
@@ -124,12 +138,24 @@ jobs:
           fetch-depth: 0
       - name: 'Download TFLint plugins'
         run: tflint --init
-      - name: 'Run tests for changed subdirectories'
+      - name: 'Validate changed Terraform modules'
         uses: ./.github/actions/make
         with:
+          directory: modules
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          goals: test SKIP_UNCHANGED=true
+      - name: 'Validate changed Terragrunt configurations'
+        uses: ./.github/actions/make
+        with:
+          directory: aws
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          pre-goals: init SKIP_UNCHANGED=true SUBDIR_GOALS=init
           goals: test SKIP_UNCHANGED=true
 
-  plan:
+  development:
+    name: 'Development Environment'
     if: |
       ! startsWith(github.head_ref, 'release-v') &&
       ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
@@ -138,15 +164,122 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-      - name: 'Create execution plans'
+      - name: 'Create execution plans for aws/poc/management/dev'
         uses: ./.github/actions/make
         with:
-          directory: examples
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/dev
           pre-goals: init
           goals: plan
         env:
           TERRAGRUNT_FLAGS: --terragrunt-non-interactive
           TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
+      - name: 'Create execution plans for aws/poc/workloads/dev'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/workloads/dev
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
+      - name: 'Check for changed paths'
+        id: plan-feedback
+        run: .terragrunt/bin/plan-feedback tfplan
+    outputs:
+      changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
+
+  integration:
+    name: 'Integration Environment'
+    if: |
+      ! startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans for aws/poc/management/test'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/test
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
+      - name: 'Create execution plans for aws/poc/workloads/test'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/workloads/test
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
+      - name: 'Check for changed paths'
+        id: plan-feedback
+        run: .terragrunt/bin/plan-feedback tfplan
+    outputs:
+      changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
+
+  production:
+    name: 'Production Environment'
+    if: |
+      startsWith(github.head_ref, 'release-v') &&
+      ! contains(github.event.pull_request.labels.*.name, 'ci: skip') &&
+      ! github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Create execution plans for aws/poc/management/boot'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/boot
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
+      - name: 'Create execution plans for aws/poc/management/prod'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/management/prod
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
+      - name: 'Create execution plans for aws/poc/workloads/prod'
+        uses: ./.github/actions/make
+        with:
+          aws-access-key-id: ${{ secrets.CD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CD_AWS_SECRET_ACCESS_KEY }}
+          directory: aws/poc/workloads/prod
+          pre-goals: init
+          goals: plan
+        env:
+          TERRAGRUNT_FLAGS: --terragrunt-non-interactive
+          TERRAGRUNT_PLAN_OUT: tfplan
+          TERRAGRUNT_LOG_LEVEL: error
       - name: 'Check for changed paths'
         id: plan-feedback
         run: .terragrunt/bin/plan-feedback tfplan
@@ -154,7 +287,7 @@ jobs:
       changed-paths: ${{ steps.plan-feedback.outputs.changed-paths }}
 
   feedback:
-    needs: [commitlint, fix, test, plan]
+    needs: [commitlint, fix, test, development, integration, production]
     if: always()
     runs-on: ubuntu-latest
     steps:

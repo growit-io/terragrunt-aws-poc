@@ -22,6 +22,12 @@ const Configuration = {
        */
       'terragrunt-aws',
       /*
+       * This scope may be used in the context of the "terragrunt-aws-poc"
+       * repository if the change spans multiple scopes, or if there is no
+       * better scope available.
+       */
+      'terragrunt-aws-poc',
+      /*
        * Changes affecting the CI/CD actions and workflows defined in the
        * .github/ directory within this repository. Often, but not always,
        * the commit type associated with these changes would be "ci".

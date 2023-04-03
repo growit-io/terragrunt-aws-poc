@@ -1,17 +1,16 @@
 <img src="icon.png" align="right" width="25%" />
 
-# Terragrunt Template for Amazon Web Services
-[![Upstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/upstream.yml)
-[![Release](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/release.yml)
-[![Downstream](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws/actions/workflows/downstream.yml)
+# AWS Organizations "PoC" Configuration
+[![Release](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/release.yml)
+[![Upstream](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml/badge.svg)](https://github.com/growit-io/terragrunt-aws-poc/actions/workflows/upstream.yml)
 
-This is a template for [Terragrunt](https://terragrunt.gruntwork.io/)
-configuration repositories with a single parent `terragrunt.hcl` file that
-supports simple configurations as well as complex, highly interdependent and
-deeply nested scenarios.
+This is a proof-of-concept [Terragrunt](https://terragrunt.gruntwork.io/)
+configuration repository for a [hypothetical "poc" organization](aws/poc)
+on Amazon Web Services that follows Amazon's recommendations for
+[organizing environments using multiple accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html).
 
 This repository was generated from the
-[terragrunt](https://github.com/growit-io/terragrunt) template and is
+[terragrunt-aws](https://github.com/growit-io/terragrunt-aws) template and is
 [automatically kept synchronized](.github/workflows) with new releases of the
 template.
 
@@ -48,6 +47,8 @@ template.
 - [`tgenv`](https://github.com/cunymatthieu/tgenv) and a
   [compatible version](.terragrunt-version) of Terragrunt installed
   via `tgenv install`
+- [AWS CLI](https://aws.amazon.com/cli/) configured to grant at least
+  developer-level access to organization resources
 - [GNU Make](https://www.gnu.org/software/make/) (already
   comes preinstalled on macOS), or a compatible implementation
 
@@ -61,7 +62,9 @@ template.
    in order to run Terragrunt in a subset of directories. See the
    [`Makefile`](Makefile) for details on how the `paths` variable is handled.
 
-   The default value of the `paths` variable will target all configurations.
+   The default value of the `paths` variable will target only configurations
+   which can be modified by IAM users with developer-level access in the
+   organization.
 3. Commit and push your changes to a branch and open a pull request. Make sure
    to read the [contributing guide](CONTRIBUTING.md), so that the pull request
    will be ready to be merged after review.
@@ -130,7 +133,8 @@ environment variables:
 - **git_repository** (`string`): The URL of the `origin` remote in the Git
   repository configuration.
 - **platform** (`string`): The name of the first subdirectory which leads to the
-  child `terragrunt.hcl` file.
+  child `terragrunt.hcl` file. The value can be either [`aws`](aws), or
+  [`examples`](examples).
 - **root_dir** (`string`): The absolute path of the directory which contains
   the parent `terragrunt.hcl` file.
 - **terraform_remote_state_backend** (`string`): The name of the Terraform
